@@ -19,7 +19,7 @@
                 
                 <div class='nav-list-wrapper'>
                     <ul class='nav-list'>
-                        <li>DISCOVER</li>
+                        <li class='current-page'>DISCOVER</li>
                         <li>HOUSEBOATING</li>
                         <li>RENTALS</li>
                         <li>MOORAGE</li>

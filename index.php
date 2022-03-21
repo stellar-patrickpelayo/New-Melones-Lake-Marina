@@ -1,5 +1,5 @@
 <?php get_header();?>
 
-TEST
+This is the body here
 
 <?php get_footer();?>
