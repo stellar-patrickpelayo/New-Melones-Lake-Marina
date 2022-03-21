@@ -1,0 +1,56 @@
+$giftCardBackground: #2f7bbb;
+$headerBackground: #262626;
+$headerNavListColor: #ffff;
+$giftCardColor: #ffff;
+body{
+    padding:0;
+    margin:0;
+}
+.main-header{
+    .gift-card{
+        background:$giftCardBackground;
+        color:$giftCardColor;
+        height:40px;
+        width:100vw;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-bar{
+        padding-top:14px;
+        padding-bottom:20px;
+        background:$headerBackground;
+        
+        .inner-nav-bar-wrapper{
+            margin-left:auto;
+            margin-right:auto;
+            max-width:1160px;
+            display:grid;
+            grid-template-columns: auto minmax(0px,800px);
+            padding : 0 20px;
+
+            .logo{
+                max-height:88px;
+            }
+
+            .nav-list-wrapper{
+                width:100%;;
+                max-width:800px;
+                .nav-list{
+                    display:flex;
+                    flex-direction:row;
+                    list-style: none;
+                    color:$headerNavListColor;
+                    justify-content: end;
+                    padding:0;
+                    margin:0;
+
+                    li{
+                        padding:1.375rem 0.75rem;;
+                    }
+                }
+            }
+        }
+    }
+}
