@@ -410,13 +410,33 @@ body{
 
             .column:nth-child(3){
                 ul{ 
-                   
+                   li{
+                       a{
+                           color:$footerTextColor;
+                           text-decoration: none;
+
+                           &:hover{
+                               text-decoration: underline;
+                           }
+                       }
+                   }
                 }
             }
 
             .column:nth-child(4){
                 ul{ 
                    margin:24px 0;
+                   
+                   li{
+                        a{
+                            color:$footerTextColor;
+                            text-decoration: none;
+
+                            &:hover{
+                                text-decoration: underline;
+                            }
+                        }
+                   }
                 }
 
                 .recreation-image{
@@ -426,3 +446,5 @@ body{
         }
     }
 }
+
+@import './responsiveHeader.scss';

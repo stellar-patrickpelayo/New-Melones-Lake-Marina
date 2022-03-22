@@ -27,24 +27,12 @@
                     </div>
                     <div class='column'>
                         <h3>Quick Links</h3>
-                        <ul>
-                            <li>Home</li>
-                            <li>About Us</li>
-                            <li>Moorage</li>
-                            <li>RV & Camping</li>
-                            <li>Attractions</li>
-                            <li>Gift Card</li>
-                            <li>FAQ</li>
-                            <li>Contact</li>
-                        </ul>
+                        <?php outputFooterQuickLinksNavMenu();?>
                     </div>
                     <div class='column'>
                         <h4>Rentals</h4>
-                        <ul>
-                            <li>Sportboat Rentals</li>
-                            <li>Watersport Rentals</li>
-                            <li>Houseboat Rentals</li>
-                        </ul>
+                        <?php outputFooterRentalsNavMenu();?>
+                        
                         <img class='recreation-image' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/RecreationDotGovLogo-light-o3g4hl7yvh8cg9f25bskgfl4wm7gjst111179hm9s0.png'; ?>>
 
                         <img class='recreation-image' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/BOR-o3g4hl7yvh8cg9f25bskgfl4wm7gjst111179hm9s0.png'; ?>>
