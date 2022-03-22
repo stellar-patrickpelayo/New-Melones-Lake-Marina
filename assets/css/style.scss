@@ -4,7 +4,12 @@ $headerNavListColor: #ffff;
 $giftCardColor: #ffff;
 $footerTextColor: #ffff;
 $footerH3Color:#d6e7f5;
+
 $socialMediaIconColor:#d2d2d2;
+$facebookIconHoveredColor:#8b9dc3;
+$instagramIconHoveredColor:#e1306c;
+$twitterIconHoveredColor:#1da1f3;
+
 
 //This is that V icon
 .v-icon {
@@ -103,7 +108,7 @@ body{
                         .v-icon{
                             position:relative;
                             bottom: 2px;
-                            left: 8px;
+                            left: 10px;
                         }
                     }
 
@@ -118,18 +123,14 @@ body{
 }
 
 .main-footer{
-    height:100vh;
     width:100vw;
     color:$footerTextColor;
     
-
     .upper-footer{   
         width:100vw;
-        height:334px;
-        
-        
+        height:334px;     
         background: linear-gradient(0deg,rgba(8,9,14,0.9) 0%,rgba(8,9,14,0.7) 100%), url('/wordpress/wp-content/themes/New-Melones-Lake-Marina/assets/images/lake.jpg');
-        padding: 80px 0;
+        padding: 80px 0 80px 21px;
         background-position: center center;
         background-size:cover;
 
@@ -145,9 +146,11 @@ body{
                 h3{
                     
                     font-size:32px;   
+                    line-height:40px;
                 }
                 h4{
                     font-size:24px;
+                    line-height:32.4px;
                 }
                 h3,h4{
                     color:$footerH3Color;
@@ -155,7 +158,7 @@ body{
                     margin-bottom:24px;
                     font-weight:400;
                     font-family: Alata,sans-serif;
-                    line-height:40px;
+                    
                 }
                 
                 ul{
@@ -173,11 +176,12 @@ body{
                 flex-direction: column;
 
                 .social-wrapper{
-                    color:$socialMediaIconColor;
+                    
                     display:grid;
                     grid-template-columns:auto auto auto;
                     grid-column-gap: 16px;
-                    margin-top:40px;
+                    margin-top:43px;
+                    margin-left:3px;
 
                     .custom-facebook {
                         display: inline-block;
@@ -199,19 +203,31 @@ body{
                         }
                     }
 
+                    .custom-facebook:hover{
+                        background-color:$facebookIconHoveredColor;
+                    }
+
                     .instagram-icon{
                         font-size: 38px;
                         position: relative;
                         bottom: 2px;     
+                        color:$socialMediaIconColor;
+
+                        &:hover{
+                            color:$instagramIconHoveredColor;
+                        }
                     }
 
                     .twitter-icon{
-                        font-size: 35px;
+                        font-size: 44px;
                         position: relative;
-                        
-                    }
-             
-                    
+                        bottom:4px;
+                        color:$socialMediaIconColor;
+
+                        &:hover{
+                            color:$twitterIconHoveredColor;
+                        }
+                    }                    
                 }
             }
 
@@ -233,15 +249,35 @@ body{
                         display:grid;
                         grid-template-columns: 24px 220px;
                         grid-column-gap: 16px;
+                        text-decoration: none;
+
+                        i,span{    
+                            color:$footerTextColor;
+                        }
+
+                        span{
+                            &:hover{
+                                text-decoration: underline;
+                            }
+                        }
                     }
 
                     .last-list-grid{
-                        grid-column-start:2;
+                        span{
+                            grid-column-start:2;
+                            //doing this to remove the underline that is created from the &hover above
+                            &:hover{
+                                text-decoration:none;
+                            }
+                        }
                     }
 
-                    .phone-icon{
-                        font-size:30.6px;
+                    .phone-contact{
+                        .phone-icon{
+                            font-size:30.6px;          
+                        }
                     }
+                    
 
                     .envelope-icon{
                         font-size:24px;
@@ -249,6 +285,10 @@ body{
 
                     .map-icon{
                         font-size:28px;
+                    }
+
+                    .map-icon:before{
+                        margin-left:4px;
                     }
                 }
             }
