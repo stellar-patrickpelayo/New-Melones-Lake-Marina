@@ -12,22 +12,48 @@ class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
         $output .= "$indent</ul></div>\n";
     }
 
-    // function start_el(&$output, $item, $depth=0, $args=[], $id=0) {
-    //     echo $depth;
+    function start_el(&$output, $item, $depth=0, $args=[], $id=0) {
         
-    //     $output .= '<li class="test">BLAH';
-    //     //$output .= "<li class='" .  implode(" ", $item->classes) . "'>";
+
+        if($depth === 0){
+            $categoryClass = 'menu-item-object-category';
+            //echo $depth;
+            //echo $output;
+            //echo $item->title;
+            //  echo $item['menu-item-object-category'];
+            //echo array_search($categoryClass, $item->classes);
+           
+            $output .= "<li class='" .  implode(" ", $item->classes) . "'>" ;
+
+            if(array_search($categoryClass, $item->classes)){
+                $output .= '<span class="cursor-default">';
+                $output .= $item->title . '<span class="v-icon"></span>';
+                $output .= '<span>';
+            }else{
+                $output .= '<a href="' . $item->url . '">';
+                $output .= $item->title;
+                $output .= '</a>';
+            }
+        }else{
+            $output .= "<li class='" .  implode(" ", $item->classes) . "'>" ;
+            $output .= '<a href="' . $item->url . '">';
+            $output .= $item->title;
+            $output .= '</a>';
+        }
         
-    //     // if ($item->url && $item->url != '#') {
-    //     //     $output .= '<a href="' . $item->url . '">';
-    //     // } else {
-    //     //     $output .= '<span>';
-    //     // }
-    //     // $output .= $item->title;
-    //     // if ($item->url && $item->url != '#') {
-    //     //     $output .= '</a>';
-    //     // } else {
-    //     //     $output .= '</span>';
-    //     // }
-    // }
+        
+        //$output .= "<li class='" .  implode(" ", $item->classes) . "'>";
+        
+        // if ($item->url && $item->url != '#') {
+        //     $output .= '<a href="' . $item->url . '">';
+        // } else {
+        //     $output .= '<span>';
+        // }
+        // $output .= $item->title;
+        // if ($item->url && $item->url != '#') {
+        //     $output .= '</a>';
+        // } else {
+        //     $output .= '</span>';
+        // }
+    }
 }
