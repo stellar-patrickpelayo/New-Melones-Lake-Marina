@@ -1,0 +1,4 @@
+<?php 
+
+//nav menu keys
+$HEADER_FULL_WIDTH_NAV_MENU_KEY = 'HEADER_FULL_WIDTH_NAV_MENU_KEY';
