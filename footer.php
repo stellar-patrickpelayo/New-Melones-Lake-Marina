@@ -14,10 +14,10 @@
             <div class='column'>
                 <h3>New Melones Lake Marina</h3>
                 <ul>
-                    <li><a> <i class='fa fa-phone'></i>(209) 785-3300</a></li>
-                    <li><a> <i>E</i>pr@newmeloneslakemarina.com</a></li>
-                    <li><i>L</i>6503 Glory Hole Road Angels Camp, CA 95222</li>
-                    <li><span><strong>Mailing Address:</strong> P.O. Box 1389 Angels Camp, CA 95222</span></li>
+                    <li><a class='list-grid'> <i class='fa fa-phone phone-icon'></i><span>(209) 785-3300</span></a></li>
+                    <li><a class='list-grid'> <i class='fa fa-envelope envelope-icon'></i>pr@newmeloneslakemarina.com</a></li>
+                    <li class='list-grid'><i class='fa fa-map-marker map-icon'></i><span>6503 Glory Hole Road Angels Camp, CA 95222</span></li>
+                    <li class='list-grid'><span class='last-list-grid'><strong>Mailing Address:</strong> P.O. Box 1389 Angels Camp, CA 95222</span></li>
                 </ul>
             </div>
             <div class='column'>

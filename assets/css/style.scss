@@ -155,6 +155,7 @@ body{
                     margin-bottom:24px;
                     font-weight:400;
                     font-family: Alata,sans-serif;
+                    line-height:40px;
                 }
                 
                 ul{
@@ -216,6 +217,11 @@ body{
 
             .column:nth-child(2){
                 ul{
+                    i{
+                        height:24px;
+                        width:24px;
+                    }
+                    
                     li:nth-of-type(n+2){
                         margin-top:16px;
                     }
@@ -223,8 +229,26 @@ body{
                         margin-top:24px;
                     }
 
-                    i{
-                        font-size:30.6;
+                    .list-grid{
+                        display:grid;
+                        grid-template-columns: 24px 220px;
+                        grid-column-gap: 16px;
+                    }
+
+                    .last-list-grid{
+                        grid-column-start:2;
+                    }
+
+                    .phone-icon{
+                        font-size:30.6px;
+                    }
+
+                    .envelope-icon{
+                        font-size:24px;
+                    }
+
+                    .map-icon{
+                        font-size:28px;
                     }
                 }
             }
@@ -232,6 +256,16 @@ body{
             .column:nth-child(3){
                 ul{ 
                    
+                }
+            }
+
+            .column:nth-child(4){
+                ul{ 
+                   margin:24px 0;
+                }
+
+                .recreation-image{
+                    margin-bottom:16px;
                 }
             }
         }
