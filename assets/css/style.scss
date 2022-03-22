@@ -86,8 +86,17 @@ body{
             grid-template-columns: 196px minmax(0px,964px);
             padding : 0 20px;
 
-            .logo{
+            .logo-anchor{
+                .logo{
                 max-height:88px;
+                }
+
+                -webkit-transition: 0.2s cubic-bezier(.58,.3,.51,.82);
+                -o-transition: 0.2s cubic-bezier(.58,.3,.51,.82);
+                transition: 0.2s cubic-bezier(.58,.3,.51,.82);
+                &:hover{
+                    opacity:0.5;
+                }
             }
 
             .nav-list-wrapper{

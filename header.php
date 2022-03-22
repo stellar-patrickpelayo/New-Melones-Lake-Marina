@@ -15,8 +15,9 @@
         
             <nav class="nav-bar">
                 <div class="inner-nav-bar-wrapper">
-                    <img class='logo' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/new-melones-logo-light-o3g4hm5wpvlki28ltzysw3vnosfmomt2s69ebvcmkm.png'; ?> />
-                    
+                    <a class='logo-anchor' target='_blank' href=<?php get_home_url();?>>
+                        <img class='logo' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/new-melones-logo-light-o3g4hm5wpvlki28ltzysw3vnosfmomt2s69ebvcmkm.png'; ?> />
+                    </a>
                     <div class='nav-list-wrapper'>
                         <ul class='nav-list'>
                             <li class='current-page'>DISCOVER <div class="v-icon"></div></li>
