@@ -4,6 +4,8 @@ $headerNavListColor: #ffff;
 $giftCardColor: #ffff;
 $footerTextColor: #ffff;
 $footerH3Color:#d6e7f5;
+$headerNavSubMenuBGColor:#2f7bbb;
+$headerSubMeduHoverredColor:#256092;;
 
 $socialMediaIconColor:#d2d2d2;
 $facebookIconHoveredColor:#8b9dc3;
@@ -105,6 +107,7 @@ body{
                 align-items: center;
                 justify-content: end;
                 margin:0 20px;
+
                 .nav-list{
                     display:flex;
                     flex-direction:row;
@@ -114,6 +117,18 @@ body{
                     padding:0;
                     margin:0;
                     height:60px;
+
+                    //hide v-icon when not a category
+                    .v-icon{
+                        display:none;
+                    }
+
+                    //show v-icon if item is a cateogry
+                    .menu-item-object-category {
+                        .v-icon{
+                            display:inline;
+                        }
+                    }
 
                     li{
                         padding:22px 35px 22px 12px;
@@ -132,19 +147,74 @@ body{
                         }
 
                         .sub-menu{
-                            //display:none;
+                            visibility:hidden;
+                            webkit-transform: scale(.9) translateY(-20px);
+                            -ms-transform: scale(.9) translateY(-20px);
+                            transform: scale(.9) translateY(-20px);
+
+                            opacity: 0;
+                            -webkit-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                            -o-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                            transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                        }
+    
+                        &:hover{
+                            .sub-menu{
+                                visibility:visible;
+                                opacity:1;
+                                -webkit-transform: scale(1) translateY(0); 
+                                -ms-transform: scale(1) translateY(0);
+                                transform: scale(1) translateY(0);
+                                
+                            }
+                        }
+
+                        .sub-menu-wrap{
                             position:relative;
-                            list-style:none;
-                            padding:0;
                             width:0;
                             height:0;
-                            li{
+                            
+                            .sub-menu{
                                 position:absolute;
-                                padding:0;
-                                width:100px;
+                                list-style:none;
+                                padding:0;      
+                                background:$headerNavSubMenuBGColor;  
+                                min-width:200px;
+                                left: -15px;
+                                top: 18px;
+                                
+                                li{
+                                    white-space: nowrap;
+                                    padding:0;
+                                    text-transform:none;
+                                    font-size:14px;
+                                    
+                                    &:hover{
+                                        background:$headerSubMeduHoverredColor;
+                                    }
+                                    
+                                    a{
+                                        display:flex;
+                                        justify-content: space-between;
+                                        padding:12px 20px;
+                                        -webkit-transform: translateX(0); 
+                                        -ms-transform: translateX(0);
+                                        transform: translateX(0);
+                                        -webkit-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                        -o-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                        transition: .15s all cubic-bezier(.58,.3,.51,.82);
 
-                                .v-icon{
-                                    display:none;
+                                        &:hover{
+                                            -webkit-transform: translateX(5px); 
+                                            -ms-transform: translateX(5px);
+                                            transform: translateX(5px);
+                                            text-decoration:underline;
+                                        }
+                                    }
+
+                                    .v-icon{
+                                        display:none;
+                                    }
                                 }
                             }
                         }
@@ -167,6 +237,7 @@ body{
                                 transform: rotate(45deg);
                         }
                     }
+                    
 
                     .current-page{
                         font-weight:700;
