@@ -4,15 +4,17 @@
             <div class='column'>
                 <img class='logo' src=<?php echo get_stylesheet_directory_uri() . '\assets\images\new-melones-logo-light-o3g4hm5wpvlki28ltzysw3vnosfmomt2s69ebvcmkm.png'; ?> />
                 <div class='social-wrapper'>
-                    <i class='facebook'>F</i>
-                    <i class='instagram'>I</i>
-                    <i class='twitter'>T</i>
+                    <div class='custom-facebook'>
+                        <i class='fa fa-facebook-f facebook-icon'></i>
+                    </div>
+                    <i class='fa fa-instagram instagram-icon'></i>
+                    <i class='fa fa-twitter twitter-icon'></i>
                 </div>
             </div>
             <div class='column'>
                 <h3>New Melones Lake Marina</h3>
                 <ul>
-                    <li><a> <i>P</i>(209) 785-3300</a></li>
+                    <li><a> <i class='fa fa-phone'></i>(209) 785-3300</a></li>
                     <li><a> <i>E</i>pr@newmeloneslakemarina.com</a></li>
                     <li><i>L</i>6503 Glory Hole Road Angels Camp, CA 95222</li>
                     <li><span><strong>Mailing Address:</strong> P.O. Box 1389 Angels Camp, CA 95222</span></li>

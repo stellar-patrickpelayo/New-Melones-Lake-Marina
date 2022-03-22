@@ -4,9 +4,45 @@ $headerNavListColor: #ffff;
 $giftCardColor: #ffff;
 $footerTextColor: #ffff;
 $footerH3Color:#d6e7f5;
+$socialMediaIconColor:#d2d2d2;
 
+//This is that V icon
+.v-icon {
+    color: white;
+    position: absolute;
+    margin-top: 0;
+    margin-left: 0;
+    width: 2px;
+    height: 8px;
+  }
+  
+  .v-icon:before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    width: 2px;
+    height: 8px;
+    left:5px;
+    background-color: currentColor;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
+  
+  .v-icon:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    width: 2px;
+    height: 8px;
+    background-color: currentColor;
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    
+  }
+  
+  
 html{
-    overflow-y:hidden;
+    overflow-x:hidden;
 }
 body{
     padding:0;
@@ -35,7 +71,7 @@ body{
             margin-right:auto;
             max-width:1160px;
             display:grid;
-            grid-template-columns: auto minmax(0px,800px);
+            grid-template-columns: 196px minmax(0px,964px);
             padding : 0 20px;
 
             .logo{
@@ -44,19 +80,31 @@ body{
 
             .nav-list-wrapper{
                 width:100%;;
-                max-width:800px;
+                display:flex;
+                align-items: center;
+                justify-content: end;
+            
                 .nav-list{
                     display:flex;
                     flex-direction:row;
                     list-style: none;
                     color:$headerNavListColor;
-                    justify-content: end;
+                    
                     padding:0;
                     margin:0;
+                    height:60px;
 
                     li{
-                        padding:1.375rem 0.75rem;
+                        display:flex;
+                        padding:22px 32px 22px 12px;
                         font-family: Open Sans,sans-serif;
+                        
+                        //needed to position the icon correctly
+                        .v-icon{
+                            position:relative;
+                            bottom: 2px;
+                            left: 8px;
+                        }
                     }
 
                     .current-page{
@@ -122,6 +170,48 @@ body{
                 display:flex;
                 align-items: center;
                 flex-direction: column;
+
+                .social-wrapper{
+                    color:$socialMediaIconColor;
+                    display:grid;
+                    grid-template-columns:auto auto auto;
+                    grid-column-gap: 16px;
+                    margin-top:40px;
+
+                    .custom-facebook {
+                        display: inline-block;
+                        overflow: hidden;
+                        width: 32px;
+                        height: 32px;
+                        text-align: right;
+                        background-color: $socialMediaIconColor;
+                        border:1px solid black;
+                        border-radius:2px;
+
+                        .facebook-icon{
+                            position: relative;
+                            font-size: 22px;
+                            top: 6px;
+                            right: 4px;
+                            font-size: 29px;
+                            color:black;
+                        }
+                    }
+
+                    .instagram-icon{
+                        font-size: 38px;
+                        position: relative;
+                        bottom: 2px;     
+                    }
+
+                    .twitter-icon{
+                        font-size: 35px;
+                        position: relative;
+                        
+                    }
+             
+                    
+                }
             }
 
             .column:nth-child(2){
@@ -131,6 +221,10 @@ body{
                     }
                     li:nth-of-type(4){
                         margin-top:24px;
+                    }
+
+                    i{
+                        font-size:30.6;
                     }
                 }
             }

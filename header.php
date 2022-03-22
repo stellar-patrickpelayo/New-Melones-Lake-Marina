@@ -19,13 +19,14 @@
                 
                 <div class='nav-list-wrapper'>
                     <ul class='nav-list'>
-                        <li class='current-page'>DISCOVER</li>
-                        <li>HOUSEBOATING</li>
-                        <li>RENTALS</li>
-                        <li>MOORAGE</li>
-                        <li>THINGS TO DO</li>
+                        <li class='current-page'>DISCOVER <div class="v-icon"></div></li>
+                        
+                        <li>HOUSEBOATING <div class="v-icon"></li>
+                        <li>RENTALS <div class="v-icon"></li>
+                        <li>MOORAGE <div class="v-icon"></li>
+                        <li>THINGS TO DO <div class="v-icon"></li>
                         <li>CONTACT</li>
-                        <li>More</li>
+                        <li>More <div class="v-icon"></li>
                     </ul>
                 </div>
             </div>
