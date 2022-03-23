@@ -367,7 +367,7 @@ body{
 
                     .list-grid{
                         display:grid;
-                        grid-template-columns: 24px 220px;
+                        grid-template-columns: 24px minmax(0,220px);
                         grid-column-gap: 16px;
                         text-decoration: none;
 
