@@ -2,27 +2,63 @@
     width:100vw;
     background:$headerNavSubMenuBGColor;
     color:$headerNavListColor;
-
+    
+    a{
+        text-decoration:none;
+    }
+    
     ul{
         list-style:none;
+        //padding-left:15px;
         padding-left:0;
+        padding-top:16px;
+
+        ul{
+            padding-left:0;
+        }
+        .cursor-default{
+            padding-left:20px;
+            display:block;
+            width:100%;
+        }
 
         li{
             @include liStyleSubMenu;
-            padding:16px 20px;
+            padding:0 20px 25px 0;
+            
 
             &:hover{
                 @include vIconChangeTo;
             }
+
+            .sub-menu{
+                //display:none;
+                
+                
+                li{
+                    padding:0;
+                    font-size:14px;
+                    
+                    a{
+                        display:inline-block;
+                        width:100%;
+                        padding:8px 0;
+                        padding-left:30px;
+
+                        &:hover{
+                            background:$headerSubMeduHoverredColor;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                li:last-child{
+                    padding-bottom:0;
+                }
+            }
         }
 
-        .cursor-default{
-            display:flex;
-            justify-content:space-between;
-        }
-        
         .v-icon{
-            position:relative;
+            //position:relative;
             right:26px;
         }
     }
