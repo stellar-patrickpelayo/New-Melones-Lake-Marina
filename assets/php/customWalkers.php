@@ -4,6 +4,7 @@
 class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
 {
     function start_lvl( &$output, $depth = 0, $args = array() ) {
+        
         if($depth === 0){
             $indent = str_repeat("\t", $depth);
             $output .= "\n$indent<div class='sub-menu-wrap'><ul class='sub-menu'>\n";
@@ -29,22 +30,15 @@ class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
         //these are the top nav menu li
         if($depth === 0){
             $categoryClass = 'menu-item-object-category';
-            //echo $depth;
-            //echo $output;
-            //echo $item->title;
-            //  echo $item['menu-item-object-category'];
-            //echo array_search($categoryClass, $item->classes);
-           
             
-
             if(array_search($categoryClass, $item->classes)){
                 $output .= "<li class='" .  implode(" ", $item->classes) . "'>" ;
 
                 $output .= '<span class="cursor-default">';
-                $output .= $item->title . '<span class="v-icon"></span>';
+                $output .= '<span class="item-title">' . $item->title . '</span>' . '<span class="v-icon"></span>';
             }else{
                 $output .= "<li class='less-padding-no-v" .  implode(" ", $item->classes) . "'>" ;
-                $output .= '<a href="' . $item->url . '">';
+                $output .= '<a class="no-v-anchor" href="' . $item->url . '">';
                 $output .= $item->title;
                 $output .= '</a>';
             }

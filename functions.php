@@ -7,3 +7,4 @@ include_once(get_template_directory() . '/assets/php/navMenusOutput/headerNavOut
 include_once(get_template_directory() . '/assets/php/navMenusOutput/footerNavOutputs.php');
 include_once(get_template_directory() . '/assets/php/navMenusOutput/headerMobileSlidingNavBarOutputs.php');
 include_once(get_template_directory() . '/assets/php/enqueueStyleSheets.php');
+include_once(get_template_directory() . '/assets/php/enqueueScripts.php');
