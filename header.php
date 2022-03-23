@@ -4,6 +4,7 @@
 <head>
     <title><?php echo is_home() ? bloginfo('name') :  get_the_title();?></title>        
     <?php do_action('wp_head'); ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 </head>
 
 <body>
