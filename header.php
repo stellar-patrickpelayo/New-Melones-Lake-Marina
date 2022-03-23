@@ -20,6 +20,8 @@
                     </a>
                     
                         <?php outputHeaderFullWidthNavMenu();?>
+                        <?php outPutHeaderFirstBreakPointNavMenu(); ?>
+                        <?php outPutHeaderSecondBreakPointNavMenu(); ?>
                         <!-- <ul class='nav-list'>
                             <li class='current-page'>DISCOVER <div class="v-icon"></div></li>
                             <li>HOUSEBOATING <span class="v-icon"></span></li>

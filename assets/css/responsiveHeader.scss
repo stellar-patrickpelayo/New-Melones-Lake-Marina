@@ -1,0 +1,21 @@
+.main-header{
+    @media only screen and (max-width: 1133px){
+        #header-full-width-nav-menu{
+            display:none;
+        }
+    }
+
+    @media only screen and (min-width: 1133px),
+                screen and (max-width: 1037px){
+        #header-first-break-point-nav-menu{
+            display:none;
+        }
+    } 
+
+    @media only screen and (min-width: 1037px),
+                screen and (max-width: 992px){
+        #header-second-break-point-nav-menu{
+            display:none;
+        }
+    } 
+}

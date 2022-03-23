@@ -23,13 +23,16 @@ class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
             //  echo $item['menu-item-object-category'];
             //echo array_search($categoryClass, $item->classes);
            
-            $output .= "<li class='" .  implode(" ", $item->classes) . "'>" ;
+            
 
             if(array_search($categoryClass, $item->classes)){
+                $output .= "<li class='" .  implode(" ", $item->classes) . "'>" ;
+
                 $output .= '<span class="cursor-default">';
                 $output .= $item->title . '<span class="v-icon"></span>';
                 $output .= '<span>';
             }else{
+                $output .= "<li class='less-padding-no-v" .  implode(" ", $item->classes) . "'>" ;
                 $output .= '<a href="' . $item->url . '">';
                 $output .= $item->title;
                 $output .= '</a>';
