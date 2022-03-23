@@ -32,14 +32,37 @@
                     <div class='column'>
                         <h4>Rentals</h4>
                         <?php outputFooterRentalsNavMenu();?>
-                        
+
                         <img class='recreation-image' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/RecreationDotGovLogo-light-o3g4hl7yvh8cg9f25bskgfl4wm7gjst111179hm9s0.png'; ?>>
 
                         <img class='recreation-image' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/BOR-o3g4hl7yvh8cg9f25bskgfl4wm7gjst111179hm9s0.png'; ?>>
                     </div>
                 </div>
+
+                <div class='mobile-bottom-logo-and-social-media'>
+
+                    <div class='social-wrapper'>
+                            <a class='custom-facebook' href='#'>
+                                <i class='fa fa-facebook-f facebook-icon'></i>
+                            </a>
+                            <a class='custom-instagram' href='#'><i class='fa fa-instagram instagram-icon'></i></a>
+                            <a class='custom-twitter' href='#'><i class='fa fa-twitter twitter-icon'></i></a>
+                    </div>
+
+                    <img class='logo' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/new-melones-logo.png'; ?> 
+                    >
+                    
+                    <div class='recreation-wrapper'>
+                        <img class='recreation-image' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/RecreationDotGovLogo-light-o3g4hl7yvh8cg9f25bskgfl4wm7gjst111179hm9s0.png'; ?>>
+
+                        <img class='recreation-image' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/BOR-o3g4hl7yvh8cg9f25bskgfl4wm7gjst111179hm9s0.png'; ?>>
+                    </div>
+                </div>
+
             </div>
             <div class='lower-footer'>
+
+            
 
             </div>
         </footer>
