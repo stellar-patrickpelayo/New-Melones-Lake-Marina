@@ -1,0 +1,17 @@
+.index{
+    margin-bottom:5000px;
+    .video-wrapper{
+        background-image: url('/wordpress/wp-content/themes/New-Melones-Lake-Marina/assets/images/boat-in-lake.jpg');
+        //padding:208px 0 80px 0;
+        position:absolute;
+        background-position: center center;
+        width:100vw;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        iframe{
+            height: 75vh;
+            width: 100vw;
+        }
+    }  
+}
