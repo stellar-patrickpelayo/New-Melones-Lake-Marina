@@ -23,8 +23,10 @@
                         <?php outPutHeaderFirstBreakPointNavMenu(); ?>
                         <?php outPutHeaderSecondBreakPointNavMenu(); ?>
 
-                        <!-- Mobile Hamburger Menu Icon -->
-                        test<span class='hamburger-menu'></span>
+                        <div class='hamburger-menu-wrapper'>
+                            <span class='hamburger-label'>MENU</span>
+                            <span class='hamburger-menu'></span>
+                        </div>
                         <!-- <ul class='nav-list'>
                             <li class='current-page'>DISCOVER <div class="v-icon"></div></li>
                             <li>HOUSEBOATING <span class="v-icon"></span></li>

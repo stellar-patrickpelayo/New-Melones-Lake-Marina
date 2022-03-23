@@ -19,6 +19,47 @@
         }
     } 
 
+
+    @media only screen and (max-width:991px){
+        .nav-bar{
+            .inner-nav-bar-wrapper{
+                display:flex;
+                justify-content: space-between;
+
+                .logo-anchor{
+                    .logo{
+                        width:98px;
+                    }
+                }
+
+                .hamburger-menu-wrapper{
+                    align-self:center;
+                    position:relative;
+                    bottom:4px;
+                    right:12px;
+                    opacity:1;
+                    -webkit-transition: 0.1s all cubic-bezier(0.58, 0.3, 0.51, 0.82);
+                    -o-transition: 0.1s all cubic-bezier(0.58, 0.3, 0.51, 0.82);
+                    transition: 0.1s all cubic-bezier(0.58, 0.3, 0.51, 0.82);
+                    cursor: pointer;
+                    
+                    .hamburger-label{
+                        color:$headerMobileColor;
+                        font-family: Arial;
+                        font-size:12px;
+                        font-weight:bold;
+                        margin-right:10px;
+                        
+                    }
+
+                    &:hover{
+                        opacity:0.8;
+                    }
+                }
+            }
+        }
+    }
+
     //hamburger menu
 
     
