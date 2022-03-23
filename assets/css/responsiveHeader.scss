@@ -19,6 +19,9 @@
         }
     } 
 
+    .hamburger-menu-wrapper{
+        display:none;
+    }
 
     @media only screen and (max-width:991px){
         .nav-bar{
@@ -33,6 +36,7 @@
                 }
 
                 .hamburger-menu-wrapper{
+                    display:initial;
                     align-self:center;
                     position:relative;
                     bottom:4px;
@@ -58,11 +62,7 @@
                 }
             }
         }
-    }
-
-    //hamburger menu
-
-    
+    }   
 
     .hamburger-menu{
         display: inline-block;
@@ -75,7 +75,7 @@
         width: 14px;
         border-radius: 1px;
         border-radius: 1px;
-        background-color: #ffe469;
+        background-color: $headerMobileColor;
         -webkit-transition: .1s all cubic-bezier(.58,.3,.51,.82);
         -o-transition: .1s all cubic-bezier(.58,.3,.51,.82);
         transition: .1s all cubic-bezier(.58,.3,.51,.82);

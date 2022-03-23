@@ -248,8 +248,7 @@ body{
     width:100vw;
     color:$footerTextColor;
     
-    .upper-footer{   
-        height:334px;     
+    .upper-footer{       
         background: linear-gradient(0deg,rgba(8,9,14,0.9) 0%,rgba(8,9,14,0.7) 100%), url('/wordpress/wp-content/themes/New-Melones-Lake-Marina/assets/images/lake.jpg');
         padding: 80px 0 80px 21px;
         background-position: center center;
@@ -454,3 +453,4 @@ body{
 }
 
 @import './responsiveHeader.scss';
+@import './responsiveFooter.scss';
