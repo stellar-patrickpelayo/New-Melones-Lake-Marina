@@ -1,0 +1,33 @@
+.mobile-nav-bar{
+    width:100vw;
+    background:$headerNavSubMenuBGColor;
+    color:$headerNavListColor;
+
+    ul{
+        list-style:none;
+        padding-left:0;
+
+        li{
+            @include liStyleSubMenu;
+            padding:16px 20px;
+
+            &:hover{
+                @include vIconChangeTo;
+            }
+        }
+
+        .cursor-default{
+            display:flex;
+            justify-content:space-between;
+        }
+        
+        .v-icon{
+            position:relative;
+            right:26px;
+        }
+    }
+
+    a{
+        color:$headerNavListColor;
+    }
+}

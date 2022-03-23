@@ -40,4 +40,9 @@
                     
                 </div>
             </nav>
+
+            <nav class='mobile-nav-bar'>
+                <?php outputHeaderMobileSlideOut();?>
+
+            </nav>
     </header>

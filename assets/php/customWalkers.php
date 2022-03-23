@@ -42,7 +42,6 @@ class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
 
                 $output .= '<span class="cursor-default">';
                 $output .= $item->title . '<span class="v-icon"></span>';
-                $output .= '<span>';
             }else{
                 $output .= "<li class='less-padding-no-v" .  implode(" ", $item->classes) . "'>" ;
                 $output .= '<a href="' . $item->url . '">';
@@ -55,20 +54,5 @@ class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
             $output .= $item->title;
             $output .= '</a>';
         }
-        
-        
-        //$output .= "<li class='" .  implode(" ", $item->classes) . "'>";
-        
-        // if ($item->url && $item->url != '#') {
-        //     $output .= '<a href="' . $item->url . '">';
-        // } else {
-        //     $output .= '<span>';
-        // }
-        // $output .= $item->title;
-        // if ($item->url && $item->url != '#') {
-        //     $output .= '</a>';
-        // } else {
-        //     $output .= '</span>';
-        // }
     }
 }
