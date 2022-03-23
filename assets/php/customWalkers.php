@@ -4,17 +4,29 @@
 class WPSE_78121_Sublevel_Walker extends Walker_Nav_Menu
 {
     function start_lvl( &$output, $depth = 0, $args = array() ) {
-        $indent = str_repeat("\t", $depth);
-        $output .= "\n$indent<div class='sub-menu-wrap'><ul class='sub-menu'>\n";
+        if($depth === 0){
+            $indent = str_repeat("\t", $depth);
+            $output .= "\n$indent<div class='sub-menu-wrap'><ul class='sub-menu'>\n";
+        }
+        if($depth === 1){
+            $indent = str_repeat("\t", $depth);
+            $output .= "\n$indent<div class='sub-menu-wrap depth-1-sub-menu'><ul class='sub-menu'>\n";
+        }
     }
     function end_lvl( &$output, $depth = 0, $args = array() ) {
-        $indent = str_repeat("\t", $depth);
-        $output .= "$indent</ul></div>\n";
+        if($depth === 0){
+            $indent = str_repeat("\t", $depth);
+            $output .= "$indent</ul></div>\n";
+        }
+        if($depth === 1){
+            $indent = str_repeat("\t", $depth);
+            $output .= "$indent</ul></div>\n";
+        }
     }
 
     function start_el(&$output, $item, $depth=0, $args=[], $id=0) {
         
-
+        //these are the top nav menu li
         if($depth === 0){
             $categoryClass = 'menu-item-object-category';
             //echo $depth;

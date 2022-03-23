@@ -159,8 +159,7 @@ body{
                                 opacity:1;
                                 -webkit-transform: scale(1) translateY(0); 
                                 -ms-transform: scale(1) translateY(0);
-                                transform: scale(1) translateY(0);
-                                
+                                transform: scale(1) translateY(0);                  
                             }
                         }
 
@@ -183,11 +182,7 @@ body{
                                     padding:0;
                                     text-transform:none;
                                     font-size:14px;
-                                    
-                                    &:hover{
-                                        background:$headerSubMeduHoverredColor;
-                                    }
-                                    
+
                                     a{
                                         display:flex;
                                         justify-content: space-between;
@@ -198,12 +193,15 @@ body{
                                         -webkit-transition: .15s all cubic-bezier(.58,.3,.51,.82);
                                         -o-transition: .15s all cubic-bezier(.58,.3,.51,.82);
                                         transition: .15s all cubic-bezier(.58,.3,.51,.82);
-
-                                        &:hover{
+                                    }
+                                    
+                                    &:hover{
+                                        background:$headerSubMeduHoverredColor;
+                                        a{
+                                            text-decoration:underline;
                                             -webkit-transform: translateX(5px); 
                                             -ms-transform: translateX(5px);
                                             transform: translateX(5px);
-                                            text-decoration:underline;
                                         }
                                     }
 
@@ -211,7 +209,68 @@ body{
                                         display:none;
                                     }
                                 }
+
+                                .depth-1-sub-menu{
+                                    right: 183px;
+                                    bottom: 61px;
+
+                                    .sub-menu{
+                                        visibility:hidden;
+                                        webkit-transform: scale(.9) translateY(-20px);
+                                        -ms-transform: scale(.9) translateY(-20px);
+                                        transform: scale(.9) translateY(-20px);
+
+                                        opacity: 0;
+                                        -webkit-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                        -o-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                        transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                    }
+                                }
+                                .menu-item-has-children{
+                                    &:hover{      
+                                        .depth-1-sub-menu{
+                                            .sub-menu{
+                                                visibility:visible;
+                                                opacity:1;
+                                                -webkit-transform: scale(1) translateY(0); 
+                                                -ms-transform: scale(1) translateY(0);
+                                                transform: scale(1) translateY(0);    
+                                            }
+                                        }
+                                    }
+                                }
+                                
+
+                                .depth-1-sub-menu{
+                                    .sub-menu{
+                                        li{
+                                            a{
+                                                text-decoration:none;
+                                                display:flex;
+                                                justify-content: space-between;
+                                                padding:12px 20px;
+                                                -webkit-transform: translateX(0); 
+                                                -ms-transform: translateX(0);
+                                                transform: translateX(0);
+                                                -webkit-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                                -o-transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                                transition: .15s all cubic-bezier(.58,.3,.51,.82);
+                                            }
+                                            
+                                            &:hover{
+                                                background:$headerSubMeduHoverredColor;
+                                                a{
+                                                    text-decoration:underline;
+                                                    -webkit-transform: translateX(5px); 
+                                                    -ms-transform: translateX(5px);
+                                                    transform: translateX(5px);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
+
                         }
                     }
 
