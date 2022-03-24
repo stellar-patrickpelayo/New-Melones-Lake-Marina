@@ -1,5 +1,3 @@
-
-
 <?php /* Template Name: RV & Camping Template */ ?>
 
 <?php get_header();?>
