@@ -16,7 +16,7 @@
         
             <nav class="nav-bar">
                 <div class="inner-nav-bar-wrapper">
-                    <a class='logo-anchor' target='_blank' href=<?php get_home_url();?>>
+                    <a class='logo-anchor' target='_blank' href=<?php echo get_home_url();?>>
                         <img class='logo' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/new-melones-logo-light-o3g4hm5wpvlki28ltzysw3vnosfmomt2s69ebvcmkm.png'; ?> />
                     </a>
                     

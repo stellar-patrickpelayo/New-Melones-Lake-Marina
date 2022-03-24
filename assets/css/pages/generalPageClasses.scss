@@ -35,6 +35,8 @@
         color:white;
         font-size:16px;
         line-height:24px;
+        padding-left:100px;
+        padding-right:100px;
     }
 
     .lower-section-posts{
@@ -49,4 +51,48 @@
         text-align:center;
         font-family: Open Sans,sans-serif;
     }
+
+    //some responsiveness
+
+    // The background at the top of pages
+    @media only screen and (min-width:544px){
+        .header-background{
+        min-height:440px;
+        }
+    }
+
+    @media only screen and (min-width:992px){
+        .header-background{
+        min-height:577px;
+        }
+    }
+
+    //The text over background at top of pages 
+    
+    .header-background{
+        h1{
+            font-size:32px;
+            line-height:1.25;
+        }
+    }
+
+    @media only screen and (min-width:768px){
+        .header-background{
+            h1{
+                font-size:48px;
+                line-height:1.18;
+            }
+        }
+    }
+
+    @media only screen and (min-width:992px){
+        .header-background{
+            h1{
+                font-size:64px;
+                line-height:1.125;
+            }
+        }
+    }
+    
+
 }

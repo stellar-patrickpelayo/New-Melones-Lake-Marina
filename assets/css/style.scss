@@ -123,7 +123,10 @@ body{
 @import './responsiveHeader.scss';
 @import './responsiveFooter.scss';
 
-@import './generalPageClasses.scss';
-@import './about-us.scss';
-@import './page-faq.scss';
-@import './houseboat-rentals.scss';
+@import './pages/generalPageClasses.scss';
+@import './pages/about-us.scss';
+@import './pages/page-faq.scss';
+@import './pages/houseboat-rentals.scss';
+@import './pages/party-boat-rentals.scss';
+@import './pages/patio-and-pontoon-rentals.scss';
+@import './pages/sportboat-rentals.scss';

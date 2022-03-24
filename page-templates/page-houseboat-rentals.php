@@ -3,7 +3,7 @@
 <?php get_header();?>
 <main class='houseboat-rentals general-page'>
     <div class='title-header header-background'>
-        <div class='title-wrapper'>
+        <div class='title-wrapper upper-case-text'>
             <h1><?php echo get_the_title();?></h1>
         </div>
     </div>
