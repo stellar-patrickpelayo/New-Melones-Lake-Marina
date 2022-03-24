@@ -4,7 +4,7 @@
 <main class='contact general-page'>
     <div class='title-header header-background'>
         <div class='title-wrapper'>
-            <h1>Local Attractions</h1>
+            <h1>Contact Us</h1>
         </div>
     </div>
         
