@@ -1,12 +1,12 @@
 
 
-<?php /* Template Name: Slip Leasing Information Template */ ?>
+<?php /* Template Name: RV & Camping Template */ ?>
 
 <?php get_header();?>
-<main class='slip-leasing-information general-page'>
+<main class='rv-and-camping general-page'>
     <div class='title-header header-background'>
         <div class='title-wrapper upper-case-text'>
-            <h1>EXTENDED SLIP LEASING</h1>
+            <h1>RV & CAMPING</h1>
         </div>
     </div>
         
