@@ -1,0 +1,74 @@
+.daily-slip-rentals{
+    .header-background{
+        
+        background: linear-gradient(0deg,rgba(8,9,14,0.6) 0%,rgba(8,9,14,0.6) 100%), url('./assets/images/daily-slip-rental-header.avif');
+        padding-top:112px;
+        background-size:cover;
+        background-position:center center;
+        display:block;
+        min-height:0;
+
+        .title-wrapper{
+            min-height:60vh;
+            width:1200px;
+            position:static;
+            
+            display:flex;
+            flex-direction:column;
+            justify-content: center;
+
+            margin-left:auto;
+            margin-right:auto;
+
+            .inner-wrapper{
+                padding-left:20px;
+                max-width:660px;
+            }
+
+            h1{
+                color:$lightBlue;
+            }
+                      
+            p{
+                padding:0;
+                font-family: Open Sans,sans-serif;
+                font-size:22px;
+            }
+        }
+
+        @media only screen and (min-width:992px){
+            padding-top:128px;
+            
+        }
+    }
+
+    .lower-section{
+        width:1200px;
+        margin-left:auto;
+        margin-right:auto;
+        padding-left:20px;
+
+        h2{
+            font-size:40px;
+            font-weight:400;
+            line-height:48px;
+            margin:0;
+            margin-top:75px;
+            font-family: Alata,sans-serif;
+            color:white;
+        }
+        p{
+            font-family: Open Sans,sans-serif;
+            color:white;
+            margin-top:16px;
+            padding:0;
+        }
+        hr{
+            max-width:680px;
+            margin:0;
+            margin-top:40px;
+        }
+    }
+
+    
+}
