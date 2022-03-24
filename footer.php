@@ -19,7 +19,7 @@
                             <li> 
                                 <a class='list-grid location-contact' target='_blank' href="https://www.google.com/maps/place/New+Melones+Lake+Marina/@38.0016302,-120.5465814,17z/data=!3m1!4b1!4m5!3m4!1s0x8090ea87a910915b:0x3d5487c47083ebf2!8m2!3d38.0016302!4d-120.5443927">
                                     <i class='fa fa-map-marker map-icon'></i>
-                                    <span>6503 Glory Hole Road Angels Camp, CA 5222</span>
+                                    <span>6503 Glory Hole Road Angels Camp, CA 95222</span>
                                 </a>
                             </li>
                             <li class='list-grid last-list-grid address-contact'><span><strong>Mailing Address:</strong> P.O. Box 1389 Angels Camp, CA 95222</span></li>
