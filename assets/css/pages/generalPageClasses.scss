@@ -22,6 +22,31 @@
         text-shadow: 1px 1px 2px black, 0 0 10px black;
     };
     
+    .price-title{
+        font-size:14px;
+        font-family: Open Sans,sans-serif;
+        line-height:1.5;
+        color:white;
+    }
+
+    .price-symbol{
+        font-size:12px;
+        font-family: Open Sans,sans-serif;
+        margin-right:1px;
+        color:white;
+        font-weight:700;
+        position: relative;
+        left: 4px;
+        bottom: 1px;
+    }
+
+    .item-price{
+        font-family: Open Sans,sans-serif;
+        color:white;
+        font-size:16px;
+        font-weight:700;
+    }
+    
     h1{
         color:white;
         font-size:64px;
@@ -67,31 +92,33 @@
         }
     }
 
-    //The text over background at top of pages 
+    //Font Sizes 
+    h1{
+        font-size:32px;
+        line-height:1.25;
+    }
     
-    .header-background{
+
+    @media only screen and (min-width:768px){       
         h1{
+            font-size:48px;
+            line-height:1.18;
+        }
+        h2{
             font-size:32px;
             line-height:1.25;
-        }
-    }
-
-    @media only screen and (min-width:768px){
-        .header-background{
-            h1{
-                font-size:48px;
-                line-height:1.18;
-            }
-        }
+        } 
     }
 
     @media only screen and (min-width:992px){
-        .header-background{
-            h1{
-                font-size:64px;
-                line-height:1.125;
-            }
+        h1{
+            font-size:64px;
+            line-height:1.125;
         }
+        h2{
+            font-size:40px;
+            line-height: 1.2;
+        }           
     }
     
 
