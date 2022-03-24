@@ -11,23 +11,14 @@
     </div>
         
     <div class='lower-section'>
-        <p>
-            Immerse yourself in the heart of our marina community by leasing one of our private slips. As true boat aficionados know, there’s no better way to relax and enjoy your leisure. Designed to handle even the largest craft, our houseboat slips provide power hook-ups for easy recharging and in-dock servicing and are the ideal place to start and end your New Melones Lake experience.
-        </p>
-        <p>
-            Our slips are just a short stroll from the marina. Here you can mingle with your fellow owners, enthusiasts, and travelers. Trade your favorite New Melones Lake stories over a drink. Or simply relax on your own fore-deck to the gentle lapping of the water and take in the striking views. All the pleasure of New Melones Lake is right within reach when you lease at New Melones Lake Marina.
-        </p>
+        <div class='center-image-wrapper'>
+            <img src=<?php echo get_template_directory_uri() .'/assets/images/rv-and-camping-image-in-page.avif' ?>>
+        </div>
 
-        <h3>Rates</h3>
-        <ul>
-            <li><strong>Houseboat Slips:</strong> Annual – $6,350 (Includes Power and Garbage Service)</li>
-            <li><strong>20’ Covered Berth:</strong> Annual – $3,400/ Seasonal – $1,775</li>
-            <li><strong>24’ Covered Berth:</strong> Annual – $3,700/ Seasonal – $1,925</li>
-            <li><strong>30 ’ Covered Berth:</strong> Annual – $4,300/ Seasonal – $2,445</li>
-            <li><strong>Open Berths:</strong> Annual – $3,000/ Seasonal – $1,500</li>
-            <li><strong>Jet Ski Ports:</strong>  Annual – $1,100/ Seasonal – $1,100</li>
-            <li><strong>Mooring Balls:</strong>  Annual – $4,075</li>
-        </ul>
+        <h3>Camping</h3>
+        <p>
+            Camping at New Melones Lake is that rich family and friend fun you’ve been looking for. Wake up in the morning to fresh air and a beautiful view. Keep the whole family easily entertained on one of our party boats, or zip around the lake on one of our sport boats. Don’t forget, our full-service store also offers everything you could need for your trip, making your entire vacation both convenient and memorable.
+        </p>
         
     </div>
 </main>

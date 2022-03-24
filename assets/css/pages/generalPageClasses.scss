@@ -16,9 +16,8 @@
     }
 
     .title-wrapper{
-        min-height:360px;
         position:relative;
-        top:60px;
+        bottom:47px;
         text-shadow: 1px 1px 2px black, 0 0 10px black;
     };
     
@@ -45,6 +44,10 @@
         color:white;
         font-size:16px;
         font-weight:700;
+    }
+
+    .center-image-wrapper{
+        text-align: center;
     }
     
     h1{
@@ -93,6 +96,7 @@
         line-height: 1.25;
         margin:24px 0 0 0;
         font-weight:400;
+        color:white;
     }
     
     p{

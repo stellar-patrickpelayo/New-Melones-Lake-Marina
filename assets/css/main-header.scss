@@ -2,7 +2,8 @@
     font-family: Alata,sans-serif;
     position:absolute;
     z-index:1;
-    
+    background:$headerBackground;
+    padding-bottom:14px;
     .gift-card{
         background:$giftCardBackground;
         color:$giftCardColor;
@@ -16,8 +17,8 @@
 
     .nav-bar{
         padding-top:14px;
-        padding-bottom:20px;
-        background:$headerBackground;
+        
+        
         
         .inner-nav-bar-wrapper{
             margin-left:auto;
