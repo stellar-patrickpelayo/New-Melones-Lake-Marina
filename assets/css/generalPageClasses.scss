@@ -1,3 +1,52 @@
 .general-page{
+
+    font-family: Alata, sans-serif;
+    margin-bottom:80px;
     
+    .title-header{
+        padding-top:208px;
+        background-position:center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+
+    .title-wrapper{
+        min-height:360px;
+        position:relative;
+        top:60px;
+        text-shadow: 1px 1px 2px black, 0 0 10px black;
+    };
+    
+    h1{
+        color:white;
+        font-size:64px;
+        margin-bottom:24px;
+        font-weight:400;
+        line-height:72px;
+    }
+
+    p{
+        margin-top:16px;
+        color:white;
+        font-size:16px;
+        line-height:24px;
+    }
+
+    .lower-section-posts{
+        padding-bottom:80px;
+        padding-top:80px;
+        max-width:1200px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .section-before-posts{
+        text-align:center;
+        font-family: Open Sans,sans-serif;
+    }
 }

@@ -1,0 +1,16 @@
+.about-us{
+    display:grid;
+    grid-template-columns: 50% 50%;
+    max-width:1200px;
+    padding-left:20px;
+    padding-right:20px;
+    margin-left:auto;
+    margin-right:auto;
+    padding-top:208px;
+
+    h2{      
+        font-weight: 400;
+        color:$darkBlue;
+        font-size:40px;
+    }
+}
