@@ -5,7 +5,7 @@
 <?php get_header();?>
 <main class='more-attractions general-page'>
     <div class='title-header header-background'>
-        <div class='title-wrapper upper-case-text'>
+        <div class='title-wrapper'>
             <h1>Local Attractions</h1>
         </div>
     </div>
