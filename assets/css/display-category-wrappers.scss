@@ -1,0 +1,43 @@
+.display-category-wrappers{
+    display:flex;
+    flex-wrap:wrap;
+    gap:40px;
+    margin-top:40px;
+
+    .category-rental-card{
+        flex-basis:360px;
+        color:black;
+        background:white;
+
+        a{
+            text-decoration: none;;
+        }
+
+        img{
+            object-fit: cover;
+            object-position: center center;
+            height:191px;
+            width:100%;
+        }
+
+        h4{
+            color:black;
+        }
+        .below-img-section{
+            padding:20px;
+        }
+
+        .category-rental-image-card{
+            filter:brightness(0.8);
+        }
+
+        &:hover{
+            .category-rental-image-card{
+                filter:brightness(1);
+            }
+            h4{
+                opacity: .5;
+            }
+        }
+    }
+}
