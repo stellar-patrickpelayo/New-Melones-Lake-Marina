@@ -1,3 +1,5 @@
+@import './includes/contact-page.scss';
+
 .page{
     color:white;
     // The background at the top of pages
@@ -56,6 +58,7 @@
             padding-right:20px;
         }
     }
+    @include contact-page;
 
     .center-image-wrapper{
         text-align: center;
@@ -64,6 +67,8 @@
     .grid-one-row{
         grid-template-rows:auto;
     }
+
+    @include social-media-icon-styles;
 }
 
 .page.no-thumbnail{
@@ -107,6 +112,15 @@
         line-height: 1.25;
         margin:24px 0 0 0;
         font-weight:400;
+        color:white;
+    }
+
+    h4{
+        font-size: 24px;
+        line-height: 1.25;
+        margin:0;
+        font-weight:400;
+        line-height:32.4px;
         color:white;
     }
 

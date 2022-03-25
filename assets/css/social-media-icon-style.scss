@@ -1,0 +1,55 @@
+@mixin  social-media-icon-styles{
+    .social-wrapper{                
+        display:grid;
+        grid-template-columns:auto auto auto;
+        grid-column-gap: 16px;
+        margin-top:43px;
+        margin-left:3px;
+
+        .custom-facebook {
+            display: inline-block;
+            overflow: hidden;
+            width: 32px;
+            height: 32px;
+            text-align: right;
+            background-color: $socialMediaIconColor;
+            border:1px solid black;
+            border-radius:2px;
+
+            .facebook-icon{
+                position: relative;
+                font-size: 22px;
+                top: 6px;
+                right: 4px;
+                font-size: 29px;
+                color:black;
+            }
+        }
+
+        .custom-facebook:hover{
+            background-color:$facebookIconHoveredColor;
+        }
+
+        .instagram-icon{
+            font-size: 38px;
+            position: relative;
+            bottom: 2px;     
+            color:$socialMediaIconColor;
+
+            &:hover{
+                color:$instagramIconHoveredColor;
+            }
+        }
+
+        .twitter-icon{
+            font-size: 44px;
+            position: relative;
+            bottom:4px;
+            color:$socialMediaIconColor;
+
+            &:hover{
+                color:$twitterIconHoveredColor;
+            }
+        }                    
+    }
+}
