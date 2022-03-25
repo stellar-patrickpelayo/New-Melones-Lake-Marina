@@ -1,4 +1,7 @@
 <?php
+add_theme_support( 'post-thumbnails' );
+
+
 
 include_once(get_template_directory() . '/assets/php/constants.php');
 include_once(get_template_directory() . '/assets/php/customWalkers.php');
