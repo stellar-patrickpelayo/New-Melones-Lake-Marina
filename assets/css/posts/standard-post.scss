@@ -69,6 +69,10 @@
                 font-size: 20px;
             }
 
+            .fa-anchor{
+                font-size: 19px;
+                padding-right: 5px;
+            }
             h4{
                 font-family: Alata,sans-serif;
                 font-size:16px;
@@ -86,6 +90,17 @@
             }
         }
 
+        ul{
+            ul{
+                margin:0;
+                list-style: disc;
+            }
+        }
+
+        hr{
+            margin-top:40px;
+        }
+
         table, tr, td{
             border:1px solid white;
             border-collapse: collapse;
@@ -94,10 +109,7 @@
         tr:nth-of-type(1){
             text-align:center;
         }
-        // tr:nth-of-type(n+2){
-        //     display:grid;
-        //     grid-template-columns: repeat(5,minmax(0,90px));
-        // }
+        
         td{
             padding: 8px 16px 7px;
             font-family: Open Sans,sans-serif;
