@@ -1,0 +1,138 @@
+.page{
+    color:white;
+    // The background at the top of pages
+    .header-background{
+        margin-bottom:80px;
+    }
+    @media only screen and (min-width:544px){
+        .header-background{
+            min-height:440px;
+        }
+    }
+
+    @media only screen and (min-width:992px){
+        .header-background{
+            min-height:577px;
+        }
+    }
+
+    .title-header{
+        padding-top:208px;
+        background-position:center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display:flex;
+        justify-content: center;
+        align-items: center;  
+    }
+
+    .title-wrapper{
+        position:relative;
+        bottom:47px;
+        text-shadow: 1px 1px 2px black, 0 0 10px black;
+    };
+
+    .content-section{
+        max-width:1200px;
+        padding-left:20px;
+        padding-right:20px;
+        padding-bottom:80px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .category-header{
+        padding-left:100px;
+        padding-right:100px;
+    }
+
+    .grid{
+        display:grid;
+    }
+    .grid-fify-fifty-columns{
+        grid-template-columns: 50% 50%;
+        div{
+            padding-left:20px;
+            padding-right:20px;
+        }
+    }
+
+    .center-image-wrapper{
+        text-align: center;
+    }
+    
+    .grid-one-row{
+        grid-template-rows:auto;
+    }
+}
+
+.page.no-thumbnail{
+    padding-top:167px;
+}
+
+.page{
+    font-family: Open Sans, sans-serif;
+    h1,h2,h3,h4{
+        font-family: Alata, sans-serif;
+    }
+    p{
+        margin-top:16px;
+        margin-bottom:0;
+        font-size:16px;
+        line-height:24px;   
+        color:white; 
+        
+        &:first-child{
+            margin-top:0;
+        }
+    }
+
+    //Fonts
+    h1{
+        font-size:32px;
+        line-height:1.25;
+        font-weight:400;
+        margin:0;
+    }
+
+    h2{
+        font-size:40px;
+        font-weight:400;
+        line-height:1.2;
+        margin:24px 0 0 0;
+    }
+
+    h3{
+        font-size: 24px;
+        line-height: 1.25;
+        margin:24px 0 0 0;
+        font-weight:400;
+        color:white;
+    }
+
+    @media only screen and (min-width:768px){       
+        h1{
+            font-size:48px;
+            line-height:1.18;
+        }
+        h2{
+            font-size:32px;
+            line-height:1.25;
+        } 
+        h3{
+            font-size: 28px;
+            line-height: 1.25;
+        }
+    }
+
+    @media only screen and (min-width:992px){
+        h1{
+            font-size:64px;
+            line-height:1.125;
+        }
+        h2{
+            font-size:40px;
+            line-height: 1.2;
+        }           
+    }
+}
