@@ -5,13 +5,7 @@ function displayRentalsByCategory(){
     $excludeID = get_the_ID();
     $categories = get_the_category();
     
-
-    if(count($categories) > 1){
-        $category_id = $GLOBALS['RENTALS'] !== $categories[0]->cat_ID ? $categories[0]->cat_ID : $categories[1]->cat_ID;
-    }else{
-        $category_id = $GLOBALS['RENTALS'];
-    }
-    
+    $category_id = $GLOBALS['RENTALS'] !== $categories[0]->cat_ID ? $categories[0]->cat_ID : $categories[1]->cat_ID;
 
     $myposts = get_posts(array(
         'showposts' => -1, //add -1 if you want to show all posts

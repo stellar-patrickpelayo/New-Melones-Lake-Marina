@@ -3,7 +3,7 @@ add_theme_support( 'post-thumbnails' );
 function change_mce_path_options( $init ) {
     $init['relative_urls'] = true;
     $init['document_base_url'] = get_bloginfo('url');
-    //$init['document_base_url'] = 'http://localhost/wordpress2/wp-content';
+    $init['document_base_url'] = 'http://localhost/wordpress2/wp-content';
     //use for images base '/wp-content/uploads/2022/03/'
     return $init;
    }

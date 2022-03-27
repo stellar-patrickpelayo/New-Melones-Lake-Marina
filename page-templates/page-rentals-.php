@@ -11,10 +11,19 @@
             </div>
         </div>
     <?php endif; ?>
-    <div class='content-section'>
+    
+    <?php if(!is_front_page()):?>
+        <div class='content-section'>
+            <?php the_content();?>
+            <?php displayRentalsByCategory();?>
+        </div>
+    
+    <?php else:?>
+        <div class='content-section front-page'>
         <?php the_content();?>
-        <?php displayRentalsByCategory();?>
-    </div>
+
+        </div>
+    <?php endif;?>
 
 </main>
 <?php endwhile; ?>
