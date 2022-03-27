@@ -115,6 +115,7 @@ body{
     margin:0;
     background:$bodyBackgroundColor;
 }
+@import './util/page-accordion-style.scss';
 @import './social-media-icon-style.scss';
 @import './contact-icons-list-styles.scss';
 @import './main-header.scss';

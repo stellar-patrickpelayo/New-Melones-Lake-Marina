@@ -18,12 +18,7 @@ function displayRentalsByCategory(){
         'post_type' => 'post',
         'category' => $category_id,)
     );
-    $args = array(
-        'showposts' => -1, //add -1 if you want to show all posts
-        'post_type' => 'post',
-        'category' => $category_id,);
-    $query = new WP_Query( $args );
-    //echo $query[0]->ID;
+
     echo '<div class="display-category-wrappers">';
     foreach ($myposts as &$post){
         if($post->ID !== $excludeID){
