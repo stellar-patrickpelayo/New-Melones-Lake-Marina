@@ -47,5 +47,19 @@
             padding-bottom:80px;
             background:$lightBlue;
         }
+
+        .second-block{
+            .grid-gallery{
+                display:grid;
+                grid-template-columns: 33% 33% 33%;
+                img{
+                    max-width:185px;
+                    max-height:185px;
+                    aspect-ratio: 1;
+                    object-fit: cover;
+                }
+            }
+        }
+        
     }
 }

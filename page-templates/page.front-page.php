@@ -14,6 +14,28 @@
     <div class='content-section front-page-content-section'>
         <?php the_content();?>
 
+        <!-- <div class='grid-gallery'>
+            <div class='image-box'>
+                <img href='wp-content/uploads/2022/03/Waterski.jpg' class='img-item'>
+            </div>
+            <div class='image-box'>
+                <img href='wp-content/uploads/2022/03/24-Bennington-‘Gold-Class-Sport-Pontoon-Boat-Daily-Rental-image-1.jpg'class='img-item'>
+            </div>
+            <div class='image-box'>
+                <img href='wp-content/uploads/2022/03/23-Axis-T-23-Wake-Surf-Boat-Daily-Rental-image-1.jpg' class='img-item'>
+            </div>
+            <div class='image-box'>
+                <img href='wp-content/uploads/2022/03/Tube-Rental-image-1.jpg' class='img-item'>
+            </div>
+            <div class='image-box'>
+                <img href='wp-content/uploads/2022/03/Kayaks-Daily-Rental-image-1.jpg' class='img-item'>
+            </div>
+            <div class='image-box'>
+                <img href='wp-content/uploads/2022/03/SUP-Boards-Daily-Rental-image-1.jpg' class='img-item'>
+            </div> -->
+
+        </div>
+
         <!-- <div class='our-rentals-wrapper center-and-max-width'>
             <div class='rental-item'>
                 <a href='/houseboat-rentals'>
