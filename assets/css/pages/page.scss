@@ -83,6 +83,61 @@
             margin-top:80px;
         }
     }
+
+    .descriptions{
+        p:nth-child(3){
+            margin-top:28px;
+        }
+    }
+
+    .button-1{
+        background:#2f7bbb;
+        color:white;
+        padding:13px 19px;
+        text-decoration: none;
+        font-weight:400;
+        text-transform: uppercase;
+        font-size:16px;
+
+        br{
+            display:none;
+        }
+
+    }
+
+    .social-wrapper{
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        width: 30%;
+        grid-template-rows: 47px;
+        grid-column-gap: 16px;
+        margin-top: 43px;
+
+        .custom-facebook{
+            background:none;
+            border:none;
+            color:#31353c;
+            
+            .facebook-icon{
+                top:0;
+                right:0;
+                font-size: 37px;
+            }
+
+            &:hover{
+                background-color:$facebookIconHoveredColor;
+            }
+        }
+
+        .instagram-icon{
+            color:#31353c;
+        }
+
+        .twitter-icon{
+            color:#31353c;
+        }
+        
+    }
 }
 
 .page.no-thumbnail{

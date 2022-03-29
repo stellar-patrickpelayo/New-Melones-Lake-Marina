@@ -12,6 +12,11 @@
         flex-basis:360px;
         color:black;
         background:#ffffff;
+        padding-bottom:50px;
+        height:500px;
+        display:flex;
+        flex-direction:column;
+        justify-content: space-between;
 
         .bottom-section{
             display:flex;
@@ -24,6 +29,12 @@
         }
 
         .category-rental-button-wrapper{
+            position: relative;
+            left: 50%;
+            display: inline-block;
+            width: auto;
+            transform: translateX(-50%);
+
             div{
                 margin-left:auto;
                 margin-right:auto;

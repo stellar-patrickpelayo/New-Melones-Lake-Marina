@@ -7,23 +7,27 @@ function cardTtemplate($post){
     $url = get_the_permalink($post);
 
     $card = "<div class='category-rental-card'>
-            <a target='_blank' href=$url>
-                <img class='category-rental-image-card' src=$thumbnailURL>
-            </a>
-            <div class='below-img-section'>
-                <a target='_blank' href=$url>
-                    <h4>$title</h4>    
-                </a>  
-                <div class='bottom-section'>          
-                    <span>$excerpt</span>
-                </div>
-            </div>
-            <div class='category-rental-button-wrapper'>
-                        <div>
-                            <a>Book Now</a>
-                            <a target='_blank' href=$url>Learn More</a>
+                <div class='top>
+                    <a target='_blank' href=$url>
+                        <img class='category-rental-image-card' src=$thumbnailURL>
+                    </a>
+                    <div class='below-img-section'>
+                        <a target='_blank' href=$url>
+                            <h4>$title</h4>    
+                        </a>  
+                        <div class='bottom-section'>          
+                            <span>$excerpt</span>
                         </div>
-            </div>
-        </div>";
+                    </div>
+                </div>
+                <div>
+                    <div class='category-rental-button-wrapper'>
+                            
+                        <a href='#'>Book Now</a>
+                        <a target='_blank' href=$url>Learn More</a>
+                            
+                    </div>
+                </div>
+            </div>";
     echo $card;
 }

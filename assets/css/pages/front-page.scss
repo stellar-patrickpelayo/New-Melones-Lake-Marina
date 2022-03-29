@@ -6,7 +6,8 @@
     
     .video-wrapper{
         width:100vw;
-        
+        max-height:800px;
+
         iframe{
             object-fit: cover;
             object-position: center center;
@@ -17,7 +18,13 @@
             position: relative;
             max-width: 1200px;
             bottom: 489px;
-            left: 144px;
+            margin-left:auto;
+            margin-right:auto;
+            padding-left:20px;
+            
+            
+           
+            // @media only screen and (max-width:)
             
             h3{
                 margin-bottom:40px;
@@ -41,6 +48,8 @@
             max-width:1200px;
             margin-left:auto;
             margin-right:auto;
+            padding-left:20px;
+            padding-right:20px;
         }
 
         .our-rentals-wrapper{
@@ -66,7 +75,9 @@
                     h4{
                         color:black;
                     }
-                    &:hover{
+                }
+                &:hover{ 
+                    span{
                         background:#adcfeb;
                     }
                 }
@@ -104,6 +115,9 @@
                 background:#2f7bbb;
                 color:white;
                 padding:12px;
+                &:hover{
+                    background:#246092;
+                }
             }
         }
 
@@ -132,6 +146,7 @@
         margin-top:80px;
         h2{
             color:white;
+            margin-bottom:50px;
         }
         color:black;
         p{
