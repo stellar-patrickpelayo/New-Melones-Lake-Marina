@@ -4,11 +4,11 @@
                     <div class='column'>
                         <img class='logo' src=<?php echo get_stylesheet_directory_uri() . '/assets/images/new-melones-logo-light-o3g4hm5wpvlki28ltzysw3vnosfmomt2s69ebvcmkm.png'; ?> />
                         <div class='social-wrapper'>
-                            <a class='custom-facebook' href='#'>
+                            <a class='custom-facebook' href='https://www.facebook.com/pages/New-Melones-Lake-Marina/922449434434182?ref=tn_tnmn'>
                                 <i class='fa fa-facebook-f facebook-icon'></i>
                             </a>
-                            <a class='custom-instagram' href='#'><i class='fa fa-instagram instagram-icon'></i></a>
-                            <a class='custom-twitter' href='#'><i class='fa fa-twitter twitter-icon'></i></a>
+                            <a class='custom-instagram' href='https://www.instagram.com/newmeloneslakemarina/'><i class='fa fa-instagram instagram-icon'></i></a>
+                            <a class='custom-twitter' href='https://twitter.com/NewMelonesLM'><i class='fa fa-twitter twitter-icon'></i></a>
                         </div>
                     </div>
                     <div class='column'>

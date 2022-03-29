@@ -6,13 +6,22 @@
         <div class='title-wrapper'>
             <div class='inner-wrapper'>
                 <h1><?php echo get_the_title();?></h1>
+                <h2><?php echo get_post_meta(get_the_ID(), $GLOBALS['SUB_HEADER'], TRUE);?></h2>
             </div>
         </div>
     </div>
 
     <div class='content-section'>
         <div class='main-content-wrapper'>
-            <?php the_content(); ?>
+            <div>
+                <?php the_content(); ?>
+                <?php getBookingSideBar();?>
+            </div>
+            <hr>
+            <?php if(!get_post_meta(get_the_ID(), $GLOBALS['SUB_HEADER'], TRUE)){
+                    displayRentalsByCategory();
+                }
+            ?>
         </div>
     </div>
 </main>

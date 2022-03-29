@@ -11,3 +11,6 @@ $FOOTER_RENTALS_NAV_MENU_KEY = 'FOOTER_RENTALS_NAV_MENU_KEY';
 
 //catagory IDs
 $RENTALS = 6;
+
+//custom fields
+$SUB_HEADER = 'sub-header';

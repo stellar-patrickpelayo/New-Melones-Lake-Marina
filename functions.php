@@ -16,6 +16,8 @@ include_once(get_template_directory() . '/assets/php/registerNavMenus.php');
 include_once(get_template_directory() . '/assets/php/navMenusOutput/headerNavOutputs.php');
 include_once(get_template_directory() . '/assets/php/navMenusOutput/footerNavOutputs.php');
 include_once(get_template_directory() . '/assets/php/navMenusOutput/headerMobileSlidingNavBarOutputs.php');
+include_once(get_template_directory() . '/assets/php/outputRentalsByCategory/cardTemplate.php');
 include_once(get_template_directory() . '/assets/php/outputRentalsByCategory/displayRentalsByCategory.php');
+include_once(get_template_directory() . '/assets/php/getBookingSideBar.php');
 include_once(get_template_directory() . '/assets/php/enqueueStyleSheets.php');
 include_once(get_template_directory() . '/assets/php/enqueueScripts.php');
