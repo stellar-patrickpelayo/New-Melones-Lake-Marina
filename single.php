@@ -18,12 +18,13 @@
                 <?php getBookingSideBar();?>
             </div>
             <hr>
-            <?php if(!get_post_meta(get_the_ID(), $GLOBALS['SUB_HEADER'], TRUE)){
+        </div>
+        
+    </div>
+    <?php if(!get_post_meta(get_the_ID(), $GLOBALS['SUB_HEADER'], TRUE)){
                     displayRentalsByCategory();
                 }
             ?>
-        </div>
-    </div>
 </main>
 <?php endwhile; ?>
 <?php endif; ?>

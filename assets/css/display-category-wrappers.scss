@@ -3,11 +3,44 @@
     flex-wrap:wrap;
     gap:40px;
     margin-top:40px;
+    max-width:1200px;
+    margin-left:auto;
+    margin-right:auto;
 
     .category-rental-card{
         flex-basis:360px;
         color:black;
-        background:white;
+        background:#ffffff;
+
+        .bottom-section{
+            display:flex;
+            flex-direction:column;
+            justify-content: space-between;
+        }
+
+        .below-img-section{
+            padding:20px;
+        }
+
+        .category-rental-button-wrapper{
+            div{
+                margin-left:auto;
+                margin-right:auto;
+            }
+            
+            a{
+                border: 1px solid #9dc1df;
+                color:#9dc1df;
+                padding:10px 34px;
+                width:50px;
+            }
+            a:first-child{
+                background:#2f7bbb;
+              
+                
+                color:white;
+            }
+        }
 
         a{
             text-decoration: none;;
@@ -22,9 +55,6 @@
 
         h4{
             color:black;
-        }
-        .below-img-section{
-            padding:20px;
         }
 
         .category-rental-image-card{

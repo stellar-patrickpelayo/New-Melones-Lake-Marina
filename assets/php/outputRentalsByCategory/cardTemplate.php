@@ -13,12 +13,16 @@ function cardTtemplate($post){
             <div class='below-img-section'>
                 <a target='_blank' href=$url>
                     <h4>$title</h4>    
-                </a>            
-                <span>$excerpt</span>
-                <div class='category-rental-button-wrapper'>
-                    <a>Book Now</a>
-                    <a target='_blank' href=$url>Learn More</a>
+                </a>  
+                <div class='bottom-section'>          
+                    <span>$excerpt</span>
                 </div>
+            </div>
+            <div class='category-rental-button-wrapper'>
+                        <div>
+                            <a>Book Now</a>
+                            <a target='_blank' href=$url>Learn More</a>
+                        </div>
             </div>
         </div>";
     echo $card;

@@ -2,15 +2,23 @@
 <?php get_header();?>
 
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-<main class='page front-page <?php echo has_post_thumbnail() ? "" : "no-thumbnail"?>'>
+<main class='page front-page'>
 
-    <?php if (has_post_thumbnail()): ?>
-        <div class='title-header header-background' style=<?php echo 'background-image:url("'.get_the_post_thumbnail_url().'")'?>>
-            <div class='title-wrapper'>
-                
-            </div>
+<div>
+    <div class='video-wrapper'>
+        <iframe class="video-embed" id="video-row-embed" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="100%" height="100%" src="https://www.youtube.com/embed/KJNvpOS43_c?autoplay=1&amp;controls=0&amp;enablejsapi=1&amp;fs=0&amp;iv_load_policy=3&amp;loop=1&amp;modestbranding=1&amp;origin=https%3A%2F%2Fwww.newmeloneslakemarina.com&amp;playsinline=1&amp;rel=0&amp;start=12&amp;end=100&amp;widgetid=1&mute=1"></iframe>
+        
+
+        <div class='activites-wrapper'>
+            <h1>New Melones Lake Marina</h1>
+            <h3>
+            Watersport & Boat Rentals
+            on New Melones Lake
+            </h3>
+            <i class='fa fa-water'></i><a href="/rentals">VIEW ALL ACTIVITIES</a>
         </div>
-    <?php endif; ?>
+    </div>
+
     <div class='content-section front-page-content-section'>
         <?php the_content();?>
 
