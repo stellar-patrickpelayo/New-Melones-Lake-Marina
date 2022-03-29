@@ -10,9 +10,9 @@
 <body>
     <header class='main-header'>
 
-        <div class="gift-card"> 
+        <a href='#' class="gift-card"> 
             <span>Looking for the perfect holiday gift? Click here to get a gift card!</span>
-        </div>
+        </a>
         
             <nav class="nav-bar">
                 <div class="inner-nav-bar-wrapper">
