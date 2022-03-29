@@ -32,11 +32,10 @@
             </div>
             <div class='image-box'>
                 <img href='wp-content/uploads/2022/03/SUP-Boards-Daily-Rental-image-1.jpg' class='img-item'>
-            </div> -->
+            </div>
 
-        </div>
 
-        <!-- <div class='our-rentals-wrapper center-and-max-width'>
+            <div class='our-rentals-wrapper center-and-max-width'>
             <div class='rental-item'>
                 <a href='/houseboat-rentals'>
                     <img src='wp-content/uploads/2022/03/Odyssey-II-Houseboat-with-Hot-Tub-image-1.png'>
@@ -105,6 +104,10 @@
                 </div>
             </div>
         </div> -->
+
+        </div>
+
+        
     </div>
 
 </main>
