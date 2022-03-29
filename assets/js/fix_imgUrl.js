@@ -11,7 +11,6 @@ jQuery(document).ready(()=>{
             if(src.startsWith(prefix)){
                 jQuery(el).attr('src', origin + wordpressDir + src);
             }
-            
         }
     });
 });
