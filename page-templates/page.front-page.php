@@ -10,12 +10,14 @@
         
 
         <div class='activites-wrapper'>
-            <h1>New Melones Lake Marina</h1>
-            <h3>
-            Watersport & Boat Rentals
-            on New Melones Lake
-            </h3>
-            <i class='fa fa-water'></i><a href="/rentals">VIEW ALL ACTIVITIES</a>
+            <div class='inner-wrapper'>
+                <h1>New Melones Lake Marina</h1>
+                <h3>
+                Watersport & Boat Rentals<br>
+                on New Melones Lake
+                </h3>
+                <i class='fa fa-water'></i><a href="/rentals">VIEW ALL ACTIVITIES</a>
+            </div>
         </div>
     </div>
 

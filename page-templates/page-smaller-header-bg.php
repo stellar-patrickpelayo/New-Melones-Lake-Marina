@@ -5,7 +5,7 @@
     <main class='page smaller-header-bg <?php echo has_post_thumbnail() ? "" : "no-thumbnail"?>'>
         <?php if (has_post_thumbnail()): ?>
             <div class='title-header header-background' style=<?php echo 'background-image:url("'.get_the_post_thumbnail_url().'")'?>>
-                <div class='title-wrapper upper-case-text'>
+                <div class='title-wrapper'>
                     <h1><?php the_title();?></h1>
                 </div>
             </div>
