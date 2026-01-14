@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import { __, _x, _n, _nx, sprintf, setLocaleData, EventManager } from './utils'
-import SweetModal from '../tmp/sweet-modal-vue/src/plugin.js'
+import SweetModal from 'sweet-modal-vue/src/plugin.js'
 import Swal from 'sweetalert2'
-import "@sweetalert2/theme-wordpress-admin/wordpress-admin.scss";
+import "@sweetalert2/themes/wordpress-admin/wordpress-admin.scss";
 import { mapGetters } from 'vuex'
 
 // Set up the locale data for the translations to be used globally.
@@ -25,8 +25,11 @@ Vue.mixin({
 		this.siteId = window.metaslider_api.site_id
 		this.proUser = window.metaslider_api.proUser
 		this.hoplink = window.metaslider_api.hoplink
+		this.privacyLink = window.metaslider_api.privacy_link
 		this.themeEditorLink = window.metaslider_api.theme_editor_link
-		this.metasliderPage = window.metaslider_api.metaslider_page,
+		this.metasliderPage = window.metaslider_api.metaslider_page
+		this.metaslider_settings_page = window.metaslider_api.metaslider_settings_page
+		this.autoThemeConfig = window.metaslider_api.autoThemeConfig
 		this.production = process.env.NODE_ENV === 'production'
 
 		this.isIE11 = !!window.MSInputMethodContext && !!document.documentMode
@@ -65,10 +68,10 @@ Vue.mixin({
 				'window/global-js-error',
 					(message.length > 100 ? message.substring(0, 100) + '...' : message) +
 					(filename.length ? ` (${filename})` : ''),
-				true)
+				false)
 		}
 		Vue.config.errorHandler = function (error, vm, info) {
-			vm.notifyError(`vue/${info}-error`, error, true)
+			vm.notifyError(`vue/${info}-error`, error, false)
 		}
 	},
 	methods: {

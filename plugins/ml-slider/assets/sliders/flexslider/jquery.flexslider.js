@@ -30,7 +30,8 @@
         vertical = slider.vars.direction === "vertical",
         reverse = slider.vars.reverse,
         carousel = (slider.vars.itemWidth > 0),
-        fade = slider.vars.animation === "fade",
+        fade = slider.vars.animation !== "slide",
+        animation = slider.vars.animation,
         asNav = slider.vars.asNavFor !== "",
         methods = {};
 
@@ -157,7 +158,7 @@
         if (touch && slider.vars.touch) { methods.touch(); }
 
         // FADE&&SMOOTHHEIGHT || SLIDE:
-        if (!fade || (fade && slider.vars.smoothHeight)) { $(window).on("resize orientationchange focus", methods.resize); }
+        if (slider.vars.allowResize && (!fade || (fade && slider.vars.smoothHeight))) { $(window).on("resize orientationchange focus", methods.resize); }
 
         slider.find("img").attr("draggable", "false");
 
@@ -231,19 +232,19 @@
               item,
               slide;
 
-          slider.controlNavScaffold = $('<ol class="'+ namespace + 'control-nav ' + namespace + type + '"></ol>');
+          slider.controlNavScaffold = $('<ol class="'+ namespace + 'control-nav ' + namespace + type + '" aria-label="Slide controls"></ol>');
 
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
               slide = slider.slides.eq(i);
               if ( undefined === slide.attr( 'data-thumb-alt' ) ) { slide.attr( 'data-thumb-alt', '' ); }
               var altText = ( '' !== slide.attr( 'data-thumb-alt' ) ) ? altText = ' alt="' + slide.attr( 'data-thumb-alt' ) + '"' : '';
-              item = (slider.vars.controlNav === "thumbnails") ? '<img src="' + slide.attr( 'data-thumb' ) + '"' + altText + '/>' : '<a href="#">' + j + '</a>';
+              item = (slider.vars.controlNav === "thumbnails") ? '<img src="' + slide.attr( 'data-thumb' ) + '"' + altText + '/>' : '<a href="#" aria-label="Show slide ' + j + ' of ' + slider.pagingCount + '" role="tab">' + j + '</a>';
               if ( 'thumbnails' === slider.vars.controlNav && true === slider.vars.thumbCaptions ) {
                 var captn = slide.attr( 'data-thumbcaption' );
                 if ( '' !== captn && undefined !== captn ) { item += '<span class="' + namespace + 'caption">' + captn + '</span>'; }
               }
-              slider.controlNavScaffold.append('<li>' + item + '</li>');
+              slider.controlNavScaffold.append('<li role="presentation">' + item + '</li>');
               j++;
             }
           }
@@ -737,13 +738,17 @@
           master.direction = slider.direction;
 
           if (Math.ceil((target + 1)/slider.visible) - 1 !== slider.currentSlide && target !== 0) {
+            var visualIndex = reverse ? (slider.count - 1 - target) : target;
+
             slider.currentItem = target;
-            slider.slides.removeClass(namespace + "active-slide").eq(target).addClass(namespace + "active-slide");
+            slider.slides.removeClass(namespace + "active-slide").eq(visualIndex).addClass(namespace + "active-slide");
             slider.slides.attr('aria-hidden', 'true').eq(target).removeAttr('aria-hidden');
             target = Math.floor(target/slider.visible);
           } else {
+            var visualIndex = reverse ? (slider.count - 1 - target) : target;
+
             slider.currentItem = target;
-            slider.slides.removeClass(namespace + "active-slide").eq(target).addClass(namespace + "active-slide");
+            slider.slides.removeClass(namespace + "active-slide").eq(visualIndex).addClass(namespace + "active-slide");
             slider.slides.attr('aria-hidden', 'true').eq(target).removeAttr('aria-hidden');
             return false;
           }
@@ -767,7 +772,10 @@
         // !CAROUSEL:
         // CANDIDATE: slide active class (for add/remove slide)
         if (!carousel) {
-          slider.slides.removeClass(namespace + 'active-slide').eq(target).addClass(namespace + 'active-slide');
+          // For "slide", use visualIndex if reverse; for others, always use target
+          var activeIndex = (animation === "slide" && reverse) ? (slider.count - 1 - target) : target;
+
+          slider.slides.removeClass(namespace + 'active-slide').eq(activeIndex).addClass(namespace + 'active-slide');
           slider.slides.attr('aria-hidden', 'true').eq(target).removeAttr('aria-hidden');
         }
 
@@ -784,9 +792,69 @@
           // SLIDESHOW && !INFINITE LOOP:
           if (!slider.vars.animationLoop) { slider.pause(); }
         }
+        
+        if (animation === "zooming") {
+            
+            slider.slides.eq(slider.currentSlide).css({
+                "zIndex": 1,
+                "transition": "transform " + slider.vars.animationSpeed + "ms " + slider.vars.easing
+            }).animate(
+                {"opacity": 0}, 
+                {
+                    duration: slider.vars.animationSpeed,
+                    easing: slider.vars.easing,
+                    step: function(now) {
+                        let scale = 1 - (0.5 * now); // Shrinks from 1 to 0.5
+                        $(this).css("transform", `scale(${scale})`);
+                    },
+                    complete: function() {
+                        $(this).css({
+                            "transition": "",
+                        });
+                    }
+                }
+            );
+            
+            slider.slides.eq(target).css({"zIndex": 2, "opacity": 0, "transform": "scale(0.5)"}).animate(
+                {"opacity": 1}, 
+                {
+                    duration: slider.vars.animationSpeed,
+                    easing: slider.vars.easing,
+                    step: function(now) {
+                        let scale = 0.5 + (0.5 * now); // Grows from 0.5 to 1
+                        $(this).css("transform", `scale(${scale})`);
+                    },
+                    complete: slider.wrapup
+                }
+            );  
 
-        // SLIDE:
-        if (!fade) {
+        } else if (animation === "flip") {
+
+            slider.find('ul.slides').css({"perspective": "1000px"});
+
+            slider.slides.eq(slider.currentSlide).css({"zIndex": 1}).animate({"opacity": 0}, slider.vars.animationSpeed, slider.vars.easing);
+            
+            slider.slides.eq(target).css({
+                "zIndex": 2, 
+                "opacity": 0, 
+                "transform": "rotateX(180)",
+                "transformStyle": "preserve-3d", 
+                "backfaceVisibility": "hidden"
+            }).animate(
+                {"opacity": 1}, 
+                {
+                    duration: slider.vars.animationSpeed,
+                    easing: slider.vars.easing,
+                    step: function(now) {
+                        let deg = 180 - (180 * now); // Rotate from 180 to 0deg
+                        $(this).css("transform", `rotateX(${deg}deg)`);
+                    },
+                    complete: slider.wrapup
+                }
+            );
+
+        }  else if (!fade) { // SLIDE:
+
           var dimension = (vertical) ? slider.slides.filter(':first').height() : slider.computedW,
               margin, slideString, calcNext;
 
@@ -899,10 +967,16 @@
     };
     slider.getTarget = function(dir) {
       slider.direction = dir;
+      var step = slider.vars.navStep && carousel ? slider.vars.navStep : 1;
+      var last = slider.last;
+      var current = slider.currentSlide;
+
       if (dir === "next") {
-        return (slider.currentSlide === slider.last) ? 0 : slider.currentSlide + 1;
+        var next = current + step;
+        return (next > last) ? 0 : next;
       } else {
-        return (slider.currentSlide === 0) ? slider.last : slider.currentSlide - 1;
+        var prev = current - step;
+        return (prev < 0) ? last : prev;
       }
     };
 
@@ -932,9 +1006,9 @@
 
       if (slider.transitions) {
         if (slider.isFirefox) {
-          target = (vertical) ? "translate3d(0," + target + ",0)" : "translate3d(" + (parseInt(target)+'px') + ",0,0)";
+          target = (vertical) ? "translate3d(0," + target + ",0)" : "translate3d(" + (parseFloat(target)+'px') + ",0,0)";
         } else {
-          target = (vertical) ? "translate3d(0," + target + ",0)" : "translate3d(" + ((slider.vars.rtl?-1:1)*parseInt(target)+'px') + ",0,0)";
+          target = (vertical) ? "translate3d(0," + target + ",0)" : "translate3d(" + ((slider.vars.rtl?-1:1)*parseFloat(target)+'px') + ",0,0)";
         }
         dur = (dur !== undefined) ? (dur/1000) + "s" : "0s";
         slider.container.css("-" + slider.pfx + "-transition-duration", dur);
@@ -1032,7 +1106,9 @@
       // !CAROUSEL:
       // CANDIDATE: active slide
       if (!carousel) {
-        slider.slides.removeClass(namespace + "active-slide").eq(slider.currentSlide).addClass(namespace + "active-slide");
+        var visualCurrent = reverse ? (slider.count - 1 - slider.currentSlide) : slider.currentSlide;
+        
+        slider.slides.removeClass(namespace + "active-slide").eq(visualCurrent).addClass(namespace + "active-slide");
         slider.slides.attr('aria-hidden', 'true').eq(slider.currentSlide).removeAttr('aria-hidden');
       }
 
@@ -1048,7 +1124,7 @@
           maxItems = slider.vars.maxItems;
 
       slider.w = (slider.viewport===undefined) ? slider.width() : slider.viewport.width();
-      if (slider.isFirefox) { slider.w = slider.width(); }
+      if (slider.isFirefox || slider.vars.useContainerWidth) { slider.w = slider.width(); }
       slider.h = slide.height();
       slider.boxPadding = slide.outerWidth() - slide.width();
 
@@ -1066,8 +1142,19 @@
         slider.visible = slider.visible > 0 ? slider.visible : 1;
 
         slider.move = (slider.vars.move > 0 && slider.vars.move < slider.visible ) ? slider.vars.move : slider.visible;
-        slider.pagingCount = Math.ceil(((slider.count - slider.visible)/slider.move) + 1);
-        slider.last =  slider.pagingCount - 1;
+
+        // Margin-aware paging logic in case we add margin-right to each slide
+        var totalContentWidth = (slider.itemW * slider.count) + (slideMargin * (slider.count - 1));
+
+        if (totalContentWidth <= slider.w) {
+            // All slides fit within container — only one page
+            slider.pagingCount = 1;
+        } else {
+            // Legacy pagination behavior
+            slider.pagingCount = Math.ceil(((slider.count - slider.visible) / slider.move) + 1);
+        }
+
+        slider.last = slider.pagingCount - 1;
         slider.limit = (slider.pagingCount === 1) ? 0 :
                        (slider.vars.itemWidth > slider.w) ? (slider.itemW * (slider.count - 1)) + (slideMargin * (slider.count - 1)) : ((slider.itemW + slideMargin) * slider.count) - slider.w - slideMargin;
       } else {
@@ -1230,6 +1317,11 @@
 
     // Browser Specific
     isFirefox: false,             // {NEW} Boolean: Set to true when Firefox is the browser used.
+
+    // Custom MetaSlider specific
+    allowResize: true,            // {NEW} Boolean: Whether or not to allow slider.resize on resize event
+    useContainerWidth: false,     // {NEW} Boolean: Force to use slider.width() in doMath
+    navStep: 1,                   // {NEW} Integer: Number of slides to move forward/backward (carousel mode only due move param doesn't work)
 
     // Callback API
     start: function(){},            //Callback: function(slider) - Fires when the slider loads the first slide

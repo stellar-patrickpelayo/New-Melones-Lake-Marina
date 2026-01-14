@@ -4,10 +4,21 @@
 	<section
 		v-if="current.id"
 		:class="{'unsupported': unsupportedSliderType}"
-		class="ms-postbox theme-select-module">
-		<h3 class="hndle">
-			{{ __('Slideshow Theme', 'ml-slider') }}<template v-if="hasThemeSet">: <span>{{ current.theme.title }}</span></template>
-		</h3>
+		class="theme-select-module">
+		<p v-if="hasThemeSet">
+			{{ __('Slideshow Theme', 'ml-slider') }}: 
+				<template v-if="'custom' == current.theme.type">
+					<span v-if="current.theme.version === 'v2'">
+						{{ current.theme.base_title }}
+					</span>
+					<span v-else>
+						{{ current.theme.title }}
+					</span>
+				</template>
+				<template v-else>
+					<span>{{ current.theme.title }}</span>
+				</template>
+		</p>
 		<div
 			:class="{'ms-modal-open': is_open}"
 			class="inside wp-clearfix metaslider-theme-viewer">
@@ -16,11 +27,10 @@
 			<p
 				v-if="(hasThemeSet && unsupportedSliderType)"
 				class="slider-not-supported-warning">
-                <svg class="inline w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-				{{ __('This theme is not officially supported by the slider you chose. Your results might vary.', 'ml-slider') }}
+				{{ __('This theme was designed for FlexSlider. Please choose the FlexSlider option for the best display.', 'ml-slider') }}
 			</p>
+			<!-- Notice when "Recommended Theme Options" is disabled -->
+			<p v-if="!Number(autoThemeConfig)" class="slider-not-supported-warning" v-html="recommendedThemeOptionsNotice"></p>
 
 			<!-- If there's a theme already set -->
 			<div
@@ -33,11 +43,35 @@
 					@click="openModal">
 					<div
 						v-if="'custom' == current.theme.type"
-						class="custom-theme-single">
-						<span class="custom-subtitle">
-							{{ __('Custom theme', 'ml-slider') }}
-						</span>
-						{{ current.theme.title }}
+						:class="[
+							'custom-theme-single p-0',
+							{ 'custom-theme-single--legacy': current.theme?.version !== 'v2' }
+						]">
+						<template v-if="current.theme.version === 'v2'">
+							<div class="theme-label-info-v2">
+								<div class="custom-subtitle">
+									{{ current.theme.base_title + ' ' + __('theme', 'ml-slider') }}
+								</div>
+								{{ current.theme.title }}
+							</div>
+							<div class="theme-image-wrapper">
+								<img 
+									:src="themeDirectoryUrl + current.theme.base + '/screenshot.png'"
+									:alt="current.theme.title"
+									class="theme-image-v2"> 
+							</div>
+						</template>
+						<template v-else>
+							<div class="theme-label-info-legacy">
+								{{ __('Legacy', 'ml-slider') }}
+							</div>
+							<div class="custom-theme-single">
+								<div class="custom-subtitle">
+									{{ __('Custom theme', 'ml-slider') }}
+								</div>
+								{{ current.theme.title }}
+							</div>
+						</template>
 					</div>
 					<div v-else>
 						<img
@@ -50,23 +84,29 @@
 							:alt="current.theme.title">
 					</div>
 				</button>
-				<p class="button-info">{{ __('Click the image to edit or update', 'ml-slider') }}</p>
 				<button
 					type="button"
 					class="button-link remove-theme"
-					@click="removeTheme">{{ __('Remove theme', 'ml-slider') }}
+					@click="removeTheme">{{ __('Remove', 'ml-slider') }}
 				</button>
+				<button
+					type="button"
+					class="button-link change-theme"
+					@click="openModal">{{ __('Change', 'ml-slider') }}
+				</button>
+				<!-- Customize theme design (optional) -->
+				<theme-customize :manifest="theme_customize"></theme-customize>
 			</div>
 
 			<!-- If no theme then we render the theme select button -->
 			<div v-else>
 				<p>
-					{{ __('Change the look and feel of your slideshow with one of our custom-built MetaSlider themes!', 'ml-slider') }}
+					{{ __('Change the design of your slideshow with a stylish MetaSlider theme!', 'ml-slider') }}
 				</p>
 				<button
 					v-if="Object.keys(themes).length || Object.keys(customThemes).length"
 					type="button"
-					class="button-link"
+					class="button"
 					@click="openModal">{{ __('Select a custom theme', 'ml-slider') }}
 				</button>
 			</div>
@@ -87,21 +127,40 @@
                     </svg>
 				</button>
 				<sweet-modal-tab
-					id="free"
-					:title="__('Themes', 'ml-slider')">
-					<template v-if="themes && Object.keys(themes).length">
+					id="all"
+					:title="__('All themes', 'ml-slider')">
+					<div v-if="loading || loadingCustom">
+						{{ __('Loading...', 'ml-slider') }}
+					</div>
+					<template v-if="(themes && Object.keys(themes).length) || (Object.keys(customThemes).length && proUser)">
 						<div class="columns">
 							<div class="theme-list-column">
+								<!-- Notice when "Recommended Theme Options" is disabled -->
+								<div v-if="!Number(autoThemeConfig)" class="slider-not-supported-warning" style="margin: 0 !important" v-html="recommendedThemeOptionsNotice"></div>
 								<ul class="ms-image-selector regular-themes">
 									<li
+										v-if="themes && Object.keys(themes).length"
 										v-for="theme in themes"
 										:key="theme.folder"
-										:class="{ 'a-theme': true, selected: (selectedTheme.folder == theme.folder) }"
+										:class="{ 
+											'a-theme': true, selected: (selectedTheme.folder === theme.folder), 
+											'unlock-pro-theme-ad': nonSelectablePremiumTheme(theme.type)
+										}"
 										role="checkbox"
-										@mouseover="hoveredTheme = theme"
+										@mouseover="hoveredTheme = theme; showPremiumThemeAd(theme.type, theme.folder)"
 										@mouseout="hoveredTheme = selectedTheme"
-										@click="selectTheme(theme)">
+										@mouseleave="hidePremiumThemeAd(theme.type)"
+										@click="nonSelectablePremiumTheme(theme.type) ? null : selectTheme(theme)">
 										<span>
+											<div 
+												v-if="revealThemeAd === theme.folder"
+												class="custom-theme-single upgrade-pro-theme-ad">
+												<h3 class="text-white mb-3">{{ __('Get MetaSlider Pro!', 'ml-slider') }}</h3>
+												<p class="text-white font-normal text-sm mb-3">
+													{{ __('Upgrade now to unlock this theme!', 'ml-slider') }}
+												</p>
+												<a class="w-full inline-flex items-center justify-center px-5 py-2 border border-transparent rounded-md text-white bg-orange hover:bg-orange-darker active:bg-orange-darkest transition ease-in-out duration-150 md:w-auto text-base" :href="hoplink" target="_blank">{{ __('Upgrade now', 'ml-slider') }} <span class="dashicons dashicons-external border-0"></span></a>
+											</div>
 											<img
 												v-if="theme.screenshot_dir"
 												:src="theme.screenshot_dir + '/screenshot.png'"
@@ -112,6 +171,68 @@
 												:alt="theme.title">
 										</span>
 									</li>
+
+									<template v-if="Object.keys(customThemes).length && proUser">
+										<li
+											v-for="theme in customThemes"
+											:key="theme.folder"
+											:class="{ 'a-theme': true, selected: (selectedTheme.folder == theme.folder) }"
+											role="checkbox"
+											@mouseover="hoveredTheme = theme"
+											@mouseout="hoveredTheme = selectedTheme"
+											@click="selectTheme(theme)">
+											<span>
+												<template v-if="theme.version === 'v2'">
+													<div class="theme-label-info-v2">
+														<div class="custom-subtitle">
+															{{ theme.base_title + ' ' + __('theme', 'ml-slider') }}
+														</div>
+														{{ theme.title }}
+													</div>
+													<div class="theme-image-wrapper">
+														<img 
+															:src="themeDirectoryUrl + theme.base + '/screenshot.png'"
+															:alt="theme.title"
+															class="theme-image-v2"> 
+													</div>
+												</template>
+												<template v-else>
+													<div class="theme-label-info-legacy">
+														{{ __('Legacy', 'ml-slider') }}
+													</div>
+													<div class="custom-theme-single">
+														{{ theme.title }}
+													</div>
+												</template>
+											</span>
+										</li>
+									</template>
+									<template v-else-if="!Object.keys(customThemes).length && proUser && !loadingCustom">
+										<li class="a-theme">
+											<span>
+												<div class="custom-theme-single upgrade-pro-theme-ad">
+													<h3 class="text-white mb-3">{{ __('MetaSlider Pro is installed!', 'ml-slider') }}</h3>
+													<p class="text-white font-normal text-sm mb-3">
+														{{ __('You can create your own themes with our theme editor', 'ml-slider') }}
+													</p>
+													<a class="w-full inline-flex items-center justify-center px-5 py-2 border border-transparent rounded-md text-white bg-orange hover:bg-orange-darker active:bg-orange-darkest transition ease-in-out duration-150 md:w-auto text-base" :href="themeEditorLink">{{ __('Get started', 'ml-slider') }}</a>
+												</div>
+											</span>
+										</li>
+									</template>
+									<template v-else>
+										<li class="a-theme unlock-pro-custom-themes-ad">
+											<span>
+												<div class="custom-theme-single upgrade-pro-theme-ad">
+													<h3 class="text-white mb-3">{{ __('Get MetaSlider Pro!', 'ml-slider') }}</h3>
+													<p class="text-white font-normal text-sm mb-3">
+														{{ __('Upgrade now to build your own custom themes!', 'ml-slider') }}
+													</p>
+													<a class="w-full inline-flex items-center justify-center px-5 py-2 border border-transparent rounded-md text-white bg-orange hover:bg-orange-darker active:bg-orange-darkest transition ease-in-out duration-150 md:w-auto text-base" :href="hoplink" target="_blank">{{ __('Upgrade now', 'ml-slider') }} <span class="dashicons dashicons-external border-0"></span></a>
+												</div>
+											</span>
+										</li>
+									</template>
 								</ul>
 							</div>
 							<div class="theme-details-column">
@@ -144,73 +265,52 @@
 										</ul>
 									</div>
 								</template>
-								<template v-else>
+								<template v-else-if="hoveredTheme.type === 'custom'">
 									<div>
-										<h1 class="metaslider-theme-title">{{ __('How To Use', 'ml-slider') }}</h1>
-										<p>{{ __('Select a theme on the left to use on this slideshow. Click the theme for more details.', 'ml-slider') }}</p>
-										<p>{{ __('If no theme is selected we will use the default theme provided by the slider plugin', 'ml-slider') }}</p>
+										<h1 class="metaslider-theme-title">
+											 <template v-if="hoveredTheme.version === 'v2'">
+												{{ hoveredTheme.base_title }}
+											 </template>
+											<template v-else>
+												{{ hoveredTheme.title }}
+											</template>
+										</h1>
+										<div class="ms-theme-description">
+											<template v-if="hoveredTheme.version === 'v2'">
+												<h2>{{ __('Style Details', 'ml-slider') }}</h2>
+												<p>{{ __('This style was created with the Theme Editor.', 'ml-slider') }}</p>
+											</template>
+											<template v-else>
+												<h2>{{ __('Theme Details', 'ml-slider') }}</h2>
+												<p>{{ __('This theme was created through the theme editor.', 'ml-slider') }}</p>
+											</template>
+										</div>
 									</div>
+								</template>
+								<template v-else>
+									<template v-if="proUser">
+										<div>
+											<div>
+												<h1 class="metaslider-theme-title">{{ __('How To Use', 'ml-slider') }}</h1>
+												<p>{{ __('Select a theme on the left to use on this slideshow. Click the theme for more details.', 'ml-slider') }}</p>
+											</div>
+										</div>
+									</template>
+									<template v-else>
+										<div>
+											<h1 class="metaslider-theme-title">{{ __('Get MetaSlider Pro!', 'ml-slider') }}</h1>
+											<p>{{ __('MetaSlider Pro gives you access to extra themes. You can also create completely new themes that can easily be added to new slideshows.', 'ml-slider') }}</p>
+										</div>
+									</template>
 								</template>
 							</div>
 						</div>
 					</template>
 					<template v-else>
-						<div v-if="loading">
-                            {{ __('Loading...', 'ml-slider') }}
-						</div>
-						<div
-							v-else
-							class="free-themes-not-found">
+						<div class="free-themes-not-found">
 							<h1>{{ __('Error: No themes were found.', 'ml-slider') }}</h1>
-							<p v-if="Object.keys(customThemes).length">{{ __('However, it looks like you have custom themes available. Select "My Custom Themes" from the navigation up top to view your custom themes.', 'ml-slider') }}</p>
 						</div>
 					</template>
-				</sweet-modal-tab>
-				<sweet-modal-tab
-					id="custom-themes"
-					:title="__('My Custom Themes', 'ml-slider')">
-					<template v-if="!proUser">
-						<h1>{{ __('Get the add-on pack!', 'ml-slider') }}</h1>
-						<p>
-							{{ __('Upgrade now to build your own custom themes!', 'ml-slider') }}
-							<a :href="hoplink">{{ __('Learn more', 'ml-slider') }}</a>
-						</p>
-					</template>
-					<div v-if="loadingCustom">
-                        {{ __('Loading...', 'ml-slider') }}
-					</div>
-					<template v-if="!Object.keys(customThemes).length && proUser && !loadingCustom">
-						<h1>{{ __('The pro add-on pack is installed!', 'ml-slider') }}</h1>
-						<p>
-							{{ __('You can create your own themes with our theme editor', 'ml-slider') }}
-							<a :href="themeEditorLink">{{ __('Get started', 'ml-slider') }}</a>
-						</p>
-					</template>
-					<div
-						v-if="Object.keys(customThemes).length && proUser"
-						class="columns">
-						<div class="theme-list-column">
-							<ul class="ms-image-selector custom-themes">
-								<li
-									v-for="theme in customThemes"
-									:key="theme.folder"
-									:class="{ 'a-theme': true, selected: (selectedTheme.folder == theme.folder) }"
-									role="checkbox"
-									@click="selectTheme(theme)">
-									<span><div class="custom-theme-single">
-										{{ theme.title }}
-									</div></span>
-								</li>
-							</ul>
-						</div>
-						<div class="theme-details-column">
-							<div>
-								<h1 class="metaslider-theme-title">{{ __('How To Use', 'ml-slider') }}</h1>
-								<p>{{ __('On the left are themes that you have created in the theme editor.', 'ml-slider') }}</p>
-								<p>{{ __('If no theme is selected we will use the default theme provided by the slider plugin', 'ml-slider') }}</p>
-							</div>
-						</div>
-					</div>
 				</sweet-modal-tab>
 				<template
 					slot="button">
@@ -218,10 +318,7 @@
 						<span
 							v-if="sliderTypeNotSupported"
 							class="slider-not-supported-warning">
-                            <svg class="inline w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-							{{ __('This theme is not officially supported by the slider you chose. Your results might vary.', 'ml-slider') }}</span>
+							{{ __('This theme was designed for FlexSlider. Please choose the FlexSlider option for the best display.', 'ml-slider') }}</span>
 					</div>
 					<div class="flex items-center">
 						<button
@@ -251,8 +348,12 @@ import { Axios } from '../api'
 import './components'
 import { mapGetters } from 'vuex'
 import QS from 'qs'
+import { default as ThemeCustomize } from './includes/ThemeCustomize'
 
 export default {
+	components: {
+		'theme-customize' : ThemeCustomize
+	},
 	props: {
 		themeDirectoryUrl: {
 			type: [String],
@@ -268,7 +369,10 @@ export default {
 			customThemes: {},
 			selectedTheme: {},
 			hoveredTheme: {},
-			is_open: false
+			is_open: false,
+			revealThemeAd: null,
+			theme_customize: [], // @TODO Maybe declare as {} ?
+			theme_edit_settings: {}
 		}
 	},
 	watch: {
@@ -286,6 +390,65 @@ export default {
 				}
 				this.selectedTheme = this.current.theme
 				this.hoveredTheme = this.current.theme
+
+				// Get the theme customizations if available from db to avoid sync issues
+				Axios.get('theme/customization', {
+					params: {
+						action: 'ms_get_theme_customization',
+						slideshow_id: this.current.id,
+						theme: this.selectedTheme['folder'], // Just the folder!
+						type: this.selectedTheme['type'] // free, premium, etc.
+					}
+				}).then(response => {
+					var customize_data = response.data.data;
+					
+					// Assign defaults from manifest, including default values
+					this.theme_customize = customize_data.manifest || [];
+
+					// Iterate each section that has 'status' key
+					this.theme_customize.forEach((section_item, section_index) => {
+
+						// Loop each section 'settings' key
+						section_item.settings.forEach((row_item, row_index) => {
+							if (row_item.type === 'fields' && typeof row_item.fields !== 'undefined') {
+								// Replace default values with the saved ones
+								for (let i = 0; i < row_item.fields.length; i++) {
+									// The 'name' in theme_customize should match keys in saved_settings
+									const name = row_item.fields[i].name; 
+									const manifest_fields = this.theme_customize[section_index].settings[row_index].fields[i];
+
+									// Check if saved_settings contains the key matching 'name'
+									if (customize_data.saved_settings 
+										&& customize_data.saved_settings.hasOwnProperty(name)
+										&& typeof customize_data.saved_settings[name] !== 'undefined') {
+											manifest_fields.value = customize_data.saved_settings[name];
+									} else {
+										// Use default value if saved setting for this name doesn't exist
+										manifest_fields.value = manifest_fields.default;
+									}
+								}
+							} else {
+								// The 'name' in theme_customize should match keys in saved_settings
+								const name = row_item.name;
+								const manifest_data = this.theme_customize[section_index].settings[row_index];
+
+								// Check if saved_settings contains the key matching 'name'
+								if (customize_data.saved_settings 
+									&& customize_data.saved_settings.hasOwnProperty(name)
+									&& typeof customize_data.saved_settings[name] !== 'undefined') {
+									manifest_data.value = customize_data.saved_settings[name];
+								} else {
+									// Use default value if saved setting for this name doesn't exist
+									manifest_data.value = manifest_data.default;
+								}
+							}
+						});
+					});
+
+					this.updateColorPicker();
+				}).catch(error => {
+					this.notifyError('metaslider/theme-error', error, true)
+				})
 			}
 		}
 	},
@@ -318,6 +481,15 @@ export default {
 			if (!this.current.id || !this.current.hasOwnProperty('theme')) return false
 			return this.current.theme.hasOwnProperty('folder') && this.current.theme.folder.length
 		},
+		recommendedThemeOptionsNotice() {
+			const linkStart = `<a href="${this.metaslider_settings_page}" target="_blank" style="color:#135e96">`;
+			const linkEnd = `</a>`;
+			return this.sprintf(
+				this.__('We recommend to enable %1$s"Recommended Theme Options"%2$s to automatically adjust slideshow settings when selecting a new theme.', 'ml-slider'),
+				linkStart,
+				linkEnd
+			);
+		},
 		...mapGetters({
 			current: 'slideshows/getCurrent'
 		})
@@ -340,6 +512,7 @@ export default {
 		})
 
 		this.updateSupportedStatus()
+		this.setColorPicker();
 	},
 	methods: {
 		fetchThemes() {
@@ -393,11 +566,118 @@ export default {
 					slideshow_id: this.current.id,
 					theme: this.selectedTheme
 				})).then(response => {
+					this.theme_customize = this.selectedTheme.customize || [];
+
+					// Iterate each section that has 'status' key
+					this.theme_customize.forEach((section_item, section_index) => {
+						
+						// Loop each section 'settings' key
+						section_item.settings.forEach((row_item, row_index) => {
+
+							if (row_item.type === 'fields' && typeof row_item.fields !== 'undefined') {
+								// Add value property by copying default property value
+								for (let i = 0; i < row_item.fields.length; i++) {
+									const manifest_fields = this.theme_customize[section_index].settings[row_index].fields[i];
+
+									manifest_fields.value = manifest_fields.default;
+								}
+							} else {
+								const manifest_data = this.theme_customize[section_index].settings[row_index];
+
+								manifest_data.value = manifest_data.default;
+							}
+						});
+					});
+
+					this.updateColorPicker();
+
+					setTimeout(() => {
+						// @TODO - Maybe move to admin.js under window.metaslider.app.EventManager.$on("metaslider/theme-updated", function () {});
+						this.showHideColorPicker();  //delay to load all picker first
+					}, 1000);
+
 					this.notifySuccess('metaslider/theme-updated', this.__('Theme saved', 'ml-slider'), true)
+
+					if (Number(this.autoThemeConfig)) {
+						this.theme_edit_settings = this.selectedTheme.edit_settings ?? {};
+						this.updateEditSettings();
+					}
 				}).catch(error => {
 					this.notifyError('metaslider/theme-error', error, true)
 				})
 			}
+		},
+		setColorPicker() {
+			var $ = window.jQuery;
+			$('.static-theme-customize .colorpicker').each(function () {
+				$(this).wpColorPicker({
+					change: function(event, ui) {
+						var input = $(this).parents('.wp-picker-container').find('input.colorpicker');
+						var btn = $(this).parents('.wp-picker-container').find('button.wp-color-result');
+			
+						btn.css('background-color',ui.color.toCSS('rgba'));
+			
+						input.data('new-color',ui.color.toCSS('rgba'));
+						input.attr('value',ui.color.toCSS('rgba'));
+			
+						btn.trigger('change');
+					}
+				}).promise().done(function() {
+					var text = typeof metaslider !== 'undefined' ? metaslider : null;
+					if (text) {
+						$(this).parents('.wp-picker-container').find('.iris-strip').eq(0).prepend(`<span class="ms-color-tooltip">${text.tone}</span>`);
+						$(this).parents('.wp-picker-container').find('.iris-strip').eq(1).prepend(`<span class="ms-color-tooltip">${text.opacity}</span>`);
+					}
+				});
+			});
+		},
+		updateColorPicker() {
+			this.$nextTick( function () {
+				this.setColorPicker();
+
+				var $ = window.jQuery;
+				$('.static-theme-customize .colorpicker').each(function () {
+					const newColor = $(this).val();
+					if (newColor.length) {
+						$(this).wpColorPicker('color', newColor);
+					}
+				});
+			});
+		},
+		updateEditSettings() {
+			this.$nextTick( function () {
+
+				if (Object.keys(this.theme_edit_settings).length > 0) {
+					var $ = window.jQuery;
+
+					for (const [key,value] of Object.entries(this.theme_edit_settings)) {
+						const field = $(`#metaslider_configuration [name="settings[${key}]"]`);
+
+						if (field.length == 1) {
+							if (field.is('select')) {
+								// select
+								if (field.find(`option[value="${value}"]`).length) {
+									field.val(value).trigger('change');
+								}
+							} else if (field.is(':checkbox')) {
+								// checkbox
+								field.prop('checked', value).trigger('change');
+							} else if (field.is('input')) {
+								// input
+								const fieldType = field.attr('type');
+								if (fieldType === 'text' || fieldType === 'number') {
+									field.val(value).trigger('change');
+								}
+							}
+							field.attr('data-edit-setting', true); // Not requied. We add it just for reference
+						}
+					}
+
+					setTimeout(function () {
+						EventManager.$emit('metaslider/save');
+					}, 1000);
+				}
+			});
 		},
 		openModal() {
 			// TODO: when converting settings to vue, this could be removed.
@@ -405,7 +685,7 @@ export default {
 			this.hoveredTheme = this.selectedTheme || this.current.theme
 
 			// If a current theme is selected, show that tab
-			let tab = this.isCustomTheme ? 'custom-themes' : 'free'
+			let tab = 'all'
 			this.is_open = true
 			this.$refs.themesModal.open(tab)
 		},
@@ -430,6 +710,41 @@ export default {
 				title: null,
 				type: null
 			}
+		},
+		showPremiumThemeAd(type, id) {
+			if (this.nonSelectablePremiumTheme(type)) {
+				this.revealThemeAd = id;
+			}
+		},
+		hidePremiumThemeAd(type) {
+			if (this.nonSelectablePremiumTheme(type)) {
+				this.revealThemeAd = null;
+			}
+		},
+		nonSelectablePremiumTheme(type) {
+			return !this.proUser && type === 'premium';
+		},
+		showHideColorPicker() {
+			this.$nextTick( function () {
+				var $ = window.jQuery;
+				$('.static-theme-customize tr').show();
+				if ($('.ms-settings-table input[name="settings[pausePlay]"]').is(':checked')) {
+					$('tr.customizer-pausePlay').show();
+				} else {
+					$('tr.customizer-pausePlay').hide();
+				}
+				if ($('.ms-settings-table select[name="settings[links]"]').val() === 'false') {
+					$('tr.customizer-links').hide();
+				} else {
+					$('tr.customizer-links').show();
+				}
+
+				if ($('.ms-settings-table select[name="settings[navigation]"]').val() === 'true') {
+					$('tr.customizer-navigation').show();
+				} else {
+					$('tr.customizer-navigation').hide();
+				}
+			});
 		}
 	}
 }
@@ -439,6 +754,53 @@ export default {
 	@import '../assets/styles/globals.scss';
 	@import '../assets/styles/mixins.scss';
 
+	@mixin custom-theme-box() {
+		.theme-image-wrapper {
+			background: #2271b1;
+			width: 100%;
+			height: 100%;
+			display: block;
+		}
+		.theme-label-info-v2 {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			color: #fff;
+			font-size: 1.3rem;
+			font-weight: bold;
+			z-index: 1;
+			text-shadow: 0 0px 10px #000;
+			width: 100%;
+			transform: translateY(-50%);
+			text-align: center;
+			padding-left: 1rem;
+			padding-right: 1rem;
+
+			.custom-subtitle {
+				color: #fff;
+				font-size: 12px;
+				font-weight: 300;
+				margin-bottom: .1em;
+				text-transform: uppercase;
+			}
+		}
+		.theme-image-v2 {
+			opacity: 0.6;
+		}
+		.theme-label-info-legacy {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background: rgba(255,255,255,1);
+			color: #2271b1;
+			font-size: 0.7em;
+			font-weight: normal;
+			padding: 3px 7px;
+			border-radius: 4px;
+			z-index: 1;
+			opacity: 0.5;
+		}
+	}
 	#metaslider-ui .metaslider-theme-viewer {
 		p {
 			margin-top: 0;
@@ -593,7 +955,9 @@ export default {
 				height: 100%;
 				display: block;
 				padding: 2px;
+				position: relative;
 			}
+			@include custom-theme-box();
 			&:hover span {
 				border-color: #ccc;
 			}
@@ -648,7 +1012,10 @@ export default {
 		color: $brand;
 	}
 	#metaslider-ui .theme-select-module .slider-not-supported-warning {
+		background-color: #f9edc9;
+		border: 1px solid #f2a561;
 		margin-bottom: 1em;
+		padding: 10px 15px;
 		svg {
 			color: $red !important;
 		}
@@ -663,32 +1030,80 @@ export default {
 			width: 100%;
 		}
 	}
-	#metaslider-ui .ms-current-theme .custom-theme-single {
-		min-height: 0;
-		height: 177px;
+	#metaslider-ui .ms-current-theme {
+		@include custom-theme-box();
+
+		.custom-theme-single {
+			height: 100%;
+			
+			&--legacy {
+				min-height: 200px;
+			}
+		}
 	}
 	#metaslider-ui .ms-current-theme .custom-theme-single .custom-subtitle {
 		font-size: 12px;
 		font-weight: 300;
 		text-transform: uppercase;
-		color: darken(white, 15%);
+		color: #fff;
 		margin-bottom: 0.1em;
 	}
 	#metaslider-ui .custom-theme-single {
 		width: 100%;
-		min-height: 200px;
-		height: 10vw;
+		height: 100%;
 		line-height: normal;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		font-size: 24px;
-		font-weight: 600;
-		background-color: #999999;
+		font-size: 1.3rem;
+		font-weight: bold;
+		background-color: #2271b1;
 		color: white;
 		padding: 1rem;
 		box-sizing: border-box;
+	}
+	.regular-themes {
+		.a-theme {
+			//min-height: 216px;
+		}
+		.unlock-pro-theme-ad {
+			span {
+				position: relative
+			}
+			.custom-theme-single {
+				position: absolute;
+				z-index: 2;
+			}
+			img {
+				//position: absolute;
+				z-index: 1;
+				width: calc( 100% - 4px ) !important;
+				height: auto !important;
+			}
+			.upgrade-pro-theme-ad {
+				width: calc( 100% - 4px ) !important;
+				height: calc( 100% - 4px ) !important;
+
+				@media (max-width: 1199px) and (min-width: 1100px) {
+					h3 {
+						display: none;
+					}
+				}
+			}
+		}
+		.unlock-pro-custom-themes-ad {
+			.upgrade-pro-theme-ad {
+				@media (max-width: 1199px) and (min-width: 1100px) {
+					h3 {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+	#metaslider-ui .sweet-modal-tabs li.sweet-modal-tab {
+		display: none !important;
 	}
 	@include until(700px) {
 		#metaslider-ui .sweet-modal {

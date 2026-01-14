@@ -63,19 +63,38 @@ class SucuriScanInterface
      */
     public static function enqueueScripts()
     {
+        if (self::getPreferredTheme() === 'dark') {
+            wp_register_style(
+                'sucuriscan',
+                SUCURISCAN_URL . '/inc/css/dark.css',
+                array(/* empty */),
+                SucuriScan::fileVersion('inc/css/dark.css')
+            );
+        } else {
+            wp_register_style(
+                'sucuriscan',
+                SUCURISCAN_URL . '/inc/css/light.css',
+                array(/* empty */),
+                SucuriScan::fileVersion('inc/css/light.css')
+            );
+        }
+
         wp_register_style(
-            'sucuriscan',
-            SUCURISCAN_URL . '/inc/css/styles.css',
+            'sucuriscan_shared',
+            SUCURISCAN_URL . '/inc/css/shared.css',
             array(/* empty */),
-            SucuriScan::fileVersion('inc/css/styles.css')
+            SucuriScan::fileVersion('inc/css/shared.css')
         );
+
         wp_enqueue_style('sucuriscan');
+        wp_enqueue_style('sucuriscan_shared');
 
         wp_register_script(
             'sucuriscan',
             SUCURISCAN_URL . '/inc/js/scripts.js',
             array(/* empty */),
-            SucuriScan::fileVersion('inc/js/scripts.js')
+            SucuriScan::fileVersion('inc/js/scripts.js'),
+            false
         );
         wp_enqueue_script('sucuriscan');
 
@@ -228,19 +247,6 @@ class SucuriScanInterface
         SucuriScanOption::updateOption(':plugin_version', SUCURISCAN_VERSION);
 
         /**
-         * Suggest re-activation of the API communication.
-         *
-         * Check if the API communication has been disabled due to issues with
-         * the previous version of the code, in this case we will display a
-         * message at the top of the admin dashboard suggesting the user to
-         * enable it once again expecting to see have a better performance with
-         * the new code.
-         */
-        if (SucuriScanOption::isDisabled(':api_service')) {
-            self::info(__('API service communication is disabled, if you just updated the plugin this might be a good opportunity to test this feature once again with the new code. Enable it again from the "API Service" panel located in the settings page.', 'sucuri-scanner'));
-        }
-
-        /**
          * Invite website owner to subscribe to our security newsletter.
          *
          * For every fresh installation of the plugin we will send a one-time
@@ -262,9 +268,9 @@ class SucuriScanInterface
      */
     public static function checkPageVisibility()
     {
-        if (!function_exists('current_user_can') || !current_user_can('manage_options')) {
+        if (!SucuriScanPermissions::canManagePlugin()) {
             SucuriScan::throwException(__('Access denied; cannot manage options', 'sucuri-scanner'));
-            wp_die(sprintf(__('Access denied by %s', 'sucuri-scanner'), SUCURISCAN_PLUGIN_NAME));
+            wp_die(sprintf(esc_html__('Access denied by %s', 'sucuri-scanner'), esc_html(SUCURISCAN_PLUGIN_NAME)));
         }
     }
 
@@ -315,7 +321,8 @@ class SucuriScanInterface
          * an HTML alert like this when the user authentication process is
          * executed may cause a "headers already sent" error.
          */
-        if (!empty($_POST)
+        if (
+            !empty($_POST)
             && SucuriScanRequest::post('log')
             && SucuriScanRequest::post('pwd')
             && SucuriScanRequest::post('wp-submit')
@@ -329,11 +336,15 @@ class SucuriScanInterface
 
             SucuriScan::throwException($message, $type);
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             echo SucuriScanTemplate::getSection(
                 'notification-admin',
                 array(
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     'AlertType' => $type,
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     'AlertUnique' => rand(100, 999),
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     'AlertMessage' => $message,
                 )
             );
@@ -362,5 +373,34 @@ class SucuriScanInterface
     {
         self::adminNotice('updated', $msg);
         return true; /* assume success */
+    }
+
+
+    public static function isPremium()
+    {
+        $api_key = SucuriScanFirewall::getOption(':cloudproxy_apikey');
+
+        return SucuriScanFirewall::isValidKey($api_key);
+    }
+
+    public static function getPreferredTheme()
+    {
+        if (!self::isPremium()) {
+            return 'light';
+        }
+
+        $user_id = get_current_user_id();
+
+        if (!$user_id) {
+            return 'dark';
+        }
+
+        $current_theme = get_user_meta($user_id, 'sucuriscan_preferred_theme', true);
+
+        if (in_array($current_theme, array('light', 'dark'), true)) {
+            return $current_theme;
+        }
+
+        return 'dark';
     }
 }

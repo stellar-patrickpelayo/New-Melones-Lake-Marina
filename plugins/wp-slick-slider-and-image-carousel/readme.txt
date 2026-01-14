@@ -1,46 +1,79 @@
 === WP Slick Slider and Image Carousel ===
-Contributors: wponlinesupport, anoopranawat, pratik-jain, mehulwpos, jahnavwponlinesupport, rafikwp
-Tags: slick, image slider, slick slider, slick image slider, slider, image slider, header image slider, responsive image slider, responsive content slider, carousel, image carousel, carousel slider, content slider, coin slider, touch slider, text slider, responsive slider, responsive slideshow, Responsive Touch Slider, wp slider, wp image slider, wp header image slider, photo slider, responsive photo slider  
+Contributors: essentialplugin
+Tags: slick image slider, responsive header image slider, carousel slider, responsive slider, wp header image slider
 Requires at least: 4.0
-Tested up to: 5.9.1
-Stable tag: 3.0.8
+Tested up to: 6.8.3
+Stable tag: 3.7.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A quick, easy way to add and display mulipale WP Slick Slider and carousel using a shortcode. Also added Gutenberg block support.
+A quick, easy way to add and display multiple WP Slick Slider and carousel using a shortcode. Also added Gutenberg block support.
 
 == Description ==
 
-[Explore Slick Slider Pro Features](https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Read-Me) | [Bundle Deal](https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Read-Me#wpos-epb)
+✅ Now that you have your website ready then why don’t you **download** and try out this slick slider/ carousel to give it better functionality.
 
-[WP Slick Slider and Image Carousel](https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Read-Me) is one of the leading & popular Slick Slider plugins available for WordPress.
+**Download now** and display multiple slick image slider and carousel using shortcode with category. Fully responsive, Swipe enabled, Desktop mouse dragging and  Infinite looping. Fully accessible with arrow key navigation  Autoplay, dots, arrows etc.
 
-Display multiple slick image slider and carousel using shortcode with category. Fully responsive, Swipe enabled, Desktop mouse dragging and  Infinite looping. Fully accessible with arrow key navigation  Autoplay, dots, arrows etc.
+[FREE DEMO](https://demo.essentialplugin.com/slick-slider-demo/?utm_source=WP&utm_medium=SlickSlider&utm_campaign=Read-Me) | [PRO DEMO](https://demo.essentialplugin.com/prodemo/pro-wp-slick-slider-and-carousel-demo/?utm_source=WP&utm_medium=SlickSlider&utm_campaign=Read-Me)
 
-= Features =
+**Download Now** this slick slider because It is proven that slick sliders have been a powerful tool to present your content in a very neat manner with the help of fancy sliders and customized designs. 
+
+Your customer might like the professional and fancy vibe of your site with slick sliders
+
+**✅ This plugin displays your images using :**
+
+* Slick Slider (5 designs)
+* Slick Carousel (1 designs)
+
+**Download Now** it today and explore all the features.
+
+= ✅ Features : =
 [youtube https://www.youtube.com/watch?v=yTfbOaYJYR0] 
 
-It uses A custom post type and taxonomy to create a slider, with almost unlimited options and support for multiple sliders on any page. You can also display image slider on your website header.
+When you want to makeover your WordPress website theme with something extraordinary and creative, you must consider the slick slider/ carousel.
 
-We have added 5 designs for slider and 1 design for carousel. You can find all designs on our demo website. Just copy the shortcode of design that you like and use.
+Help your website get a slide-wise display to show the custom posts. Not just eye appealing, it is also loved by visitors as they find it quite easy to locate custom posts. 
+
+Display an unlimited number of custom posts slider and carousel in a single page or post with different sets of options like category, limit, autoplay,  arrow, and navigation type. You can also display image slider on your website header.
 
 **Also added Gutenberg block support.**
 
-= You can use 2 shortcodes =
+= ✅ Here is the plugin shortcode example =
 
-<code>[slick-slider] and [slick-carousel-slider]</code>
+**Slick Slider** 
 
-= Here is Template code =
+<code>[slick-slider]</code>
 
-<code><?php echo do_shortcode('[slick-slider]'); ?>  and
- <?php echo do_shortcode('[slick-carousel-slider]'); ?> </code>
+**Slick Carousel** 
 
-= Use Following parameters with shortcode =
+<code>[slick-carousel-slider]</code>
 
+**To display only slick 4 post:**
+
+<code>[slick-slider limit="4"]</code>
+Where limit define the number of posts to display. You can use same parameter with Carousel shortcode.
+
+**If you want to display Slider Slider by category then use this short code:** 
+
+<code>[slick-slider category="category_ID"]</code>
+You can use same parameter with Carousel shortcode.
+
+**✅ We have given 5 designs. For designs use the following shortcode:**
+
+<code>[slick-slider design="design-1"]</code> 
+Where designs are : design-1, design-2, design-3, design-4, design-5. You can use same parameter with Carousel shortcode but in Carousel we have given only 1 design i.e. design-1.
+
+= ✅ Here is Template code =
+<code><?php echo do_shortcode('[slick-slider]'); ?> </code>
+<code><?php echo do_shortcode('[slick-carousel-slider]'); ?> </code>
+
+= ✅ Use Following Slick Slider parameters with shortcode =
 <code>[slick-slider]</code>
 
 * **limit** : [slick-slider limit="-1"] (Limit define the number of images to be display at a time. By default set to "-1" ie all images. eg. if you want to display only 5 images then set limit to limit="5")
 * **category**: [slick-slider category="category_ID"] ( ie Display slider by their category ID ).
+* **design** : [slick-slider design="design-1"] (You can select 5 design( design-1, design-2, design-3, design-4, design-5 ) for your  slider ).
 * **show_content** : [slick-slider show_content="true" ] (Display content OR not. By default value is "true". Options are "true OR false").
 * **Pagination and arrows** : [slick-slider dots="false" arrows="false"]
 * **Autoplay and Autoplay Interval**: [slick-slider autoplay="true" autoplay_interval="100"]
@@ -53,13 +86,13 @@ We have added 5 designs for slider and 1 design for carousel. You can find all d
 * **image_fit** : [slick-slider image_fit="false"] (image_fit parameter is used to specify how an image should be resized to fit its container. By default value is "false". Options are "true OR false"). NOTE :  image_fit="true" work better if sliderheight is given. if image_fit="false", no need to use sliderheight parameter.
 * **sliderheight** : [slick-slider sliderheight="400" ] (Set image wrap height. NOTE : This parameter work better if image_fit="true" ).
 * **rtl** : [slick-slider rtl="true"] (for rtl mode. By default value is "false". Options are "true OR false").
+* **extra_class** : [slick-slider extra_class=""] (Enter extra CSS class for design customization ).
 
-= Use Following parameters with shortcode =
-
+= ✅ Use Following Slick Carousel parameters with shortcode =
 <code>[slick-carousel-slider]</code>
 
 * **limit** : [slick-carousel-slider limit="-1"] (Limit define the number of images to be display at a time. By default set to "-1" ie all images. eg. if you want to display only 5 images then set limit to limit="5")
-* **design** : [slick-carousel-slider design="design-1"] (You can select 5 design( design-1, design-2, design-3, design-4, design-5 ) for your  slider. Slick Slider -> Slider Designs ).
+* **design** : [slick-carousel-slider design="design-1"]
 * **category**: [slick-carousel-slider category="category_ID"] ( ie Display slider by their category ID ).
 * **image_size** : [slick-carousel-slider image_size="full"] (Default is "full", values are thumbnail, medium, medium_large, large, full)
 * **slidestoshow** : [slick-carousel-slider slidestoshow="3" ] (Display number of images at a time. By default value is "3").
@@ -75,61 +108,53 @@ We have added 5 designs for slider and 1 design for carousel. You can find all d
 * **image_fit** : [slick-carousel-slider image_fit="false" ] (image_fit parameter is used to specify how an image should be resized to fit its container. By default value is "false". Options are "true OR false"). NOTE :  image_fit="true" work better if sliderheight is given. if image_fit="false", no need to use sliderheight parameter.
 * **sliderheight** : [slick-carousel-slider sliderheight="400" ] (Set image wrap height. NOTE : This parameter work better if image_fit="true" ).
 * **rtl** : [slick-carousel-slider rtl="true"] (for rtl mode. By default value is "false". Options are "true OR false").
+* **extra_class** : [slick-slider extra_class=""] (Enter extra CSS class for design customization ).
 
 **Note: Due to lots of feedback from your users side, we have made image_fit="false" by default. Previously it was image_fit="true". We made image resize option now optional. If you want to resize the image, please use image_fit="true" and sliderheight="400" (400 is just an example. Please use this value as per your need) shortcode parameters.**
 
-= PRO Features Added : =
-> <strong>Premium Version</strong><br>
->
-> * 90+ Predefined stunning designs.
-> * 30 Image Slider Designs.
-> * 30 Image Carousel and Center Slider Designs.
-> * 33 Slider Variable width Designs.
-> * Gutenberg Block Supports.
-> * WP Templating Features.
-> * WPBakery Page Builder Support.
-> * Elementor, Beaver and SiteOrigin Page Builder Native Support (New).
-> * Divi Page Builder Native Support (New).
-> * Fusion Page Builder (Avada) Native Support (New).
-> * Drag & Drop frature to display slide in your order.
-> * Custom CSS plugin setting option.
-> * Powerful shortcode with strong parameters.
-> * Display content with image and link in Carousel mode .  
-> * Fully Responsive.
-> * 100% Multi Language.
->
-> [Explore WP Slick Slider and Image Carousel Pro Features](https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Read-Me)
->
+✅ **Checkout demo for better understanding**
 
-Find out about other [best WordPress plugins](https://www.essentialplugin.com/wordpress-plugins/).
+[FREE DEMO](https://demo.essentialplugin.com/slick-slider-demo/?utm_source=WP&utm_medium=SlickSlider&utm_campaign=Read-Me) | [PRO DEMO](https://demo.essentialplugin.com/prodemo/pro-wp-slick-slider-and-carousel-demo/?utm_source=WP&utm_medium=SlickSlider&utm_campaign=Read-Me)
+
+✅ **Essential Plugin Bundle Deal**
+
+[Annual or Lifetime Bundle Deal](https://www.essentialplugin.com/pricing/?utm_source=WP&utm_medium=SlickSlider&utm_campaign=Read-Me)
+
+= ✅ Features include: =
+* Added Gutenberg block support.
+* Slick slider
+* Slick carousel
+* Easy to add.
+* Also work with Gutenberg shortcode block. 
+* Elementor, Beaver and SiteOrigin Page Builder Native Support (New).
+* Divi Page Builder Native Support (New).
+* Fusion Page Builder (Avada) Native Support (New).
+* Touch-enabled Navigation.
+* Given 5 designs.
+* Media size i.e.  thumbnail, medium, medium_large, large and full
+* Responsive.
+* Responsive touch slider.
+* Mouse Draggable.
+* Use for header image slider.
+* You can create multiple post slider with different options at single page or post.
+* Fully responsive. Scales with its container.
+* 100% Multi Language.
 
 = How to install : =
-[youtube https://www.youtube.com/watch?v=rkbohcgmzVg] 
-
-= Features include =
-
-* Also added Gutenberg block support.
-* Display unlimited number of slider and carousel with the help of category.
-* Touch-enabled Navigation.
-* Fully responsive. Scales with its container.
-* Fully accessible with arrow key navigation.
-* Responsive
-* Given shortcode and template code.
-* Use for header image slider.
+[youtube https://www.youtube.com/watch?v=rkbohcgmzVg]
 
 = Privacy & Policy =
-* We have also opt-in e-mail selection , once you download the plugin , so that we can inform you and nurture you about products and its features.
+* We have also opt-in e-mail selection, once you download the plugin , so that we can inform you and nurture you about products and its features.
 
 == Installation ==
 
 1. Upload the 'wp-slick-slider-and-carousel' folder to the '/wp-content/plugins/' directory.
 2. Activate the "wp-slick-slider-and-carousel" list plugin through the 'Plugins' menu in WordPress.
 3. Add this short code where you want to display slider
-
 <code>[slick-slider] and [slick-carousel-slider]</code>
 
 = How to install : =
-[youtube https://www.youtube.com/watch?v=rkbohcgmzVg] 
+[youtube https://www.youtube.com/watch?v=rkbohcgmzVg]
 
 == Screenshots ==
 
@@ -144,6 +169,84 @@ Find out about other [best WordPress plugins](https://www.essentialplugin.com/wo
 9. Also added Gutenberg block support.
 
 == Changelog ==
+
+= 3.7.8 (17, Nov 2025) =
+* [*] Fixed code conflict issue affecting widget saving.
+
+= 3.7.7 (12, Nov 2025) =
+* [*] Check compatibility with WordPress version 6.8.3
+
+= 3.7.6 (16, May 2025) =
+* [*] Check compatibility with WordPress version 6.8.1
+
+= 3.7.5 (16, January 2024) =
+* [*] Fixed variable issue.
+
+= 3.7.4 (11, January 2024) =
+* [*] Check compatibility with WordPress version 6.7.1.
+
+= 3.7.3 (11, January 2024) =
+* [*] Check compatibility with WordPress version 6.7.1.
+
+= 3.7.2 (05 Nov 2024) =
+* [*] Check compatibility with WordPress version 6.6.2
+
+= 3.7.1 (24 July 2024) =
+* [*] Check compatibility with WordPress version 6.6.1
+
+= 3.7 (10 June 2024) =
+* [*] Check compatibility with WordPress version 6.5.3
+* [*] Update - Create Gutenberg blocks with block.JSON metadata.
+
+= 3.6 (24, Nov 2023) =
+* [*] Updated analytics SDK.
+* [*] Check compatibility with WordPress version 6.4.1
+
+= 3.5 (18 Aug 23) =
+* [*] Tested up to: 6.3
+
+= 3.4.1 (02, Aug 2023) =
+* [*] Tested up to: 6.2.2
+* [*] Fixed all security related issues.
+
+= 3.4 (17, May 2023) =
+* [*] Tested up to: 6.2.1
+
+= 3.3 (30, March 2023) =
+* [*] Fixed - Fixed some issues like design, UI of admin side.
+* [*] Update - Improve escaping functions for better security.
+* [*] Update - Update optin screen.
+
+= 3.2 (21, March 2023) =
+* [*] Fixed - Fixed one undefined PHP variable warning.
+* [*] Update - Improve escaping functions for better security.
+
+= 3.1.4 (28, Dec 2022) =
+* [*] Fix - Fixed Gutenberg range control issue.
+* [*] Fix - Fixed some issues.
+
+= 3.1.3 (09, Dec 2022) =
+* [*] Tested up to: 6.1.1
+
+= 3.1.2 (03, Nov 2022) =
+* [*] Tested up to: 6.1
+
+= 3.1.1 (16, Sep 2022) =
+* [*] Update - Use escaping and sanitize functions for better security.
+* [*] Update - Update demo and documentation link.
+* [*] Update - Update Slick slider JS to stable version 1.8.0
+* [*] Update - Check compatibility to WordPress version 6.0.2
+* [*] Fix - Fixed slider initialize issue in Elementor tab.
+* [*] Fix - SEO & HTML validation error of empty image source when plugin lazy load is enabled.
+* [*] Fix - Fixed some typo mistake.
+* [*] Remove - Removed unnecessary files, code and images.
+
+= 3.1 (18, May 2022) =
+* [*] Tested up to: 6.0
+
+= 3.0.9 (29, March 2022) =
+[+] Added free vs pro functionality.
+[+] Tested up to: 5.9.2
 
 = 3.0.8 (10, March 2022) =
 * [+] Added demo link

@@ -1,0 +1,191 @@
+.main-header{
+    font-family: Alata,sans-serif;
+    position:absolute;
+    z-index:1;
+    background:$headerBackground;
+    padding-bottom:14px;
+    .gift-card{
+        background:$giftCardBackground;
+        color:$giftCardColor;
+        height:40px;
+        width:100vw;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        font-size:16px;
+        text-decoration: none;
+    }
+
+    .nav-bar{
+        padding-top:14px;
+        
+        
+        
+        .inner-nav-bar-wrapper{
+            margin-left:auto;
+            margin-right:auto;
+            max-width:1160px;
+            display:grid;
+            grid-template-columns: 196px minmax(0px,964px);
+            padding : 0 20px;
+
+            .logo-anchor{
+                .logo{
+                max-height:88px;
+                }
+
+                -webkit-transition: 0.2s cubic-bezier(.58,.3,.51,.82);
+                -o-transition: 0.2s cubic-bezier(.58,.3,.51,.82);
+                transition: 0.2s cubic-bezier(.58,.3,.51,.82);
+                &:hover{
+                    opacity:0.5;
+                }
+            }
+
+            .nav-list-wrapper{
+                width:100%;;
+                display:flex;
+                align-items: center;
+                justify-content: end;
+                margin:0 20px 0 10px;
+
+                .nav-list{
+                    display:flex;
+                    flex-direction:row;
+                    list-style: none;
+                    color:$headerNavListColor;
+                    
+                    padding:0;
+                    margin:0;
+                    height:60px;
+
+                    //hide v-icon when not a category
+                    .v-icon{
+                        display:none;
+                    }
+
+                    //show v-icon if item is a cateogry
+                    .menu-item-object-category {
+                        .v-icon{
+                            display:inline;
+                        }
+                    }
+
+                    //less padding needed to account for no v-icon
+                    .less-padding-no-v{
+                        padding-right:20px;
+                    }
+
+                    li{
+                        @include liStyleSubMenu;
+                        a{
+                            color:inherit;
+                            text-decoration: none;
+                        }
+
+                        //needed to position the icon correctly
+                        .v-icon{
+                            position:relative;
+                            bottom: 2px;
+                            left: 10px;
+                        }
+
+                        .sub-menu{
+                            @include subMenuInitialStateTransition;
+                        }
+    
+                        &:hover{
+                            .sub-menu{
+                                @include subMenuHoveredStateTransition;                
+                            }
+                        }
+
+                        .sub-menu-wrap{
+                            position:relative;
+                            width:0;
+                            height:0;
+                            
+                            .sub-menu{
+                                position:absolute;
+                                list-style:none;
+                                padding:0;      
+                                background:$headerNavSubMenuBGColor;  
+                                min-width:200px;
+                                left: -15px;
+                                top: 18px;
+                                
+                                li{
+                                    white-space: nowrap;
+                                    padding:0;
+                                    text-transform:none;
+                                    font-size:14px;
+
+                                    a{
+                                        @include subMenuLiInitialStateTransition;
+                                    }
+                                    
+                                    &:hover{
+                                        @include subMenuLiHoveredStateTransition;
+                                    }
+
+                                    .v-icon{
+                                        display:none;
+                                    }
+                                }
+
+                                .depth-1-sub-menu{
+                                    right: 183px;
+                                    bottom: 61px;
+
+                                    .sub-menu{
+                                        @include subMenuInitialStateTransition;
+                                    }
+                                }
+                                .menu-item-has-children{
+                                    &:hover{      
+                                        .depth-1-sub-menu{
+                                            .sub-menu{
+                                                @include subMenuHoveredStateTransition; 
+                                            }
+                                        }
+                                    }
+                                }
+                                
+
+                                .depth-1-sub-menu{
+                                    .sub-menu{
+                                        li{
+                                            a{
+                                                @include subMenuLiInitialStateTransition;
+                                            }
+                                            
+                                            &:hover{
+                                                @include subMenuLiHoveredStateTransition;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                    li:last-child{
+                        text-transform:capitalize;
+                    }
+
+                    //This creates that reversing v animation in the header
+                    li:hover{
+                        @include vIconChangeTo;
+                    }
+                    
+
+                    .current-page{
+                        font-weight:700;
+                    }
+                    
+                }
+            }
+        }
+    }
+}

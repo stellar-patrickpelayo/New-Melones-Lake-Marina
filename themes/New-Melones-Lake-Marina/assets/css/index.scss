@@ -1,0 +1,16 @@
+.index{
+    display:none;
+    .video-wrapper{
+        background-image: url('../images/boat-in-lake.jpg');
+        position:absolute;
+        background-position: center center;
+        width:100vw;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        iframe{
+            height: 75vh;
+            width: 100vw;
+        }
+    }  
+}

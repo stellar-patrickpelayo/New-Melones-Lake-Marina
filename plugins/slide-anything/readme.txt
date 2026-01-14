@@ -3,8 +3,8 @@ Contributors: simonpedge
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP7JLGK6VT252
 Tags: slider, carousel, content slider, responsive slider, html slider, owl carousel
 Requires at least: 4.0
-Tested up to: 5.8
-Stable tag: trunk
+Tested up to: 6.0
+Stable tag: 2.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,18 +19,10 @@ Slide Anything provides many Owl Carousel 2 features, which include:
 * Touch and Drag Support - Designed specially to boost mobile browsing experience. Mouse drag works great on desktop too!
 * Fully Responsive - You can define the number of slides to display for various breakpoint settings, e.g. 4 slides on desktop, 3 slides on tablet and 2 slides on mobile.
 * Modern Browsers - Owl uses hardware acceleration with CSS3 Translate3d transitions. Its fast and works like a charm! It also supports CSS2 fallbacks to cater for older browsers.
-* New Lazy Load Images - with this feature enabled, slide images (<img> tags) are only loaded when the relevant slides are displayed (all of the slider's images are NOT loaded up-front).
 * Infinite Looping - introduced with Owl Carousel 2, this feature means that the first slide is now seamlessly displayed after the last slide without any carousel rewind.
-* New Transition Effects - New Owl Carousel transitions include Slide, Fade, Zoom In, Zoom Out, Flip Out X/Y, Rotate Left/Right, Bounce Out, Roll Out and Slide Down.
+* Transition Effects - New Owl Carousel transitions include Slide, Fade, Zoom In, Zoom Out, Flip Out X/Y, Rotate Left/Right, Bounce Out, Roll Out and Slide Down.
 * Slide Link Feature - A feature which allows you to create a hover-over link button for any slide within your carousels.
 * Re-Order Slides Facility - Now you can use a 'drag-and-drop' interface to easily re-order your slides within the sliders you create.
-
-[Usage Examples](https://edgewebpages.com/slide-anything-usage-examples)
-
-= Slide Anything PRO =
-
-[SLIDE ANYTHING PRO](https://edgewebpages.com/) adds the following extra features:
-
 * MODAL POPUPS - Each slide can now open a MODAL POPUP, which can be an IMAGE popup, a VIDEO EMBED popup (YouTube/Vimeo), a HTML CODE popup or a popup displaying a WordPress SHORTCODE.
 * HERO SLIDER - A Hero Slider is a slider that always is 100% of the width/height of the device it's being viewed on (or 100% of the window width/height if on a desktop device). 
 * THUMBNAIL PAGINATION - Allows you to add an area of small clickable thumb images, with each image representing a single slide that can be clicked to navigate to that slide.
@@ -87,7 +79,7 @@ The `Padding (pixels)` settings are used to define the amount of padding space a
 
 The `SLIDE STYLE` settings are the style settings for each individual slide with the slider/carousel. Here you can define the minimum height each slide and also the padding space around each slide.
 
-= Using 'Slide Anything' in WordPress 5.0 =
+= Using 'Slide Anything' with the WordPress Block Editor =
 
 Adding a SLIDE ANYTHING slider using the WordPress 5.0 'Block Editor' is pretty straight-forward. You can paste a Slide Anything shortcode into a 'Paragraph Block' or use the 'Shortcode Block'.
 
@@ -97,6 +89,54 @@ Adding a SLIDE ANYTHING slider using the WordPress 5.0 'Block Editor' is pretty 
 2. How a carousel created using `Slide Anything` appears within the slider preview popup.
 
 == Changelog ==
+
+= 2.4.9 =
+* Fixed a Cross-Site Scripting (XSS) vulnerability within the slide link URL field (part 2).
+
+= 2.4.8 =
+* Fixed a Cross-Site Scripting (XSS) vulnerability within the slide link URL field.
+
+= 2.4.7 =
+* Fixed a bug where the slide 'MOVE UP' button strips out some content.
+
+= 2.4.6 =
+* Removed the 'Slider Preview' feature as it was causing issues on some installations of WordPress.
+
+= 2.4.5 =
+* Lets try this again. The SVN commit process keeps corrupting the key 'lightGallery' JavaScript (minified) files. So I've re-minified the source code for 'lightGallery' and hopefully this will work.
+
+= 2.4.4 =
+* Missing JavaScript for the 'lightGallery' plugin 'lightgallery.umd.js' - added in this release.
+
+= 2.4.3 =
+* Removed the 'Magnific Popup' JavaScript library, which was used to generate popups for slides as this out-of-date library posed a potential, future security issue. Replaced this library with the 'lightGallery' JavaScript library and have modified the Slide Anything code to use this library now to generate slide popups.
+
+= 2.4.2 =
+* Discontinued the Slide Anything PRO plugin addon. All of the 'Pro' features will now be available within the 'Free' version of the plgin offered on WordPress.org. As ongoing developent and support for the Owl Carousel jQuery library (the engine on which Slide Anything is built) is now discontinued, there is a possibility that at some point in the future the Owl Carousel code will no longer work with the later versions of jQuery that may be bundled with WordPress. But I will endevour to keep the Slide Anything plugin running with WordPress as long as possible.
+
+= 2.4.1 =
+* Updated all PHP code within the plugin to meet the WordPress.org security and coding standards (minor update to ensure PHP function names have a standard prefix).
+
+= 2.4.0 =
+* Updated all PHP code within the plugin to meet the WordPress.org security and coding standards.
+
+= 2.3.47 =
+* Fixed a security vulnerability whereby XSS scripts could be inserted within the slider post titles (part 2)
+
+= 2.3.46 =
+* Fixed a security vulnerability whereby XSS scripts could be inserted within the slider post titles.
+
+= 2.3.45 =
+* Added the WordPress filter 'wp_kses_allowed_html' to allow IFRAME content to be inserted into slide content, which is required to insert YouTube & Vimeo IFRAMEs.
+
+= 2.3.44 =
+* Another security fix. WPScan notified me of a potential security vunerability where high privilege users (with a role of 'Editor' and above) could perform Cross-Site Scripting attacks by inserting malicious scripts within slide content. Fixed by using 'wp_kses_post()' function to sanitise slide content before updating sliders.
+
+= 2.3.43 =
+* Fixed a code syntax error in the security fix I did in release 2.3.41 (oops!)
+
+= 2.3.42 =
+* Added a new option 'Don't use CSS IDs for slides' - when checked CSS Classes will be used instead of CSS IDs to identify each slide container.
 
 = 2.3.41 =
 * A security fix to remove a vunerability to SQL injection with the slide duplication function.
@@ -740,3 +780,51 @@ Adding a SLIDE ANYTHING slider using the WordPress 5.0 'Block Editor' is pretty 
 
 = 2.3.41 =
 * A security fix to remove a vunerability to SQL injection with the slide duplication function.
+
+= 2.3.42 =
+* Added a new option 'Don't use CSS IDs for slides' - when checked CSS Classes will be used instead of CSS IDs to identify each slide container.
+
+= 2.3.43 =
+* Fixed a code syntax error in the security fix I did in release 2.3.41 (oops!)
+
+= 2.3.44 =
+* Another security fix. WPScan notified me of a potential security vunerability where high privilege users (with a role of 'Editor' and above) could perform Cross-Site Scripting attacks by inserting malicious scripts within slide content. Fixed by using 'wp_kses_post()' function to sanitise slide content before updating sliders.
+
+= 2.3.45 =
+* Added the WordPress filter 'wp_kses_allowed_html' to allow IFRAME content to be inserted into slide content, which is required to insert YouTube & Vimeo IFRAMEs.
+
+= 2.3.46 =
+* Fixed a security vulnerability whereby XSS scripts could be inserted within the slider post titles.
+
+= 2.3.47 =
+* Fixed a security vulnerability whereby XSS scripts could be inserted within the slider post titles (part 2)
+
+= 2.4.0 =
+* Updated all PHP code within the plugin to meet the WordPress.org security and coding standards.
+
+= 2.4.1 =
+* Updated all PHP code within the plugin to meet the WordPress.org security and coding standards (minor update to ensure PHP function names have a standard prefix).
+
+= 2.4.2 =
+* Discontinued the Slide Anything PRO plugin addon. All of the 'Pro' features will now be available within the 'Free' version of the plgin offered on WordPress.org. As ongoing developent and support for the Owl Carousel jQuery library (the engine on which Slide Anything is built) is now discontinued, there is a possibility that at some point in the future the Owl Carousel code will no longer work with the later versions of jQuery that may be bundled with WordPress. But I will endevour to keep the Slide Anything plugin running with WordPress as long as possible.
+
+= 2.4.3 =
+* Removed the 'Magnific Popup' JavaScript library, which was used to generate popups for slides as this out-of-date library posed a potential, future security issue. Replaced this library with the 'lightGallery' JavaScript library and have modified the Slide Anything code to use this library now to generate slide popups.
+
+= 2.4.4 =
+* Missing JavaScript for the 'lightGallery' plugin 'lightgallery.umd.js' - added in this release.
+
+= 2.4.5 =
+* Lets try this again. The SVN commit process keeps corrupting the key 'lightGallery' JavaScript (minified) files. So I've re-minified the source code for 'lightGallery' and hopefully this will work.
+
+= 2.4.6 =
+* Removed the 'Slider Preview' feature as it was causing issues on some installations of WordPress.
+
+= 2.4.7 =
+* Fixed a bug where the slide 'MOVE UP' button strips out some content.
+
+= 2.4.8 =
+* Fixed a Cross-Site Scripting (XSS) vulnerability within the slide link URL field.
+
+= 2.4.9 =
+* Fixed a Cross-Site Scripting (XSS) vulnerability within the slide link URL field (part 2).

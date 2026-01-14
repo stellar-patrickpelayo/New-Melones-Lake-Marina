@@ -1,10 +1,10 @@
 === Lightbox slider - Responsive Lightbox Gallery ===
 Contributors: weblizar
 Donate link: https://weblizar.com/lightbox-slider-pro/
-Tags: gallery, slider, responsive gallery, lightbox, photo gallery, masonry, gallery builder, image gallery, wordpress gallery plugin
-Requires at least: 4.0
-Tested up to: 5.9
-Stable tag: 1.8.9
+Tags: Gallery, Image Gallery, Photo Gallery, Lightbox, Responsive Gallery
+Requires at least: 7.4
+Tested up to: 6.9
+Stable tag: 1.10.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,9 +35,7 @@ Using **[SLGF id=xx]** shortcode, you can publish lightbox gallery into any Page
 * Multilingual Translation Ready
 * Delete All Option
 
-
 **Upgrade To Pro:** [Lightbox Slider Pro](http://weblizar.com/lightbox-slider-pro/)
-
 
 ### Lightbox Slider Pro Features
 
@@ -76,7 +74,6 @@ Using **[SLGF id=xx]** shortcode, you can publish lightbox gallery into any Page
 * Multilingual Translation Ready
 * Import/ Export Gallery
 * And many more..
-
 
 ### See All lightbox Demo. These 8 types of lightbox are available in pro version
 
@@ -148,6 +145,74 @@ Please use WordPress [support forum](http://wordpress.org/support/plugin/simple-
 == Changelog ==
 
 For more information, see [Weblizar](https://weblizar.com/).
+= 1.10.5 = [12-12-2025]
+* Tested upto Wordpress 6.9
+* Tested upto php 8.4
+
+= 1.10.4 = [19-07-2025]
+* Tested upto Wordpress 6.8.2
+* Tested upto php 8.3.16
+
+= 1.10.3 = [13-05-2025]
+* Tested upto Wordpress 6.8
+
+= 1.10.2 = [04-04-2025]
+* Tested upto Wordpress 6.7.2
+* Tested upto php 8.3.3
+
+= 1.10.1 = [23-10-2024]
+* Tested upto Wordpress 6.6.2
+* Tested upto php 8.3.12
+
+= 1.10.0 = [02-05-2024]
+* Security issues fixed.
+* Other Minor issues fixed.
+
+= 1.9.9 = [20-03-2024]
+* Tested upto WordPress 6.5
+* Tested upto php 8.3.3
+* Fixed: Image Hover Animation.
+
+= 1.9.8 = [31-01-2024]
+* Tested upto WordPress 6.4.3
+* Tested upto php 8
+* Fixed: Duplicate photos when enlarging
+
+= 1.9.7 = [27-10-2023]
+* Tested upto WordPress 6.4
+* Tested upto php 8.2.9
+
+= 1.9.6 = [30-08-2023]
+* Tested WordPress upto 6.3
+
+= 1.9.5 = [25-03-2023]
+* Tested WordPress upto 6.2
+* Tested PHP upto 8
+
+= 1.9.4 = [21-02-2023]
+* Tested WordPress upto 6.1.1
+* Tested PHP upto 8
+* Fixed: Image label, image description control separately
+
+= 1.9.3 = [01-11-2022]
+* Tested wordpress upto 6.1
+* Minor bug fixed.
+
+= 1.9.2 = [20-09-2022]
+* Text Color Removed.
+* Change Lightbox library
+* Tested wordpress upto 6.0.2
+* Minor bug fixed.
+
+= 1.9.1 = [16-06-2022]
+* Change Lightbox library
+* Tested wordpress upto 6.0
+* Tested PHP upto 8.0.19
+* Minor bug fixes.
+
+= 1.9.0 = [30-03-2022]
+* Banner Image Removed.
+* Minor Bug Fixes.
 
 = 1.8.9 = [19-02-2022]
 * Bug Fixed

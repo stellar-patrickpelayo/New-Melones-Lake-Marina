@@ -29,8 +29,8 @@
 }
 
 .wl-gallery {
-    margin-bottom: 20px;
-
+    margin-bottom: 10px;
+    border-radius: 20px;
 }
 
 /* Isotope Animating
@@ -74,7 +74,9 @@
 }
 
 media="all"
-*:before, *:after {
+
+*:before,
+*:after {
     /* -webkit-box-sizing: border-box; */
     -moz-box-sizing: border-box;
     box-sizing: content-box;
@@ -105,9 +107,11 @@ media="all"
     padding: 0px !important;
     margin: 0px !important;
 }
-.gallery1 .slgf_home_portfolio_caption p {    
-    font-size: 16px!important;
+
+.gallery1 .slgf_home_portfolio_caption p {
+    font-size: 16px !important;
 }
-.gallery1 .slgf_home_portfolio_caption h3 {    
-  text-decoration: underline;
+
+.gallery1 .slgf_home_portfolio_caption h3 {
+    text-decoration: underline;
 }

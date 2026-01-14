@@ -1,0 +1,62 @@
+/*
+Theme Name: New Melones Lake Marina
+Author: Stellar IMS
+Description: New Melones Wordpress Theme
+Version: 1.0.0
+
+*/
+
+
+.front-page .video-wrapper .activites-wrapper{
+	bottom:260px !important;
+}
+
+/* CALENDER PLUGIN CLASS SETTINGS BELOW */
+header .calendar-icon-dropdown-wrapper{
+	position: absolute;
+    bottom: 27px;
+    left: 75px;
+    width: 20px;
+    top: 36px;
+}
+
+header .calendar-icon-dropdown-wrapper .calendar-button{
+    background:none;
+    border:none;
+	color:white;
+}
+
+header .calendar-icon-dropdown-wrapper .calendar-wrapper{
+    position:absolute;
+    display:none;
+    left:auto;
+    right:0;
+    min-width:150px;
+	z-index:5000;
+}
+
+header .calendar-icon-dropdown-wrapper .calendar-wrapper .description{
+	font-size:0.8em;
+}
+
+header .calendar-icon-dropdown-wrapper:hover .calendar-wrapper{
+    display:block;
+}
+
+@media only screen and (max-width:993px){
+	header .calendar-icon-dropdown-wrapper{
+		position: absolute;
+		right: 300px;
+		top: 22px;
+		left: unset;
+	}
+}
+
+@media only screen and (max-width:545px){
+	header .calendar-icon-dropdown-wrapper{
+		top: 21px;
+    	right: 122px;
+	}
+}
+
+/* CALENDER PLUGIN CLASS SETTINGS ABOVE */

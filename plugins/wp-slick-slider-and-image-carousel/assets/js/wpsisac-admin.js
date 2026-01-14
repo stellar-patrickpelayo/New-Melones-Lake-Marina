@@ -2,6 +2,35 @@
 
 	"use strict";
 
+	/* Vertical Tab */
+	$( document ).on( "click", ".wpsisac-vtab-nav a", function() {
+
+		$(".wpsisac-vtab-nav").removeClass('wpsisac-active-vtab');
+		$(this).parent('.wpsisac-vtab-nav').addClass("wpsisac-active-vtab");
+
+		var selected_tab = $(this).attr("href");
+		$('.wpsisac-vtab-cnt').hide();
+
+		/* Show the selected tab content */
+		$(selected_tab).show();
+
+		/* Pass selected tab */
+		$('.wpsisac-selected-tab').val(selected_tab);
+		return false;
+	});
+
+	/* Remain selected tab for user */
+	if( $('.wpsisac-selected-tab').length > 0 ) {
+		
+		var sel_tab = $('.wpsisac-selected-tab').val();
+
+		if( typeof(sel_tab) !== 'undefined' && sel_tab != '' && $(sel_tab).length > 0 ) {
+			$('.wpsisac-vtab-nav [href="'+sel_tab+'"]').click();
+		} else {
+			$('.wpsisac-vtab-nav:first-child a').click();
+		}
+	}
+
 	/* Click to Copy the Text */
 	$(document).on('click', '.wpos-copy-clipboard', function() {
 		var copyText = $(this);

@@ -8,7 +8,7 @@
  * @since 1.0.0
  */
 
-if ( !defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
@@ -17,87 +17,76 @@ class Wpsisac_Script {
 	function __construct() {
 
 		// Action to add style && script in backend
-		add_action( 'admin_enqueue_scripts', array($this, 'wpsisac_admin_script') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'wpsisac_admin_style_script' ) );
 
 		// Action to add style at front side
-		add_action( 'wp_enqueue_scripts', array( $this, 'wpsisac_front_style' ) );
-
-		// Action to add script at front side
-		add_action( 'wp_enqueue_scripts', array( $this, 'wpsisac_front_script' ) );	
-
+		add_action( 'wp_enqueue_scripts', array( $this, 'wpsisac_front_style_script' ) );
 	}
 
 	/**
 	 * Function to register admin scripts and styles
 	 * 
-	 * @package WP Slick Slider and Image Carousel Pro
 	 * @since 1.6
 	 */
 	function wpsisac_register_admin_assets() {
 
 		/* Styles */
 		// Registring admin css
-		wp_register_style( 'wpsisac-admin-style', WPSISAC_URL.'assets/css/wpsisac-admin-style.css', array(), WPSISAC_VERSION );
+		wp_register_style( 'wpsisac-admin-style', WPSISAC_URL.'assets/css/wpsisac-admin.css', array(), WPSISAC_VERSION );
 
 		/* Scripts */
 		// Registring admin script
 		wp_register_script( 'wpsisac-admin-js', WPSISAC_URL.'assets/js/wpsisac-admin.js', array('jquery'), WPSISAC_VERSION, true );
-		
+
 	}
 
 	/**
 	 * Enqueue admin script
 	 * 
-	 * @package WP Slick Slider and Image Carousel
 	 * @since 1.1
 	 */
-	function wpsisac_admin_script( $hook ) {
+	function wpsisac_admin_style_script( $hook ) {
 
 		global $typenow;
 
 		$this->wpsisac_register_admin_assets();
 
-		if( $hook == WPSISAC_POST_TYPE.'_page_wpsisacm-designs' ) {
-			wp_enqueue_script( 'wpsisac-admin-js' );
+		/* Styles */
+		if( WPSISAC_POST_TYPE == $typenow ) {
+			wp_enqueue_style( 'wpsisac-admin-style' );
 		}
 
-		// Taking pages array
-		$pages_arr = array( WPSISAC_POST_TYPE );
-
-		if( in_array($typenow, $pages_arr) ) {
-			wp_enqueue_style( 'wpsisac-admin-style' );
+		/* Scripts */
+		if( $hook == WPSISAC_POST_TYPE.'_page_wpsisacm-designs' || $hook == WPSISAC_POST_TYPE.'_page_wpsisac-solutions-features') {
+			wp_enqueue_script( 'wpsisac-admin-js' );
 		}
 	}
 
 	/**
 	 * Function to add style at front side
 	 * 
-	 * @package WP Slick Slider and Image Carousel
 	 * @since 1.0.0
 	 */
-	function wpsisac_front_style() {
+	function wpsisac_front_style_script() {
+		
+		global $post;
 
+		// Determine Elementor Preview Screen
+		// Check elementor preview is there
+		$elementor_preview = ( defined('ELEMENTOR_PLUGIN_BASE') && isset( $_GET['elementor-preview'] ) && $post->ID == (int) $_GET['elementor-preview'] ) ? 1 : 0;
+
+		/* Styles */
 		// Registring and enqueing slick slider css
-		if( !wp_style_is( 'wpos-slick-style', 'registered' ) ) {
+		if( ! wp_style_is( 'wpos-slick-style', 'registered' ) ) {
 			wp_register_style( 'wpos-slick-style', WPSISAC_URL.'assets/css/slick.css', array(), WPSISAC_VERSION );
 		}
 		wp_enqueue_style( 'wpos-slick-style' );
 
 		// Registring and enqueing public css
-		wp_register_style( 'wpsisac-public-style', WPSISAC_URL.'assets/css/slick-slider-style.css', array(), WPSISAC_VERSION );
+		wp_register_style( 'wpsisac-public-style', WPSISAC_URL.'assets/css/wpsisac-public.css', array(), WPSISAC_VERSION );
 		wp_enqueue_style( 'wpsisac-public-style' );
-	}
 
-	/**
-	 * Function to add script at front side
-	 * 
-	 * @package WP Slick Slider and Image Carousel
-	 * @since 1.0.0
-	 */
-	function wpsisac_front_script() {
-
-		global $post;
-
+		/* Scripts */
 		// Registring slick slider script
 		if( !wp_script_is( 'wpos-slick-jquery', 'registered' ) ) {
 			wp_register_script( 'wpos-slick-jquery', WPSISAC_URL.'assets/js/slick.min.js', array('jquery'), WPSISAC_VERSION, true );
@@ -109,9 +98,10 @@ class Wpsisac_Script {
 		// Registring and enqueing public script
 		wp_register_script( 'wpsisac-public-script', WPSISAC_URL.'assets/js/wpsisac-public.js', array('jquery'), WPSISAC_VERSION, true );
 		wp_localize_script( 'wpsisac-public-script', 'Wpsisac', array(
-																	'is_mobile' => ( wp_is_mobile() )	? 1 : 0,
-																	'is_rtl' 	=> ( is_rtl() ) 		? 1 : 0,
-																	'is_avada' 	=> ( class_exists( 'FusionBuilder' ) )	? 1 : 0,
+																	'elementor_preview'	=> $elementor_preview,
+																	'is_mobile'			=> ( wp_is_mobile() )	? 1 : 0,
+																	'is_rtl'			=> ( is_rtl() )			? 1 : 0,
+																	'is_avada'			=> ( class_exists( 'FusionBuilder' ) )	? 1 : 0,
 																));
 
 		// Enqueue Script for Elementor Preview

@@ -4,28 +4,25 @@
 
 	jQuery(window).on('elementor/frontend/init', function() {
 
-		/* Shortcode Element */
-		elementorFrontend.hooks.addAction( 'frontend/element_ready/shortcode.default', function() {
-			wpsisac_slick_slider_init();
-			wpsisac_slick_carousel_init();
-		});
-
-		/* Text Editor Element */
-		elementorFrontend.hooks.addAction( 'frontend/element_ready/text-editor.default', function() {
-			wpsisac_slick_slider_init();
-			wpsisac_slick_carousel_init();
-		});
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/wp-widget-text.default', wpsisac_elementor_init );
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/shortcode.default', wpsisac_elementor_init );
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/text-editor.default', wpsisac_elementor_init );
 
 		/* Tabs Element */
-		elementorFrontend.hooks.addAction( 'frontend/element_ready/tabs.default', function() {
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/tabs.default', function( $scope ) {
 
-			$('.wpsisac-slick-init').each(function( index ) {
+			if( $scope.find('.wpsisac-slick-init').length >= 1 ) {
+				$scope.find('.elementor-tabs-content-wrapper').addClass('wpsisac-elementor-tab-wrap');
+			} else {
+				$scope.find('.elementor-tabs-content-wrapper').removeClass('wpsisac-elementor-tab-wrap');
+			}
+
+			$scope.find('.wpsisac-slick-init').each(function( index ) {
 
 				var slider_id = $(this).attr('id');
 				$('#'+slider_id).css({'visibility': 'hidden', 'opacity': 0});
 
-				wpsisac_slick_slider_init();
-				wpsisac_slick_carousel_init();
+				wpsisac_elementor_init();
 
 				setTimeout(function() {
 
@@ -39,15 +36,14 @@
 		});
 
 		/* Accordion Element */
-		elementorFrontend.hooks.addAction( 'frontend/element_ready/accordion.default', function() {
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/accordion.default', function( $scope ) {
 
-			$('.wpsisac-slick-init').each(function( index ) {
+			$scope.find('.wpsisac-slick-init').each(function( index ) {
 
 				var slider_id = $(this).attr('id');
 				$('#'+slider_id).css({'visibility': 'hidden', 'opacity': 0});
 
-				wpsisac_slick_slider_init();
-				wpsisac_slick_carousel_init();
+				wpsisac_elementor_init();
 
 				setTimeout(function() {
 
@@ -61,15 +57,14 @@
 		});
 
 		/* Toggle Element */
-		elementorFrontend.hooks.addAction( 'frontend/element_ready/toggle.default', function() {
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/toggle.default', function( $scope ) {
 
-			$('.wpsisac-slick-init').each(function( index ) {
+			$scope.find('.wpsisac-slick-init').each(function( index ) {
 
 				var slider_id = $(this).attr('id');
 				$('#'+slider_id).css({'visibility': 'hidden', 'opacity': 0});
 
-				wpsisac_slick_slider_init();
-				wpsisac_slick_carousel_init();
+				wpsisac_elementor_init();
 
 				setTimeout(function() {
 
@@ -82,4 +77,13 @@
 			});
 		});
 	});
+
+	/**
+	 * Initialize Plugin Functionality
+	 */
+	function wpsisac_elementor_init() {
+		wpsisac_slick_slider_init();
+		wpsisac_slick_carousel_init();
+	}
+
 })(jQuery);

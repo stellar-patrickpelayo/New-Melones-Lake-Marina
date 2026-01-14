@@ -9,16 +9,16 @@
  * @subpackage Easy_Accordion_Free/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+} // Cannot access directly.
+
 /**
  * Register all actions and filters for the plugin.
  *
  * Maintain a list of all hooks that are registered throughout
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
- *
- * @package    Easy_Accordion_Free
- * @subpackage Easy_Accordion_Free/includes
- * @author     ShapedPlugin <support@shapedplugin.com>
  */
 class Easy_Accordion_Free_Loader {
 
@@ -59,7 +59,6 @@ class Easy_Accordion_Free_Loader {
 		$this->actions    = array();
 		$this->filters    = array();
 		$this->shortcodes = array();
-
 	}
 
 	/**
@@ -130,7 +129,6 @@ class Easy_Accordion_Free_Loader {
 		);
 
 		return $hooks;
-
 	}
 
 	/**
@@ -151,7 +149,5 @@ class Easy_Accordion_Free_Loader {
 		foreach ( $this->shortcodes as $hook ) {
 			add_shortcode( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
-
 }

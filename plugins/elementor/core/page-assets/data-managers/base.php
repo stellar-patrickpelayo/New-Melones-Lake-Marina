@@ -1,6 +1,8 @@
 <?php
 namespace Elementor\Core\Page_Assets\Data_Managers;
 
+use Elementor\Utils;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -171,7 +173,7 @@ abstract class Base {
 	 * @since 3.3.0
 	 * @access protected
 	 *
-	 * @param string $asset_key
+	 * @param string $version
 	 *
 	 * @return boolean
 	 */
@@ -187,7 +189,7 @@ abstract class Base {
 	 * @since 3.3.0
 	 * @access protected
 	 *
-	 * @param string $data_type (content|size)
+	 * @param string $data_type (exists|content|size).
 	 * @param string $file_key - In case that the same file data is needed for multiple assets (like a JSON file), the file data key should be the same for all shared assets to make sure that the file is being read only once.
 	 *
 	 * @return string|number
@@ -205,8 +207,10 @@ abstract class Base {
 
 		$asset_path = $this->get_file_path();
 
-		if ( 'content' === $data_type ) {
-			$data = file_get_contents( $asset_path );
+		if ( 'exists' === $data_type ) {
+			$data = file_exists( $asset_path );
+		} elseif ( 'content' === $data_type ) {
+			$data = Utils::file_get_contents( $asset_path );
 
 			if ( ! $data ) {
 				$data = '';

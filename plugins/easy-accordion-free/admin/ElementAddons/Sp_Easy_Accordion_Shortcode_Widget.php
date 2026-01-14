@@ -1,4 +1,15 @@
 <?php
+/**
+ * Elementor addons init.
+ *
+ * @since      2.1.6
+ * @package     easy-accordion-free
+ * @subpackage  easy-accordion-free/admin
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+} // Cannot access directly.
 
 /**
  * Elementor easy accordion free shortcode Widget.
@@ -15,7 +26,7 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'sp_easy_accordion_free_shortcode';
+		return 'sp_easy_accordion_pro_shortcode';
 	}
 
 	/**
@@ -39,7 +50,7 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'icon-accordion-menu';
+		return 'eap-icon-accordion-menu';
 	}
 
 	/**
@@ -71,7 +82,7 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 		);
 		$posts         = $sp_wcsp_posts->posts;
 		foreach ( $posts as $post ) {
-			$post_list[ $post->ID ] = $post->post_title;
+			$post_list[ $post->ID ] = ! empty( $post->post_title ) ? $post->post_title : '#' . $post->ID;
 		}
 		krsort( $post_list );
 		return $post_list;
@@ -92,7 +103,7 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
-			'sp_easy_accordion_free_shortcode',
+			'sp_easy_accordion_pro_shortcode',
 			array(
 				'label'       => __( 'Easy Accordion Shortcode(s)', 'easy-accordion-free' ),
 				'type'        => \Elementor\Controls_Manager::SELECT2,
@@ -103,11 +114,10 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	/**
-	 * Render woo category slider free shortcode widget output on the frontend.
+	 * Render easy accordion free shortcode widget output on the frontend.
 	 *
 	 * @since 2.1.6
 	 * @access protected
@@ -115,7 +125,7 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 	protected function render() {
 
 		$settings          = $this->get_settings_for_display();
-		$sp_wcsp_shortcode = $settings['sp_easy_accordion_free_shortcode'];
+		$sp_wcsp_shortcode = $settings['sp_easy_accordion_pro_shortcode'];
 
 		if ( '' === $sp_wcsp_shortcode ) {
 			echo '<div style="text-align: center; margin-top: 0; padding: 10px" class="elementor-add-section-drag-title">Select a shortcode</div>';
@@ -131,15 +141,14 @@ class Sp_Easy_Accordion_Shortcode_Widget extends \Elementor\Widget_Base {
 			$upload_data        = get_post_meta( $post_id, 'sp_eap_upload_options', true );
 			$shortcode_data     = get_post_meta( $post_id, 'sp_eap_shortcode_options', true );
 			$main_section_title = get_the_title( $post_id );
+			$ea_dynamic_css     = SP_EA_Front_Scripts::load_dynamic_style( $post_id, $shortcode_data );
+			echo '<style>' . $ea_dynamic_css['dynamic_css'] . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-			Easy_Accordion_Free_Shortcode::sp_eap_html_show( $post_id, $upload_data, $shortcode_data, $main_section_title );
+			SP_EAP_FRONTEND::sp_eap_html_show( $post_id, $upload_data, $shortcode_data, $main_section_title );
 			?>
-			<script src="<?php echo esc_url( SP_EA_URL . 'public/assets/js/script.js' ); ?>" ></script>
 			<?php
 		} else {
 			echo do_shortcode( '[sp_easyaccordion id="' . $generator_id . '"]' );
 		}
-
 	}
-
 }

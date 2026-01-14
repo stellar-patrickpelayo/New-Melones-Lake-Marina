@@ -2,7 +2,10 @@
 /**
  * Template Name: Slide Anything Preview Page
  * This template will only display the page content (and no header, footer or sidebar)
+ *
+ * @package WordPress_Slide_Anything
  */
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -13,9 +16,10 @@
 </head>
 <body class="cleanpage">
 <?php
-	while (have_posts()) : the_post();  
-		the_content();
-	endwhile;
+while ( have_posts() ) :
+	the_post();
+	the_content();
+endwhile;
 ?>
 <?php wp_footer(); ?>
 </body>

@@ -1,0 +1,96 @@
+@mixin contact-page{
+    .grid-contact-page{
+        grid-template-columns:33% 66%;
+        grid-column-gap: 20px;
+        #contact-information{
+            h2{
+                color:$darkBlue;
+                margin:0;
+                margin-bottom: 28px;
+            }
+            padding:40px 20px;
+            background-color:$lightBlue;
+            @include contact-icons-list-styles;
+            h3{
+                color:black;
+            }
+            ul{
+                i,span{
+                    color:black;
+                }
+            }
+
+            
+        }
+
+        .contact-form{
+            .grid-contact-form{
+                display:flex;
+                gap:13px;    
+            }
+            .first-line-margin-fix{
+                margin-bottom:-10px;
+            }
+            .unclickable-label{
+                font-size:16px;
+                font-weight:700;
+            }
+            .wpcf7-submit{
+                margin-top:0px;
+                background-color: rgb(47, 123, 187);
+                font-family:Arial;
+                font-size:14px;
+                font-weight:400;
+                max-width: 110px;
+                height: 15px;
+                padding: 15px 0px 29px 0px;
+                color:white;
+                border:none;
+            }
+            label{
+                flex-basis:363px;
+                font-size:16px;
+                font-weight:700;
+                
+            }
+            small{
+                font-size:13px;
+                font-weight:400;
+            }
+            p{
+                max-width:363px;
+                input{
+                    margin-top:10px;
+                }
+            }   
+            input{
+                padding:5px 4px;
+                border:1px solid rgb(155, 173, 184);
+                height:36px;      
+                width:100%; 
+                
+            }
+            .text-area-wrapper{
+                max-width:755px;
+            }
+            textarea{
+                margin-top:10px;
+                width:100%;
+                padding:2px;
+                border:1px solid rgb(155, 173, 184);
+            }
+        }
+        @media only screen  and (max-width:$firstBreakPoint){
+            display:block;
+
+            #contact-information{
+                ul{
+                    padding-left:0;
+                    .list-grid{
+                        grid-template-columns:24px 100%;
+                    }
+                }
+            }
+        }
+    }
+}

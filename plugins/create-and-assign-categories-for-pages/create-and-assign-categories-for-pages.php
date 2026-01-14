@@ -3,7 +3,7 @@
  * Plugin Name: Create And Assign Categories For Pages
  * Plugin URI: http://jobdeoz.com/
  * Description: This plugin will help you to create the new category for your wordpress pages. You can assign those categories to your pages. With that, you can get your wordpress pages with the help of specific category. This will save your time from custom coding.
- * Version: 1.2
+ * Version: 1.2.1
  * Author: Sandeep Singh
  * Author URI: https://profiles.wordpress.org/sandeepsinghhdp
  * License: GPLv2+

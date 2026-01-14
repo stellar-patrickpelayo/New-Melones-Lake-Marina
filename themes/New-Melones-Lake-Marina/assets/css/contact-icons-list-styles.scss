@@ -1,0 +1,63 @@
+@mixin contact-icons-list-styles{
+    ul{
+        i,span{    
+            color:$footerTextColor;
+        }
+        list-style: none;
+        i{
+            height:24px;
+            width:24px;
+        }
+        
+        li:nth-of-type(n+2){
+            margin-top:16px;
+        }
+        li:nth-of-type(4){
+            margin-top:24px;
+        }
+
+        .list-grid{
+            display:grid;
+            grid-template-columns: 24px minmax(0,220px);
+            grid-column-gap: 16px;
+            text-decoration: none;
+
+            
+
+            span{
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .last-list-grid{
+            span{
+                grid-column-start:2;
+                //doing this to remove the underline that is created from the &hover above
+                &:hover{
+                    text-decoration:none;
+                }
+            }
+        }
+
+        .phone-contact{
+            .phone-icon{
+                font-size:30.6px;          
+            }
+        }
+        
+
+        .envelope-icon{
+            font-size:24px;
+        }
+
+        .map-icon{
+            font-size:28px;
+        }
+
+        .map-icon:before{
+            margin-left:4px;
+        }
+    }
+}

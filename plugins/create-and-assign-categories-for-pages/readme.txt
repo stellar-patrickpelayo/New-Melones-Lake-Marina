@@ -2,8 +2,8 @@
 Contributors: sandeepsinghhdp
 Tags: add category, add category to wordpress page, page archive, assign category, category in page, get page by category, page, category, tag in page, pages.  
 Requires at least: 5.3
-Tested up to: 5.9.1
-Stable tag: 1.2
+Tested up to: 6.4.2
+Stable tag: 1.2.1
 
 Easily create/add post Categories to your Wordpress Pages
 

@@ -20,11 +20,11 @@ $read_more_link = get_post_meta( $post->ID, 'wpsisac_slide_link', true );
 	<tbody>
 		<tr valign="top">
 			<th scope="row">
-				<label for="wpsisac-more-link"><?php _e('Read More Link', 'wp-slick-slider-and-image-carousel'); ?></label>
+				<label for="wpsisac-more-link"><?php esc_html_e( 'Read More Link', 'wp-slick-slider-and-image-carousel' ); ?></label>
 			</th>
 			<td>
-				<input type="text" value="<?php echo esc_url($read_more_link); ?>" class="large-text wpsisac-more-link" id="wpsisac-more-link" name="wpsisac_slide_link" /><br/>
-				<span class="description"><?php _e('Enter read more link. eg. https://www.wponlinesupport.com', 'wp-slick-slider-and-image-carousel'); ?></span>
+				<input type="text" value="<?php echo esc_url( $read_more_link ); ?>" class="large-text wpsisac-more-link" id="wpsisac-more-link" name="wpsisac_slide_link" /><br/>
+				<span class="description"><?php esc_html_e( 'Enter read more link. eg. ', 'wp-slick-slider-and-image-carousel' ); ?>https://www.essentialplugin.com/</span>
 			</td>
 		</tr>
 	</tbody>

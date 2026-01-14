@@ -43,44 +43,13 @@ if ( ! class_exists( 'SP_EAP_Field_color' ) ) {
 		public function render() {
 
 			$default_attr = ( ! empty( $this->field['default'] ) ) ? ' data-default-color="' . esc_attr( $this->field['default'] ) . '"' : '';
-
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$this->value  = is_string( $this->value ) ? $this->value : '';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->field_before() returns safely escaped HTML markup.
 			echo $this->field_before();
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<input type="text" name="' . esc_attr( $this->field_name() ) . '" value="' . esc_attr( $this->value ) . '" class="eapro-color"' . $default_attr . $this->field_attributes() . '/>';
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->field_after() returns safely escaped HTML markup.
 			echo $this->field_after();
-
 		}
-
-		/**
-		 * Output
-		 *
-		 * @return statement
-		 */
-		public function output() {
-
-			$output    = '';
-			$elements  = ( is_array( $this->field['output'] ) ) ? $this->field['output'] : array_filter( (array) $this->field['output'] );
-			$important = ( ! empty( $this->field['output_important'] ) ) ? '!important' : '';
-			$mode      = ( ! empty( $this->field['output_mode'] ) ) ? $this->field['output_mode'] : 'color';
-
-			if ( ! empty( $elements ) && isset( $this->value ) && '' !== $this->value ) {
-				foreach ( $elements as $key_property => $element ) {
-					if ( is_numeric( $key_property ) ) {
-						$output = implode( ',', $elements ) . '{' . $mode . ':' . $this->value . $important . ';}';
-						break;
-					} else {
-						$output .= $element . '{' . $key_property . ':' . $this->value . $important . '}';
-					}
-				}
-			}
-
-			$this->parent->output_css .= $output;
-
-			return $output;
-
-		}
-
 	}
 }

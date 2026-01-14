@@ -63,6 +63,7 @@
 #sa_slider_settings .jquery_ui_slider {
 	margin:0px 5px 5px !important; 
 	background-color:#007fff !important;
+	border-width:0px !important;
 	border-radius:0px !important;
 }
 #sa_slider_settings .jquery_ui_slider .ui-slider-handle {
@@ -663,6 +664,12 @@ input.sa_slide_popup_imagetitle:-ms-input-placeholder { color:#c0c0c0 !important
 	font-size:13px !important;
 	line-height:26px !important;
 }
+.html_popup_wrapper .slide_popup_settings_line a span {
+	position:relative !important;
+	top:0px !important;
+	left:0px !important;
+	margin:-2px 0px 0px !important;
+}
 .html_popup_wrapper .slide_popup_settings_line em,
 .html_popup_wrapper .slide_popup_settings_line strong {
 	display: inline-block;
@@ -1253,22 +1260,22 @@ input.sa_slide_popup_imagetitle:-ms-input-placeholder { color:#c0c0c0 !important
 }
 
 /* other settings */
-#slider_style_metabox #sa_window_onload_line {
+#slider_style_metabox .sa_window_onload_line {
 	padding:5px 0px 10px 0px !important;
 	font-size:13px !important;
 	line-height:18px !important;
 	cursor:help !important;
 }
-#slider_style_metabox #sa_window_onload_line span {
+#slider_style_metabox .sa_window_onload_line span {
 	margin-right:5px;
 	float:left !important;
 	display:block !important;
 }
-#slider_style_metabox #sa_window_onload_line input[type=checkbox] {
+#slider_style_metabox .sa_window_onload_line input[type=checkbox] {
 	margin-left:10px !important;
 	margin-right:0px !important;
 }
-#slider_style_metabox #sa_window_onload_line select {
+#slider_style_metabox .sa_window_onload_line select {
 	box-sizing:border-box !important;
 	height:auto !important;
 	min-height:0px !important;
@@ -1338,6 +1345,12 @@ input.sa_slide_popup_imagetitle:-ms-input-placeholder { color:#c0c0c0 !important
 	font-size:13px;
 	font-weight:600;
 	line-height:18px;
+}
+#cpt_slider_thumbs .ui-spinner a.ui-button span {
+	position:relative !important;
+	top:0px !important;
+	left:0px !important;
+	margin:-2px 0px 0px !important;
 }
 #sa_thumbs_settings .sa_thumbs_line input[type=text] {
 	box-sizing:border-box !important;
@@ -1597,6 +1610,15 @@ input.sa_slide_popup_imagetitle:-ms-input-placeholder { color:#c0c0c0 !important
 }
 .ui-dialog[aria-describedby='sa_dialog_box'] #sa_dialog_box {
 	padding:15px 10px 10px !important;
+}
+.ui-dialog[aria-describedby='sa_dialog_box'] .ui-dialog-titlebar button {
+	color:transparent;
+	border-width:1px;
+	padding:5px;
+}
+.ui-dialog[aria-describedby='sa_dialog_box'] .ui-dialog-buttonset button {
+	border-width:1px;
+	padding:5px;
 }
 
 /* ### JQUERY UI - PREVIEW SLIDER DIALOG BOX ### */

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin gutenberg block Initializer.
  *
@@ -43,8 +42,8 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block_Init' ) ) {
 		public function sp_easy_accordion_free_block_editor_assets() {
 			wp_enqueue_script(
 				'sp-easy-accordion-free-shortcode-block',
-				plugins_url( '/GutenbergBlock/build/index.js', dirname( __FILE__ ) ),
-				array( 'jquery', 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
+				plugins_url( '/GutenbergBlock/build/index.js', __DIR__ ),
+				array( 'jquery' ),
 				SP_EA_VERSION,
 				true
 			);
@@ -52,14 +51,8 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block_Init' ) ) {
 			/**
 			 * Register block editor css file enqueue for backend.
 			 */
-			$settings   = get_option( 'sp_eap_settings' );
-			$custom_css = isset( $settings['ea_custom_css'] ) ? trim( html_entity_decode( $settings['ea_custom_css'] ) ) : '';
-
-			// CSS Files.
-			if ( false !== $settings['eap_dequeue_fa_css'] ) {
-				wp_enqueue_style( 'sp-ea-font-awesome', esc_url( SP_EA_URL . 'public/assets/css/font-awesome.min.css' ), array(), SP_EA_VERSION );
-			}
-			wp_enqueue_style( 'sp-ea-style', esc_url( SP_EA_URL . 'public/assets/css/ea-style.css' ), array(), SP_EA_VERSION );
+			wp_enqueue_style( 'sp-ea-fontello-icons' );
+			wp_enqueue_style( 'sp-ea-style' );
 		}
 		/**
 		 * Shortcode list.
@@ -98,16 +91,16 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block_Init' ) ) {
 			 * Register block editor js file enqueue for backend.
 			 */
 			$prefix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
-			wp_register_script( 'sp-ea-accordion-js', esc_url( SP_EA_URL . 'public/assets/js/collapse' . $prefix . '.js' ), array( 'jquery' ), SP_EA_VERSION, false );
-			wp_register_script( 'sp-ea-accordion-config', esc_url( SP_EA_URL . 'public/assets/js/script.js' ), array( 'jquery', 'sp-ea-accordion-js' ), SP_EA_VERSION, true );
+			wp_register_script( 'sp-ea-gb-accordion-config', esc_url( SP_EA_URL . 'public/assets/js/script.js' ), array( 'jquery', 'sp-ea-accordion-js' ), SP_EA_VERSION, true );
 
 			wp_localize_script(
-				'sp-ea-accordion-config',
+				'sp-ea-gb-accordion-config',
 				'sp_easy_accordion_free',
 				array(
-					'url'        => SP_EA_URL,
-					'loadScript' => SP_EA_URL . 'public/assets/js/script.js',
-					'link'       => admin_url( 'post-new.php?post_type=sp_easy_accordion' ),
+					'url'           => SP_EA_URL,
+					'loadScript'    => SP_EA_URL . 'public/assets/js/script.js',
+					'link'          => admin_url( 'post-new.php?post_type=sp_easy_accordion' ),
+					'shortCodeList' => $this->sp_easy_accordion_free_post_list(),
 				)
 			);
 
@@ -115,12 +108,12 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block_Init' ) ) {
 			 * Register Gutenberg block on server-side.
 			 */
 			register_block_type(
-				'sp-easy-accordion-free/shortcode',
+				'sp-easy-accordion-pro/shortcode',
 				array(
 					'attributes'      => array(
 						'shortcodelist'      => array(
 							'type'    => 'object',
-							'default' => $this->sp_easy_accordion_free_post_list(),
+							'default' => '',
 						),
 						'shortcode'          => array(
 							'type'    => 'string',
@@ -147,7 +140,7 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block_Init' ) ) {
 					// Enqueue blocks.editor.build.js in the editor only.
 					'editor_script'   => array(
 						'sp-ea-accordion-js',
-						'sp-ea-accordion-config',
+						'sp-ea-gb-accordion-config',
 					),
 					// Enqueue blocks.editor.build.css in the editor only.
 					'editor_style'    => array(),
@@ -166,27 +159,14 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block_Init' ) ) {
 
 			$class_name = '';
 			if ( ! empty( $attributes['className'] ) ) {
-				$class_name = 'class="' . $attributes['className'] . '"';
+				$class_name = 'class="' . esc_attr( $attributes['className'] ) . '"';
 			}
 
 			if ( ! $attributes['is_admin'] ) {
-				ob_start();
 				return '<div ' . $class_name . '>' . do_shortcode( '[sp_easyaccordion id="' . sanitize_text_field( $attributes['shortcode'] ) . '"]' ) . '</div>';
 			}
-
-			$accordion_id   = intval( $attributes['shortcode'] );
-			$ea_dynamic_css = '';
-			$shortcode_data = get_post_meta( $accordion_id, 'sp_eap_shortcode_options', true );
-
-			include SP_EA_PATH . '/public/dynamic-style.php';
-			if ( ! empty( $custom_css ) ) {
-				$ea_dynamic_css .= $custom_css;
-			}
-
-			// Add dynamic style.
-			$style = '<style>' . $ea_dynamic_css . '</style>';
-
-			return $style . '<div id="' . uniqid() . '" ' . $class_name . ' >' . do_shortcode( '[sp_easyaccordion id="' . sanitize_text_field( $attributes['shortcode'] ) . '"]' ) . '</div>';
+			$edit_accordion_link = get_edit_post_link( sanitize_text_field( $attributes['shortcode'] ) );
+			return '<div id="' . uniqid() . '" ' . $class_name . ' ><a href="' . $edit_accordion_link . '" target="_blank" class="sp-easyaccordion-block-edit-button">Edit Accordion</a>' . do_shortcode( '[sp_easyaccordion id="' . sanitize_text_field( $attributes['shortcode'] ) . '"]' ) . '</div>';
 		}
 	}
 }

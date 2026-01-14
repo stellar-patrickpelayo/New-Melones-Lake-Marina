@@ -18,46 +18,45 @@ if ( !defined( 'ABSPATH' ) ) {
 
 	<?php if( isset($_GET['error']) && $_GET['error'] == 'wpos_anylc_error' ) { ?>
 	<div class="error">
-		<p><strong>Sorry, Something happened wrong. Please contact us on <a href="mailto:support@wponlinesupport.com">support@wponlinesupport.com</a></strong></p>
+		<p><strong>Sorry, Something happened wrong. Please contact us on <a href="mailto:support@essentialplugin.com">support@essentialplugin.com</a></strong></p>
 	</div>
 	<?php } ?>
 
-	<form method="POST" action="https://analytics.wponlinesupport.com">
-		<div class="wpos-anylc-optin-wrap">
-			<div class="wpos-anylc-optin-icon-wrap">
-				<div class="wpos-anylc-optin-icon wpos-anylc-wp-badge"><i class="dashicons dashicons-wordpress"></i></div>
-				<div class="wpos-anylc-optin-plus"><i class="dashicons dashicons-plus"></i></div>
-				<div class="wpos-anylc-optin-icon"><img src="<?php echo $analy_product['icon']; ?>" alt="Icon" /></div>
-				<div class="wpos-anylc-optin-plus"><i class="dashicons dashicons-plus"></i></div>
-				<div class="wpos-anylc-optin-icon"><img src="<?php echo $analy_product['brand_icon']; ?>" alt="Icon" /></div>
-			</div>
-			<div class="wpos-anylc-optin-cnt">
-				<p>Hey <?php echo ucfirst($user_name); ?>,</p>
-				<p>Don't ever miss an opportunity to <b>opt in</b> for Email Notifications / Announcements about exciting New Features and Update Releases.</p>
-				<p>Contribute in helping us making <b><?php echo $product_name; ?></b> compatible with most themes and plugins by allowing to share non-sensitive data to <a target="_blank" href="<?php echo WPSISAC_SITE_LINK; ?>">essentialplugin.com</a> about your website.</p>
-				<p>If you skip this, that's okay! <b><?php echo $product_name; ?></b> will still work just fine.</p>
+	<form method="POST" action="https://analytics.essentialplugin.com">
+		<div class="wpos-anylc-optin-wrap" style="width: 650px; margin: 0 auto; margin-top: 70px;">
 
-				<?php if( !empty( $analy_product['promotion'] ) ) { ?>
-				<div class="wpos-anylc-promotion-wrap">
-					<?php foreach( $analy_product['promotion'] as $promotion_key => $promotion_data ) { ?>
-					<div><label><input type="checkbox" value="<?php echo $promotion_key; ?>" name="promotion[]" checked="checked" /> <?php echo $promotion_data['name']; ?></label></div>
-					<?php } ?>
+			<div>
+				<div style="height:50px; text-align: center; background-color: rgba(180,185,190, 0.2);">
+					<img style="position: relative; top:-40px;" src="<?php echo esc_url( $analy_product['icon'] ); ?>" alt="Icon" />
 				</div>
+				<div style="padding: 10px;">
+					<div style="margin-top:50px; margin-bottom: 30px; text-align: center; font-weight: 700; font-size: 24px;">Never miss an important update</div>
+
+					<div style="font-size: 20px; font-weight: 500; line-height:25px; margin: 10px 12px; color:#646970;">Opt-in to get email notifications for security & feature updates, and to share some basic WordPress environment info. This will help us make the plugin more compatible with your site and better at doing what you need it to.</div>
+				</div>
+			</div>
+
+			<?php if( ! empty( $analy_product['promotion'] ) ) { ?>
+			<div class="wpos-anylc-promotion-wrap">
+				<?php foreach( $analy_product['promotion'] as $promotion_key => $promotion_data ) { ?>
+				<div><label><input type="checkbox" value="<?php echo esc_attr( $promotion_key ); ?>" name="promotion[]" checked="checked" /> <?php echo esc_html( $promotion_data['name'] ); ?></label></div>
 				<?php } ?>
 			</div>
-			<div class="wpos-anylc-optin-action wpos-anylc-clearfix">
-				<button type="submit" name="wpos_anylc_optin" class="button button-primary button-large right wpos-anylc-allow-btn" value="wpos_anylc_optin">Allow and Continue</button>
+			<?php } ?>
+
+			<div class="wpos-anylc-optin-action wpos-anylc-clearfix" style="background-color: rgba(180,185,190, 0.3);">
+
+				<button type="submit" name="wpos_anylc_optin" class="button button-primary button-large wpos-anylc-allow-btn" value="wpos_anylc_optin">Allow and Continue</button>
 
 				<?php if( is_null( $opt_in ) ) { ?>
-				<button type="submit" name="wpos_anylc_action" class="button button-secondary button-large wpos-anylc-skip-btn" value="skip">Skip</button>
+				<button type="submit" name="wpos_anylc_action" class="button button-secondary button-large right wpos-anylc-skip-btn" value="skip" style="padding: 0 !important;background: transparent;border: none;">Skip</button>
 				<?php }
 
 				if( ! empty( $optin_form_data ) ) {
-					foreach ($optin_form_data as $data_key => $data_value) {
-						echo '<input type="hidden" name="'.esc_attr( $data_key ).'" value="'.esc_attr( $data_value ).'" />';
-					}
-				}
-				?>
+				 	foreach ($optin_form_data as $data_key => $data_value) {
+				 		echo '<input type="hidden" name="'.esc_attr( $data_key ).'" value="'.esc_attr( $data_value ).'" />';
+				 	}
+				} ?>
 			</div>
 			<div class="wpos-anylc-optin-permission">
 				<a class="wpos-anylc-permission-toggle" href="javascript:void(0);">What permissions are being granted?</a>
@@ -87,7 +86,7 @@ if ( !defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 			<div class="wpos-anylc-terms">
-				<a href="https://www.wponlinesupport.com/privacy-policy/#free-pluign-info" target="_blank">Privacy Policy</a> - <a href="https://www.wponlinesupport.com/term-and-condition/" target="_blank">Terms of Service</a>
+				<a href="https://www.essentialplugin.com/privacy-policy/#free-pluign-info" target="_blank">Privacy Policy</a> - <a href="https://www.essentialplugin.com/term-and-condition/" target="_blank">Terms of Service</a>
 			</div>
 		</div>
 	</form>

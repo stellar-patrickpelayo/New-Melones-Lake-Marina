@@ -1,11 +1,18 @@
 <?php
-
 /**
  * Elementor shortcode block.
  *
  * @since      2.1.6
  * @package     easy-accordion-free
  * @subpackage  easy-accordion-free/admin
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+} // Cannot access directly.
+
+/**
+ * Easy_Accordion_Free_Element_Shortcode_Addons
  */
 class Easy_Accordion_Free_Element_Shortcode_Addons {
 	/**
@@ -38,7 +45,6 @@ class Easy_Accordion_Free_Element_Shortcode_Addons {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
-
 	}
 
 	/**
@@ -50,7 +56,8 @@ class Easy_Accordion_Free_Element_Shortcode_Addons {
 	 */
 	public function __construct() {
 		$this->on_plugins_loaded();
-		add_action( 'wp_enqueue_scripts', array( $this, 'easy_accordion_free_addons_enqueue_scripts' ) );
+		add_action( 'elementor/preview/enqueue_styles', array( $this, 'eaf_addons_enqueue_styles' ) );
+		add_action( 'elementor/preview/enqueue_scripts', array( $this, 'eaf_addons_enqueue_scripts' ) );
 		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'easy_accordion_free_addons_icon' ) );
 	}
 
@@ -65,11 +72,11 @@ class Easy_Accordion_Free_Element_Shortcode_Addons {
 	}
 
 	/**
-	 * Register the JavaScript for the elementor block area.
+	 * Register the styles for the elementor block area.
 	 *
 	 * @since    2.1.6
 	 */
-	public function easy_accordion_free_addons_enqueue_scripts() {
+	public function eaf_addons_enqueue_styles() {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -82,9 +89,29 @@ class Easy_Accordion_Free_Element_Shortcode_Addons {
 		 * class.
 		 */
 
-		$prefix = defined( 'WP_DEBUG' ) && WP_DEBUG ? '' : '.min';
-		wp_enqueue_script( 'sp-ea-accordion-js', esc_url( SP_EA_URL . 'public/assets/js/collapse' . $prefix . '.js' ), array( 'jquery' ), SP_EA_VERSION, false );
-		wp_enqueue_script( 'sp-ea-accordion-config', esc_url( SP_EA_URL . 'public/assets/js/script.js' ), array( 'jquery', 'sp-ea-accordion-js' ), SP_EA_VERSION, true );
+		wp_enqueue_style( 'sp-ea-fontello-icons' );
+		wp_enqueue_style( 'sp-ea-style' );
+	}
+	/**
+	 * Register the JavaScript for the elementor block area.
+	 *
+	 * @since    2.1.6
+	 */
+	public function eaf_addons_enqueue_scripts() {
+		/**
+		 * This function is provided for demonstration purposes only.
+		 *
+		 * An instance of this class should be passed to the run() function
+		 * defined in easy_accordion_free_Loader as all of the hooks are defined
+		 * in that particular class.
+		 *
+		 * The easy_accordion_free_Loader will then create the relationship
+		 * between the defined hooks and the functions defined in this
+		 * class.
+		 */
+
+		wp_enqueue_script( 'sp-ea-accordion-js' );
+		wp_enqueue_script( 'sp-ea-accordion-config' );
 	}
 
 	/**
@@ -117,7 +144,7 @@ class Easy_Accordion_Free_Element_Shortcode_Addons {
 	 */
 	public function init() {
 		// Add Plugin actions.
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'init_widgets' ) );
+		add_action( 'elementor/widgets/register', array( $this, 'init_widgets' ) );
 	}
 
 	/**
@@ -132,10 +159,8 @@ class Easy_Accordion_Free_Element_Shortcode_Addons {
 	public function init_widgets() {
 		// Register widget.
 		require_once SP_EA_PATH . 'admin/ElementAddons/Sp_Easy_Accordion_Shortcode_Widget.php';
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Sp_Easy_Accordion_Shortcode_Widget() );
-
+		\Elementor\Plugin::instance()->widgets_manager->register( new Sp_Easy_Accordion_Shortcode_Widget() );
 	}
-
 }
 
 Easy_Accordion_Free_Element_Shortcode_Addons::instance();

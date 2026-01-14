@@ -1095,7 +1095,7 @@ function update_popup_video(slide_no) {
 	if (video_type == 'youtube') {
 		// ##### SET SLIDE BACKGROUND IMAGE TO YOUTUBE THUMB IMAGE - 14 MAY 2020 - START #####
 		// Get the YouTube video thumbnail image
-		var youtube_thumb = "https://img.youtube.com/vi/" + valid_video_id + "/hqdefault.jpg";
+		var youtube_thumb = "https://img.youtube.com/vi/" + valid_video_id + "/maxresdefault.jpg";
 		// Set the "Use Popup Image as Slide Background" dropdown to "No"
 		var popup_bg_dropdown = "#sa_slide" + slide_no + "_popup_background";
 		jQuery(popup_bg_dropdown).val('no');

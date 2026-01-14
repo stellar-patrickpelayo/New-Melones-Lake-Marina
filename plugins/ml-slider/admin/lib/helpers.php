@@ -12,12 +12,24 @@ if (!defined('ABSPATH')) {
  */
 function metaslider_plugin_is_installed($name = 'ml-slider')
 {
+    // @since 3.101 - Get path from db if available
+    $path = metaslider_plugin_data( $name, 'path' );
+    if ( $path && file_exists( WP_PLUGIN_DIR . '/' . $path ) ) {
+        return $path;
+    }
+
+    // Callback for the old way of getting path
     if (!function_exists('get_plugins')) {
-        include_once(ABSPATH.'wp-admin/includes/plugin.php');
+        include_once(ABSPATH . 'wp-admin/includes/plugin.php');
     }
     $plugins = get_plugins();
-    // Don't cache plugins this early
-    wp_cache_delete('plugins', 'plugins');
+    
+    $delete_cache = apply_filters( 'metaslider_plugins_delete_cache', true );
+    if ( $delete_cache ) {
+        // Don't cache plugins this early
+        wp_cache_delete('plugins', 'plugins');
+    }
+
     foreach ($plugins as $plugin => $data) {
         if ($data['TextDomain'] == $name) {
             return $plugin;
@@ -25,6 +37,38 @@ function metaslider_plugin_is_installed($name = 'ml-slider')
     }
     return false;
 }
+
+/**
+ * Will return the stored plugin data
+ *
+ * @since 3.101
+ * 
+ * @param  string $slug name of the plugin 'ml-slider' or 'ml-slider-pro'
+ * @param  string $data name of the data to return. e.g. 'path' or 'version'
+ * 
+ * @return bool|string - will return path or version, e.g. 'ml-slider/ml-slider.php' or '3.101'
+ */
+function metaslider_plugin_data( $slug = 'ml-slider', $data = 'path' )
+{
+    $skip       = apply_filters( 'metaslider_skip_get_plugin_data', false );
+    $allowed    = array( 'version', 'path' );
+
+    // Short circuit if we want to skip or $data is invalid
+    if ( $skip === true || ! in_array( $data, $allowed ) ) {
+        return false;
+    }
+
+    if ( $slug == 'ml-slider' ) {
+        return get_option( 'metaslider_plugin_' . $data );
+    } elseif ( $slug == 'ml-slider-pro' ) {
+        return get_option( 'metaslider_pro_plugin_' . $data );
+    } elseif ( $slug == 'ml-slider-lightbox' ) {
+        return get_option( 'metaslider_lightbox_plugin_' . $data );
+    }
+
+    return false;
+}
+
 /**
  * checks if metaslider pro is installed
  *
@@ -42,7 +86,7 @@ function metaslider_pro_is_installed()
  */
 function metaslider_pro_is_active()
 {
-    return is_plugin_active(metaslider_plugin_is_installed('ml-slider-pro'));
+    return function_exists('is_plugin_active') && is_plugin_active(metaslider_plugin_is_installed('ml-slider-pro'));
 }
 
 /**
@@ -129,6 +173,16 @@ function metaslider_get_upgrade_link()
 }
 
 /**
+ * Returns the privacy policy link
+ *
+ * @return string
+ */
+function metaslider_get_privacy_link()
+{
+    return esc_url('https://www.metaslider.com/privacy-policy/');
+}
+
+/**
  * Returns an array of the trashed slides
  *
  * @param int $slider_id Slider ID
@@ -179,6 +233,12 @@ function metaslider_viewing_trashed_slides($slider_id)
  */
 function metaslider_pro_version()
 {
+    // @since 3.101 - Get version from db if available
+    if ( $version = metaslider_plugin_data( 'ml-slider-pro', 'version' ) ) {
+        return $version;
+    }
+
+    // Callback for the old way of getting version
     $file = trailingslashit(WP_PLUGIN_DIR) . metaslider_plugin_is_installed('ml-slider-pro');
     $data = get_file_data($file, array('Version' => 'Version'));
     return $data['Version'];
@@ -191,6 +251,12 @@ function metaslider_pro_version()
  */
 function metaslider_version()
 {
+    // @since 3.101 - Get version from db if available
+    if ( $version = metaslider_plugin_data( 'ml-slider', 'version' ) ) {
+        return $version;
+    }
+
+    // Callback for the old way of getting version
     $file = trailingslashit(WP_PLUGIN_DIR) . metaslider_plugin_is_installed('ml-slider');
     $data = get_file_data($file, array('Version' => 'Version'));
     return $data['Version'];
@@ -224,15 +290,277 @@ function metaslider_optimize_url($url, $text, $html = null, $class = '')
 
     // Check if the URL is metaslider.
     if (false !== strpos($url, 'metaslider.com')) {
-
         // Set URL with Affiliate ID.
         $url = metaslider_get_upgrade_link();
     }
 
     // Return URL - check if there is HTML such as Images.
     if (!empty($html)) {
-        return sprintf('<a class="%1$s" href="%2$s">%3$s</a>', esc_attr($class), esc_attr($url), $html);
+        return sprintf('<a class="%1$s" href="%2$s">%3$s</a>', esc_attr($class), esc_url($url), $html);
     } else {
-        return sprintf('<a class="text-blue-dark underline %1$s" href="%2$s">%3$s</a>', esc_attr($class), esc_attr($url), htmlspecialchars($text));
+        return sprintf('<a class="ml-upgrade-button %1$s" href="%2$s">%3$s</a>', esc_attr($class), esc_url($url), htmlspecialchars($text));
     }
+}
+
+/**
+ * Check if meta value is enabled
+ * 
+ * @since 3.100
+ * 
+ * @param mixed $value
+ * 
+ * @return bool
+ */
+function metaslider_option_is_enabled( $value ) 
+{
+    return $value === 'yes' || $value === 'on' || $value === true || $value == 1;
+}
+
+/**
+ * Used to filter out empty strings/arrays with array_filter()
+ *
+ * @since 3.100
+ * 
+ * @param mixed $item The item being tested
+ * 
+ * @return bool - Will return whether empty on arrays/strings
+ */
+function metaslider_remove_empty_vars($item)
+{
+    // If it's an array and not empty, keep it (return true)
+    if (is_array($item)) {
+        return ! empty($item);
+    }
+
+    // If it's a string and not '', keep it (return true)
+    if (is_string($item)) {
+        return ('' !== trim($item));
+    }
+
+    // Not likely to get this far but just in case, keep everything else
+    return true;
+}
+
+/**
+ * Check if we're using native width/height from slideshow main options
+ * or custom image width/height
+ * 
+ * @since 3.100
+ * 
+ * @param $side string          'width' or 'height' only
+ * @param $settings array|null  Slideshow settings
+ * 
+ * @return int|bool
+ */
+function metaslider_image_cropped_size( $side, $settings ) 
+{
+    if ( ! in_array( $side, array( 'width', 'height' ) ) ) {
+        return false;
+    }
+
+    $Side = ucfirst( $side ); // e.g 'width' -> 'Width'
+
+    if ( class_exists( 'MetaSliderPro' ) 
+        && isset( $settings['smartCropSource'] ) 
+        && $settings['smartCropSource'] == 'image' 
+    ) {
+        // e.g. we look for 'imageWidth' settings
+        if ( isset( $settings['image' . $Side] ) && absint( $settings['image' . $Side] ) > 0 ) {
+            return absint( $settings['image' . $Side] );
+        }
+    }
+
+    return isset( $settings[$side] ) ? $settings[$side] : 0; // Slideshow width or height setting
+}
+
+/**
+ * Get global settings
+ *
+ * @since 3.101
+ * 
+ * @return array
+ */
+function metaslider_global_settings()
+{
+    if (is_multisite() && $settings = get_site_option('metaslider_global_settings')) {
+        return $settings;
+    }
+
+    if ($settings = get_option('metaslider_global_settings')) {
+        return $settings;
+    }
+
+    return array();
+}
+
+/**
+ * Upgrade to pro small yellow button with lock icon
+ * 
+ * @since 3.101
+ * 
+ * @param string $text Optional tooltip text
+ * 
+ * @return html
+ */
+function metaslider_upgrade_pro_small_btn($text = '')
+{
+    if (empty($text)) {
+        $text = __( 'Some of these features are available in MetaSlider Pro', 'ml-slider' );
+    }
+    
+    $link = 'https://www.metaslider.com/upgrade?utm_source=lite&utm_medium=banner&utm_campaign=pro';
+    return '<a class="dashicons dashicons-lock is-pro-setting tipsy-tooltip-top" original-title="' . 
+        esc_attr( $text ) . '" href="' . 
+        esc_url( $link ) . '" target="_blank"></a>';
+}
+
+/**
+ * Install Lightbox plugin small button
+ * 
+ * @since 3.104
+ * 
+ * @param string $text Optional tooltip text
+ * 
+ * @return html
+ */
+function metaslider_install_lightbox_small_btn($text = '')
+{
+    if (empty($text)) {
+        $text = __( 'This feature is available with MetaSlider Lightbox', 'ml-slider' );
+    }
+    
+    $link = 'https://wordpress.org/plugins/ml-slider-lightbox/';
+    return '<a class="dashicons dashicons-external is-free-setting tipsy-tooltip-top" original-title="' . 
+        esc_attr( $text ) . '" href="' . 
+        esc_url( $link ) . '" target="_blank"></a>';
+}
+
+/**
+ * Get the closest image based on a width size
+ * 
+ * @since 3.102
+ * 
+ * @param int $width            Image width we want to target
+ * @param int $attachment_id    Image ID
+ * 
+ * @return string A valid media image URL or a placeholder URL
+ */
+function metaslider_intermediate_image_src( $width, $attachment_id )
+{
+    $image_sizes = wp_get_attachment_image_src( $attachment_id, 'full' );
+
+    if ( is_array( $image_sizes ) && count( $image_sizes ) ) {
+        $original_width = $image_sizes[1]; // Image width value from array
+        
+        // Find the closest image size to $width in width
+        $sizes = get_intermediate_image_sizes(); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_intermediate_image_sizes_get_intermediate_image_sizes
+
+        // Default if no smaller size is found
+        $closest_size = 'full'; 
+
+        foreach ( $sizes as $size ) {
+            $size_info  = image_get_intermediate_size( $attachment_id, $size );
+
+            if ( isset( $size_info['width'] ) 
+                && $size_info['width'] >= $width 
+                && $size_info['width'] < $original_width 
+            ) {
+                $closest_size = $size;
+                break;
+            }
+        }
+
+        // Get the URL of the closest image size.
+        $closest_image = wp_get_attachment_image_src( $attachment_id, $closest_size );
+        
+        // $closest_image[0] URL
+        // $closest_image[1] width
+        // $closest_image[2] height
+        // $closest_image[3] boolean for: is the image cropped?
+
+        if ( is_array( $closest_image ) ) {
+            $image_ = is_ssl() ? set_url_scheme( $closest_image[0], 'https' ) : set_url_scheme( $closest_image[0], 'http' );
+            return $image_;
+        }
+    }
+
+    return METASLIDER_ASSETS_URL . 'metaslider/placeholder-thumb.jpg';
+}
+
+/**
+ * Filter unsafe HTML from slide content (e.g. caption)
+ * 
+ * @since 3.103
+ * 
+ * @param string $content    The HTML content to be purified
+ * @param array  $slide      The slide data such as id, caption, caption_raw, etc.
+ * @param int    $slider_id  The slideshow ID
+ * @param array  $settings   The slideshow settings
+ * 
+ * @return string The purified HTML content
+ */
+function metaslider_filter_unsafe_html( $content, $slide, $slider_id, $settings )
+{
+    try {
+        if ( ! class_exists( 'HTMLPurifier' ) ) {
+            require_once( METASLIDER_PATH . 'lib/htmlpurifier/library/HTMLPurifier.auto.php' );
+        }
+        $config = HTMLPurifier_Config::createDefault();
+        // How to filter:
+        // add_filter('metaslider_html_purifier_config', function($config) {
+        //     $config->set('HTML.Allowed', 'a[href|target]');
+        //     $config->set('Attr.AllowedFrameTargets', array('_blank'));
+        //     return $config;
+        // });
+        $config   = apply_filters('metaslider_html_purifier_config', $config, $slide, $slider_id, $settings);
+        $purifier = new HTMLPurifier( $config );
+        $content  = $purifier->purify( $content );
+    } catch ( Exception $e ) {
+        // If something goes wrong then escape
+        $content = htmlspecialchars( do_shortcode( $content ), ENT_NOQUOTES, 'UTF-8' );
+    }
+
+    return $content;
+}
+
+/**
+ * Get device breakpoints
+ * 
+ * @since 3.104
+ * 
+ * @return array
+ */
+function metaslider_breakpoints()
+{
+    $slideshow_defaults = '';
+    $smartphone = 480;
+    $tablet = 768;
+    $laptop = 1024;
+    $desktop = 1440;
+
+    if (is_multisite() && $settings = get_site_option('metaslider_default_settings')) {
+        $slideshow_defaults = $settings;
+    }
+    if ($settings = get_option('metaslider_default_settings')) {
+        $slideshow_defaults = $settings;
+    }
+
+    if (! empty( $slideshow_defaults )) {
+        if(isset($slideshow_defaults['smartphone'])) {
+            $smartphone = $slideshow_defaults['smartphone'];
+        }
+        if(isset($slideshow_defaults['tablet'])) {
+            $tablet = $slideshow_defaults['tablet'];
+        }
+        if(isset($slideshow_defaults['laptop'])) {
+            $laptop = $slideshow_defaults['laptop'];
+        }
+        if(isset($slideshow_defaults['desktop'])) {
+            $desktop = $slideshow_defaults['desktop'];
+        }
+    }
+
+    $breakpoints = array($smartphone, $tablet, $laptop, $desktop);
+
+    return $breakpoints;
 }

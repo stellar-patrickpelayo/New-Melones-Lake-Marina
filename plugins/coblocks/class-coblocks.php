@@ -4,10 +4,11 @@
  * Description: CoBlocks is a suite of professional <strong>page building content blocks</strong> for the WordPress Gutenberg block editor. Our blocks are hyper-focused on empowering makers to build beautifully rich pages in WordPress.
  * Author: GoDaddy
  * Author URI: https://www.godaddy.com
- * Version: 2.22.9
+ * Version: 3.1.16
  * Text Domain: coblocks
  * Domain Path: /languages
- * Tested up to: 5.9
+ * Tested up to: 6.8
+ * Requires at least: 6.3
  *
  * CoBlocks is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'COBLOCKS_VERSION', '2.22.9' );
+define( 'COBLOCKS_VERSION', '3.1.16' );
 define( 'COBLOCKS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'COBLOCKS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'COBLOCKS_PLUGIN_FILE', __FILE__ );
@@ -110,19 +111,24 @@ if ( ! class_exists( 'CoBlocks' ) ) :
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-register-blocks.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-generated-styles.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-body-classes.php';
-			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-form.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-font-loader.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-post-meta.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-google-map-block.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-accordion-ie-support.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-settings.php';
+			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-labs.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/get-dynamic-blocks.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/ical-parser/class-coblocks-event.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'includes/ical-parser/class-coblocks-ical.php';
+			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-site-design.php';
+			require_once COBLOCKS_PLUGIN_DIR . 'includes/class-coblocks-site-content.php';
 
 			// Require CoBlocks custom filters.
 			require_once COBLOCKS_PLUGIN_DIR . 'src/components/gutter-control/gutter-wrapper.php';
 			require_once COBLOCKS_PLUGIN_DIR . 'src/components/form-label-colors/label-color-wrapper.php';
+
+			// Forced Block Migration Processor.
+			require_once COBLOCKS_PLUGIN_DIR . 'includes/block-migrate/loader.php';
 
 			if ( is_admin() ) {
 				require_once COBLOCKS_PLUGIN_DIR . 'src/extensions/layout-selector/index.php';
@@ -134,6 +140,12 @@ if ( ! class_exists( 'CoBlocks' ) ) :
 				require_once COBLOCKS_PLUGIN_DIR . 'includes/admin/class-coblocks-install.php';
 				require_once COBLOCKS_PLUGIN_DIR . 'includes/admin/class-coblocks-crop-settings.php';
 			}
+
+			// StylesLoader.
+			require_once COBLOCKS_PLUGIN_DIR . 'includes/Dependencies/GoDaddy/Styles/StylesLoader.php';
+			GoDaddy\WordPress\Plugins\CoBlocks\Dependencies\GoDaddy\Styles\StylesLoader::getInstance()->setBasePath( COBLOCKS_PLUGIN_DIR . 'includes/Dependencies/GoDaddy/Styles/' );
+			GoDaddy\WordPress\Plugins\CoBlocks\Dependencies\GoDaddy\Styles\StylesLoader::getInstance()->setBaseUrl( COBLOCKS_PLUGIN_URL . 'includes/Dependencies/GoDaddy/Styles/' );
+			add_action( 'plugins_loaded', array( GoDaddy\WordPress\Plugins\CoBlocks\Dependencies\GoDaddy\Styles\StylesLoader::getInstance(), 'boot' ) );
 		}
 
 		/**

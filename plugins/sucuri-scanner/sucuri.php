@@ -8,15 +8,17 @@
  * Author: Sucuri Inc.
  * Text Domain: sucuri-scanner
  * Domain Path: /lang
- * Version: 1.8.30
+ * Version: 2.6
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category   Library
  * @package    Sucuri
  * @subpackage SucuriScanner
  * @author     Daniel Cid <dcid@sucuri.net>
- * @copyright  2010-2018 Sucuri Inc.
+ * @copyright  2010-2024 Sucuri Inc.
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GPL2
  * @link       https://wordpress.org/plugins/sucuri-scanner
  */
@@ -85,7 +87,7 @@ define('SUCURISCAN', 'sucuriscan');
 /**
  * Current version of the plugin's code.
  */
-define('SUCURISCAN_VERSION', '1.8.30');
+define('SUCURISCAN_VERSION', '2.6');
 
 /**
  * Defines the human readable name of the plugin.
@@ -112,18 +114,6 @@ define('SUCURISCAN_PLUGIN_PATH', WP_PLUGIN_DIR . '/' . SUCURISCAN_PLUGIN_FOLDER)
  * The local URL where the plugin's files and assets are served.
  */
 define('SUCURISCAN_URL', rtrim(plugin_dir_url(__FILE__), '/'));
-
-/**
- * Remote URL where the public Sucuri API service is running.
- *
- * We will check if the constant was already set to allow developers to use
- * their own API service. This is useful both for the execution of the tests
- * as well as for website owners who do not want to send data to the Sucuri
- * servers.
- */
-if (!defined('SUCURISCAN_API_URL')) {
-    define('SUCURISCAN_API_URL', 'https://wordpress.sucuri.net/api/');
-}
 
 /**
  * Latest version of the public Sucuri API.
@@ -153,7 +143,12 @@ define('SUCURISCAN_AUDITLOGS_LIFETIME', 600);
 /**
  * The maximum quantity of entries that will be displayed in the audit logs page.
  */
-define('SUCURISCAN_AUDITLOGS_PER_PAGE', 50);
+define('SUCURISCAN_AUDITLOGS_PER_PAGE', 25);
+
+/**
+ * The maximum quantity of entries that will be displayed in the integrity section.
+ */
+define('SUCURISCAN_INTEGRITY_FILES_PER_PAGE', 15);
 
 /**
  * The maximum quantity of buttons in the paginations.
@@ -200,16 +195,19 @@ function sucuriscan_load_plugin_textdomain()
 {
     load_plugin_textdomain('sucuri-scanner', false, basename(dirname(__FILE__)) . '/lang/');
 }
+
 add_action('plugins_loaded', 'sucuriscan_load_plugin_textdomain');
 
 /* Load all classes before anything else. */
 require_once 'src/base.lib.php';
 require_once 'src/request.lib.php';
+require_once 'src/cookie.lib.php';
 require_once 'src/fileinfo.lib.php';
 require_once 'src/cache.lib.php';
 require_once 'src/option.lib.php';
 require_once 'src/cron.lib.php';
 require_once 'src/event.lib.php';
+require_once 'src/permissions.lib.php';
 require_once 'src/hook.lib.php';
 require_once 'src/api.lib.php';
 require_once 'src/mail.lib.php';
@@ -224,6 +222,11 @@ require_once 'src/wordpress-recommendations.lib.php';
 require_once 'src/integrity.lib.php';
 require_once 'src/firewall.lib.php';
 require_once 'src/installer-skin.lib.php';
+require_once 'src/cachecontrol.lib.php';
+require_once 'src/csp.lib.php';
+require_once 'src/cors.lib.php';
+require_once 'src/totp.core.php';
+require_once 'src/topt.lib.php';
 
 /* Load page and ajax handlers */
 require_once 'src/pagehandler.php';
@@ -241,8 +244,10 @@ require_once 'src/settings-integrity.php';
 require_once 'src/settings-hardening.php';
 require_once 'src/settings-posthack.php';
 require_once 'src/settings-alerts.php';
+require_once 'src/settings-headers.php';
 require_once 'src/settings-apiservice.php';
 require_once 'src/settings-webinfo.php';
+require_once 'src/vulnerability.lib.php';
 
 /* Load global variables and triggers */
 require_once 'src/globals.php';
@@ -250,6 +255,33 @@ require_once 'src/globals.php';
 /* Load WP-CLI command */
 if (defined('WP_CLI') && WP_CLI) {
     include_once 'src/cli.lib.php';
+}
+
+SucuriScanTwoFactor::add_hooks();
+
+add_action('send_headers', 'sucuriscanSetSecurityHeaders');
+function sucuriscanSetSecurityHeaders()
+{
+    $isCacheControlHeaderEnabled = SucuriScanOption::getOption(':headers_cache_control') != 'disabled';
+
+    if ($isCacheControlHeaderEnabled) {
+        $sucuriScanCacheHeaders = new SucuriScanCacheHeaders();
+        $sucuriScanCacheHeaders->setCacheHeaders();
+    }
+
+    $isCSPHeaderEnabled = SucuriScanOption::getOption(':headers_csp') === 'report-only';
+
+    if ($isCSPHeaderEnabled) {
+        $sucuriScanCSPHeaders = new SucuriScanCSPHeaders();
+        $sucuriScanCSPHeaders->setCSPHeaders();
+    }
+
+    $isCORSHeaderEnabled = SucuriScanOption::getOption(':headers_cors') === 'enabled';
+
+    if ($isCORSHeaderEnabled) {
+        $sucuriScanCORSHeaders = new SucuriScanCORSHeaders();
+        $sucuriScanCORSHeaders->setCORSHeaders();
+    }
 }
 
 /**
@@ -284,7 +316,7 @@ function sucuriscanUninstall()
         /* Delete all plugin related options from the database */
         $options = $GLOBALS['wpdb']->get_results(
             'SELECT option_id, option_name FROM ' . $GLOBALS['wpdb']->options
-                . ' WHERE option_name LIKE "' . SUCURISCAN . '%"'
+            . ' WHERE option_name LIKE "' . SUCURISCAN . '%"'
         );
 
         foreach ($options as $option) {

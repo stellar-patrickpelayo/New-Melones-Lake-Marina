@@ -88,7 +88,8 @@ class SucuriScanHook extends SucuriScanEvent
             $email = $data->user_email;
         }
 
-        $message = sprintf(__('User added to website; user_id: %s; role: %s; blog_id: %s; name: %s; email: %s', 'sucuri-scanner'),
+        $message = sprintf(
+            __('User added to website; user_id: %s; role: %s; blog_id: %s; name: %s; email: %s', 'sucuri-scanner'),
             $user_id,
             $role,
             $blog_id,
@@ -104,7 +105,8 @@ class SucuriScanHook extends SucuriScanEvent
      * @param int    $user_id User ID.
      * @param int    $blog_id Blog ID.
      */
-    public static function hookRemoveUserFromBlog($user_id, $blog_id) {
+    public static function hookRemoveUserFromBlog($user_id, $blog_id)
+    {
         $title = __('unknown', 'sucuri-scanner');
         $email = __('user@domain.com', 'sucuri-scanner');
         $data = get_userdata($user_id);
@@ -114,7 +116,8 @@ class SucuriScanHook extends SucuriScanEvent
             $email = $data->user_email;
         }
 
-        $message = sprintf(__('User removed from website; user_id: %s; blog_id: %s; name: %s; email: %s', 'sucuri-scanner'),
+        $message = sprintf(
+            __('User removed from website; user_id: %s; blog_id: %s; name: %s; email: %s', 'sucuri-scanner'),
             $user_id,
             $blog_id,
             $title,
@@ -131,7 +134,7 @@ class SucuriScanHook extends SucuriScanEvent
      */
     public static function hookCategoryCreate($id = 0)
     {
-        $title = ( is_int($id) ? get_cat_name($id) : __('Unknown', 'sucuri-scanner') );
+        $title = (is_int($id) ? get_cat_name($id) : __('Unknown', 'sucuri-scanner'));
 
         $message = sprintf(__('Category created; ID: %s; name: %s', 'sucuri-scanner'), $id, $title);
         self::reportNoticeEvent($message);
@@ -141,19 +144,15 @@ class SucuriScanHook extends SucuriScanEvent
     /**
      * Detects when the core files are updated.
      *
+     * @param string $wp_version The current WordPress version.
      * @return void
      */
-    public static function hookCoreUpdate()
+    public static function hookCoreUpdate($wp_version = '')
     {
-        // WordPress update request.
-        if (current_user_can('update_core')
-            && SucuriScanRequest::get('action', '(do-core-upgrade|do-core-reinstall)')
-            && SucuriScanRequest::post('upgrade')
-        ) {
-            $message = sprintf(__('WordPress updated to version: %s', 'sucuri-scanner'), SucuriScanRequest::post('version'));
-            self::reportCriticalEvent($message);
-            self::notifyEvent('website_updated', $message);
-        }
+        // WordPress core has been successfully updated
+        $message = sprintf(__('WordPress updated to version: %s', 'sucuri-scanner'), $wp_version);
+        self::reportCriticalEvent($message);
+        self::notifyEvent('website_updated', $message);
     }
 
     /**
@@ -312,7 +311,7 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookOptionsManagement()
     {
         /* detect any Wordpress settings modification */
-        if (current_user_can('manage_options') && SucuriScanOption::checkOptionsNonce()) {
+        if (SucuriScanPermissions::canManagePlugin() && SucuriScanOption::checkOptionsNonce()) {
             /* compare settings in the database with the modified ones */
             $options_changed = SucuriScanOption::whatOptionsWereChanged($_POST);
             $options_changed_str = '';
@@ -326,13 +325,13 @@ class SucuriScanHook extends SucuriScanEvent
                     __("The value of the option <b>%s</b> was changed from <b>'%s'</b> to <b>'%s'</b>.<br>\n", 'sucuri-scanner'),
                     self::escape($option_name),
                     self::escape($option_value),
-                    self::escape($options_changed['changed'][ $option_name ])
+                    self::escape($options_changed['changed'][$option_name])
                 );
                 $options_changed_simple .= sprintf(
                     __("%s: from '%s' to '%s',", 'sucuri-scanner'),
                     self::escape($option_name),
                     self::escape($option_value),
-                    self::escape($options_changed['changed'][ $option_name ])
+                    self::escape($options_changed['changed'][$option_name])
                 );
             }
 
@@ -448,7 +447,8 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookPluginDelete()
     {
         // Plugin deletion request.
-        if (current_user_can('delete_plugins')
+        if (
+            SucuriScanPermissions::canDeletePlugins()
             && SucuriScanRequest::post('action', 'delete-selected')
             && SucuriScanRequest::post('verify-delete', '1')
         ) {
@@ -464,7 +464,8 @@ class SucuriScanHook extends SucuriScanEvent
 
                 $plugin_info = get_plugin_data($filename);
 
-                if (!empty($plugin_info['Name'])
+                if (
+                    !empty($plugin_info['Name'])
                     && !empty($plugin_info['Version'])
                 ) {
                     $items_affected[] = sprintf(
@@ -500,7 +501,8 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookPluginEditor()
     {
         // Plugin editor request.
-        if (current_user_can('edit_plugins')
+        if (
+            SucuriScanPermissions::canEditPlugins()
             && SucuriScanRequest::post('action', 'update')
             && SucuriScanRequest::post('plugin', '.+')
             && SucuriScanRequest::post('file', '.+')
@@ -521,10 +523,12 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookPluginInstall()
     {
         // Plugin installation request.
-        if (current_user_can('install_plugins')
-            && SucuriScanRequest::get('action', '(install|upload)-plugin')
+        if (
+            SucuriScanPermissions::canInstallPlugins()
+            && SucuriScanRequest::getOrPost('action', '(install|upload)-plugin')
+            && check_ajax_referer('updates', false, false)
         ) {
-            $plugin = SucuriScanRequest::get('plugin', '.+');
+            $plugin = SucuriScanRequest::getOrPost('plugin', '.+');
 
             if (isset($_FILES['pluginzip'])) {
                 $plugin = $_FILES['pluginzip']['name'];
@@ -547,21 +551,29 @@ class SucuriScanHook extends SucuriScanEvent
         // Plugin update request.
         $plugin_update_actions = '(upgrade-plugin|do-plugin-upgrade|update-selected)';
 
-        if (!current_user_can('update_plugins')) {
+        if (!SucuriScanPermissions::canUpdatePlugins()) {
             return;
         }
 
-        if (SucuriScanRequest::getOrPost('action', $plugin_update_actions)
+        if (
+            SucuriScanRequest::getOrPost('action', $plugin_update_actions)
             || SucuriScanRequest::getOrPost('action2', $plugin_update_actions)
         ) {
+
+            if (!check_ajax_referer('updates', false, false)) {
+                return;
+            }
+
             $plugin_list = array();
             $items_affected = array();
 
-            if (SucuriScanRequest::get('plugin', '.+')
+            if (
+                SucuriScanRequest::get('plugin', '.+')
                 && strpos($_SERVER['SCRIPT_NAME'], 'wp-admin/update.php') !== false
             ) {
                 $plugin_list[] = SucuriScanRequest::get('plugin', '.+');
-            } elseif (isset($_POST['checked'])
+            } elseif (
+                isset($_POST['checked'])
                 && is_array($_POST['checked'])
                 && !empty($_POST['checked'])
             ) {
@@ -571,7 +583,8 @@ class SucuriScanHook extends SucuriScanEvent
             foreach ($plugin_list as $plugin) {
                 $plugin_info = get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin);
 
-                if (!empty($plugin_info['Name'])
+                if (
+                    !empty($plugin_info['Name'])
                     && !empty($plugin_info['Version'])
                 ) {
                     $items_affected[] = sprintf(
@@ -862,9 +875,11 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookThemeDelete()
     {
         // Theme deletion request.
-        if (current_user_can('delete_themes')
+        if (
+            SucuriScanPermissions::canDeleteThemes()
             && SucuriScanRequest::getOrPost('action', 'delete')
             && SucuriScanRequest::getOrPost('stylesheet', '.+')
+            && check_ajax_referer('updates', false, false)
         ) {
             $theme = SucuriScanRequest::getOrPost('stylesheet', '.+');
             $theme = $theme ? $theme : __('Unknown', 'sucuri-scanner');
@@ -883,11 +898,13 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookThemeEditor()
     {
         // Theme editor request.
-        if (current_user_can('edit_themes')
+        if (
+            SucuriScanPermissions::canEditThemes()
             && SucuriScanRequest::post('action', 'update')
             && SucuriScanRequest::post('theme', '.+')
             && SucuriScanRequest::post('file', '.+')
             && strpos($_SERVER['SCRIPT_NAME'], 'theme-editor.php') !== false
+            && check_ajax_referer('updates', false, false)
         ) {
             $theme_name = SucuriScanRequest::post('theme');
             $filename = SucuriScanRequest::post('file');
@@ -905,8 +922,10 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookThemeInstall()
     {
         // Theme installation request.
-        if (current_user_can('install_themes')
+        if (
+            SucuriScanPermissions::canInstallThemes()
             && SucuriScanRequest::get('action', 'install-theme')
+            && check_ajax_referer('updates', false, false)
         ) {
             $theme = SucuriScanRequest::get('theme', '.+');
             $theme = $theme ? $theme : __('Unknown', 'sucuri-scanner');
@@ -939,9 +958,11 @@ class SucuriScanHook extends SucuriScanEvent
     public static function hookThemeUpdate()
     {
         // Theme update request.
-        if (current_user_can('update_themes')
+        if (
+            SucuriScanPermissions::canUpdateThemes()
             && SucuriScanRequest::get('action', '(upgrade-theme|do-theme-upgrade)')
             && SucuriScanRequest::post('checked', '_array')
+            && check_ajax_referer('updates', false, false)
         ) {
             $themes = SucuriScanRequest::post('checked', '_array');
             $items_affected = array();
@@ -1013,13 +1034,14 @@ class SucuriScanHook extends SucuriScanEvent
         $old_email = __('user@domain.com', 'sucuri-scanner');
         $old_roles = 'none';
 
-        if($old_user_data) {
+        if ($old_user_data) {
             $old_title = $old_user_data->user_login;
             $old_email = $old_user_data->user_email;
             $old_roles = @implode(', ', $old_user_data->roles);
         }
 
-        $message = sprintf(__('User account edited; ID: %s; name: %s; old_name: %s; email: %s; old_email: %s; roles: %s; old_roles: %s', 'sucuri-scanner'),
+        $message = sprintf(
+            __('User account edited; ID: %s; name: %s; old_name: %s; email: %s; old_email: %s; roles: %s; old_roles: %s', 'sucuri-scanner'),
             $id,
             $title,
             $old_title,
@@ -1072,17 +1094,19 @@ class SucuriScanHook extends SucuriScanEvent
     }
 
     /**
-     * Detects when a widget is added.
+     * Detects when a widget is added or deleted
      *
      * @return void
      */
     private static function hookWidgetChanges()
     {
         // Widget addition or deletion.
-        if (current_user_can('edit_theme_options')
+        if (
+            SucuriScanPermissions::canEditThemeOptions()
             && SucuriScanRequest::post('action', 'save-widget')
             && SucuriScanRequest::post('id_base') !== false
             && SucuriScanRequest::post('sidebar') !== false
+            && check_ajax_referer('save-sidebar-widgets', 'savewidgets', false)
         ) {
             if (SucuriScanRequest::post('delete_widget', '1')) {
                 $action_d = 'deleted';
@@ -1107,6 +1131,7 @@ class SucuriScanHook extends SucuriScanEvent
             self::notifyEvent('widget_' . $action_d, $message);
         }
     }
+
 
     /**
      * Detects when a widget is deleted.

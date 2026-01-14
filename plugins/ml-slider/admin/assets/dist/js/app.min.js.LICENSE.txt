@@ -1,12 +1,19 @@
 /*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * Vue.js v2.7.16
+ * (c) 2014-2023 Evan You
  * Released under the MIT License.
  */
 
 /*!
- * vuex v3.5.1
- * (c) 2020 Evan You
+ * vuex v3.6.2
+ * (c) 2021 Evan You
  * @license MIT
  */
 
@@ -33,6 +40,20 @@ THE SOFTWARE.
 
 */
 
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
 /*! tether 1.4.7 */
 
 /*! tether-shepherd 1.8.1 */
+
+/**! 
+ * hotkeys-js v3.13.7 
+ * A simple micro-library for defining and dispatching keyboard shortcuts. It has no dependencies. 
+ * 
+ * Copyright (c) 2024 kenny wong <wowohoo@qq.com> 
+ * https://github.com/jaywcjlove/hotkeys-js.git 
+ * 
+ * @website: https://jaywcjlove.github.io/hotkeys-js
+ 
+ * Licensed under the MIT license 
+ */

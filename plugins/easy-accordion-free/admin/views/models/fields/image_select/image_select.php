@@ -52,7 +52,7 @@ if ( ! class_exists( 'SP_EAP_Field_image_select' ) ) {
 
 			$value = ( is_array( $this->value ) ) ? $this->value : array_filter( (array) $this->value );
 
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->field_before() returns safely escaped HTML markup.
 			echo $this->field_before();
 
 			if ( ! empty( $args['options'] ) ) {
@@ -75,9 +75,13 @@ if ( ! class_exists( 'SP_EAP_Field_image_select' ) ) {
 					} else {
 						echo '<img src="' . esc_url( $option ) . '" alt="img-' . esc_attr( $num++ ) . '" />';
 					}
-					// phpcs:ignore
+					// phpcs:ignore -- escaped inside field_attribute function.
 					echo '<input ' . esc_attr( $pro_only ) . ' type="' . esc_attr( $type ) . '" name="' . esc_attr( $this->field_name( $extra ) ) . '" value="' . esc_attr( $key ) . '"' . $this->field_attributes() . esc_attr( $checked ) . '/>';
-					if ( ! empty( $option['option_name'] ) ) {
+					if ( isset( $option['option_demo_url'] ) ) {
+						echo '<p class="eap-image-name">' . esc_html( $option['option_name'] ) . '<a href="' . esc_url( $option['option_demo_url'] ) . '" tooltip="Demo" class="eapro-live-demo-icon" target="_blank"><i class="eap-icon-external-link"></i></a></p>';
+					}
+
+					if ( isset( $option['option_name'] ) && ! isset( $option['option_demo_url'] ) ) {
 						echo '<p class="eap-image-name">' . esc_html( $option['option_name'] ) . '</p>';
 					}
 
@@ -90,10 +94,8 @@ if ( ! class_exists( 'SP_EAP_Field_image_select' ) ) {
 			}
 
 			echo '<div class="clear"></div>';
-			// phpcs:ignore
+			// phpcs:ignore -- $this->field_after() returns safely escaped HTML markup.
 			echo $this->field_after();
-
 		}
-
 	}
 }

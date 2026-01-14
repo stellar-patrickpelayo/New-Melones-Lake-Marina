@@ -1,58 +1,48 @@
 <?php
 /**
  * Plugin Name: WP Slick Slider and Image Carousel
- * Plugin URI: https://www.essentialplugin.com/wordpress-plugins/wp-slick-slider-and-image-carousel/
+ * Plugin URI: https://essentialplugin.com/wordpress-plugins/wp-slick-slider-and-image-carousel/
  * Text Domain: wp-slick-slider-and-image-carousel
  * Domain Path: /languages/
  * Description: Easy to add and display wp slick image slider and carousel. Also added Gutenberg block support.
- * Author: WP OnlineSupport, Essential Plugin
- * Version: 3.0.8
- * Author URI: https://www.essentialplugin.com/wordpress-plugins/wp-slick-slider-and-image-carousel/
+ * Author: Essential Plugin
+ * Version: 3.7.8
+ * Author URI: https://essentialplugin.com
  *
- * @package WordPress
- * @author WP OnlineSupport
+ * @package WP Slick Slider and Image Carousel
+ * @author Essential Plugin
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if( ! defined('WPSISAC_VERSION') ) {
-	define( 'WPSISAC_VERSION', '3.0.8' ); // Plugin version
+if ( ! defined('WPSISAC_VERSION') ) {
+	define( 'WPSISAC_VERSION', '3.7.8' ); // Plugin version
 }
-if( ! defined('WPSISAC_NAME') ) {
-	define( 'WPSISAC_NAME', 'Slick Slider and Image Carousel' ); // Plugin version
-}
-if( ! defined( 'WPSISAC_DIR' ) ) {
+if ( ! defined( 'WPSISAC_DIR' ) ) {
 	define( 'WPSISAC_DIR', dirname( __FILE__ ) ); // Plugin dir
 }
-if( ! defined( 'WPSISAC_URL' ) ) {
+if ( ! defined( 'WPSISAC_URL' ) ) {
 	define( 'WPSISAC_URL', plugin_dir_url( __FILE__ ) ); // Plugin url
 }
-if( ! defined( 'WPSISAC_POST_TYPE' ) ) {
+if ( ! defined( 'WPSISAC_POST_TYPE' ) ) {
 	define( 'WPSISAC_POST_TYPE', 'slick_slider' ); // Plugin post type
 }
-if( ! defined( 'WPSISAC_META_PREFIX' ) ) {
-	define( 'WPSISAC_META_PREFIX', '_wpsisac_' ); // Plugin post type
+if ( ! defined( 'WPSISAC_PLUGIN_LINK_UPGRADE' ) ) {
+	define('WPSISAC_PLUGIN_LINK_UPGRADE','https://essentialplugin.com/pricing/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Upgrade-PRO'); // Plugin Check link
 }
-if( ! defined( 'WPSISAC_SITE_LINK' ) ) {
-	define('WPSISAC_SITE_LINK','https://www.essentialplugin.com'); // Plugin link
+if ( ! defined( 'WPSISAC_PLUGIN_BUNDLE_LINK' ) ) {
+	define('WPSISAC_PLUGIN_BUNDLE_LINK', 'https://essentialplugin.com/pricing/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Welcome-Screen'); // Plugin link
 }
-if( ! defined( 'WPSISAC_PLUGIN_BUNDLE_LINK' ) ) {
-	define('WPSISAC_PLUGIN_BUNDLE_LINK','https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Bundle-Banner#wpos-epb'); // Plugin link
-}
-if( ! defined( 'WPSISAC_PLUGIN_LINK_UNLOCK' ) ) {
-	define('WPSISAC_PLUGIN_LINK_UNLOCK','https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Features-PRO#wpos-epb'); // Plugin link
-}
-if( ! defined( 'WPSISAC_PLUGIN_LINK_UPGRADE' ) ) {
-	define('WPSISAC_PLUGIN_LINK_UPGRADE','https://www.essentialplugin.com/wordpress-plugin/wp-slick-slider-and-image-carousel/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Upgrade-PRO#wpos-epb'); // Plugin Check link
+if ( ! defined( 'WPSISAC_PLUGIN_LINK_UNLOCK' ) ) {
+	define('WPSISAC_PLUGIN_LINK_UNLOCK', 'https://essentialplugin.com/pricing/?utm_source=WP&utm_medium=Slick-Slider&utm_campaign=Features-PRO'); // Plugin link
 }
 
 /**
  * Load Text Domain
  * This gets the plugin ready for translation
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
 function wpsisac_get_load_textdomain() {
@@ -87,7 +77,6 @@ function wpsisac_get_load_textdomain() {
 /**
  * Do stuff once all the plugin has been loaded
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
 function wpsisac_get_plugins_loaded() {
@@ -97,55 +86,45 @@ add_action('plugins_loaded', 'wpsisac_get_plugins_loaded');
 
 /**
  * Activation Hook
- * 
  * Register plugin activation hook.
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
 register_activation_hook( __FILE__, 'free_wpsisac_install_premium_version' );
 
 /**
  * Deactivation Hook
- * 
  * Register plugin deactivation hook.
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
-register_deactivation_hook( __FILE__, 'wpsisac_uninstall');
+register_deactivation_hook( __FILE__, 'wpsisac_uninstall' );
 
 /**
- * Plugin Setup (On Activation)
+ * Plugin Setup On Activation
  * 
  * Does the initial setup,
- * stest default values for the plugin options.
+ * set default values for the plugin options.
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
 function free_wpsisac_install_premium_version(){
 
-	wpsisac_get_slick_post_type();
-	wpsisac_get_slick_taxonomy();
+	wpsisac_register_post_type();
+	wpsisac_register_taxonomies();
 
 	// IMP need to flush rules for custom registered post type
 	flush_rewrite_rules();
 
-	if( is_plugin_active('wp-slick-slider-and-image-carousel-pro/wp-slick-image-slider.php') ){
-	 	add_action('update_option_active_plugins', 'free_wpsisac_deactivate_premium_version');
+	if ( is_plugin_active( 'wp-slick-slider-and-image-carousel-pro/wp-slick-image-slider.php' ) ){
+		add_action( 'update_option_active_plugins', 'wpsisac_deactivate_premium_version' );
 	}
-
-	// Add option for solutions & features
-	add_option( 'wpsisac_sf_optin', true );
 }
 
 /**
- * Plugin Setup (On Deactivation)
+ * Plugin On Deactivation
+ * Delete plugin options and etc.
  * 
- * Delete  plugin options.
- * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
 function wpsisac_uninstall() {
@@ -157,34 +136,47 @@ function wpsisac_uninstall() {
 /**
  * Deactivate free plugin
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
-function free_wpsisac_deactivate_premium_version(){
-   deactivate_plugins('wp-slick-slider-and-image-carousel-pro/wp-slick-image-slider.php',true);
+function wpsisac_deactivate_premium_version() {
+   deactivate_plugins( 'wp-slick-slider-and-image-carousel-pro/wp-slick-image-slider.php', true );
 }
 
 /**
  * Function to display admin notice of activated plugin.
  * 
- * @package WP Slick Slider and Image Carousel
  * @since 1.0.0
  */
 function wpsisac_get_admin_notice() {
+
 	global $pagenow;
-	$dir 				= WP_PLUGIN_DIR . '/wp-slick-slider-and-image-carousel-pro/wp-slick-image-slider.php';
-	$notice_link        = add_query_arg( array('message' => 'wpsisac-plugin-notice'), admin_url('plugins.php') );
+
+	// If not plugin screen
+	if ( 'plugins.php' != $pagenow ) {
+		return;
+	}
+
+	// Check Lite Version
+	$dir = WP_PLUGIN_DIR . '/wp-slick-slider-and-image-carousel-pro/wp-slick-image-slider.php';
+
+	if ( ! file_exists( $dir ) ) {
+		return;
+	}
+
+	$notice_link        = add_query_arg( array( 'message' => 'wpsisac-plugin-notice' ), admin_url( 'plugins.php' ) );
 	$notice_transient   = get_transient( 'wpsisac_install_notice' );
 
-	if( $notice_transient == false && $pagenow == 'plugins.php' && file_exists( $dir ) && current_user_can( 'install_plugins' ) ) {
-		echo '<div class="updated notice" style="position:relative;">
+	// If free plugin exist
+	if ( $notice_transient == false && current_user_can( 'install_plugins' ) ) {
+			echo '<div class="updated notice" style="position:relative;">
 			<p>
-				<strong>'.sprintf( __('Thank you for activating %s', 'wp-slick-slider-and-image-carousel'), 'WP Slick Slider and Image Carousel').'</strong>.<br/>
-				'.sprintf( __('It looks like you had PRO version %s of this plugin activated. To avoid conflicts the extra version has been deactivated and we recommend you delete it.', 'wp-slick-slider-and-image-carousel'), '<strong>(<em>WP Slick Slider and Image Carousel Pro</em>)</strong>' ).'
+				<strong>'.sprintf( __( 'Thank you for activating %s', 'wp-slick-slider-and-image-carousel' ), 'WP Slick Slider and Image Carousel' ).'</strong>.<br/>
+				'.sprintf( __( 'It looks like you had PRO version %s of this plugin activated. To avoid conflicts the extra version has been deactivated and we recommend you delete it.', 'wp-slick-slider-and-image-carousel' ), '<strong>(<em>WP Slick Slider and Image Carousel Pro</em>)</strong>' ).'
 			</p>
 			<a href="'.esc_url( $notice_link ).'" class="notice-dismiss" style="text-decoration:none;"></a>
 		</div>';
 	}
+
 }
 add_action( 'admin_notices', 'wpsisac_get_admin_notice');
 
@@ -195,7 +187,7 @@ require_once( WPSISAC_DIR . '/includes/wpsisac-function.php' );
 require_once( WPSISAC_DIR . '/includes/class-wpsisac-script.php' );
 
 // Post type file
-require_once( WPSISAC_DIR . '/includes/wpsisac-slider-custom-post.php' );
+require_once( WPSISAC_DIR . '/includes/wpsisac-post-types.php' );
 
 // Admin File
 require_once( WPSISAC_DIR . '/includes/admin/class-wpsisac-admin.php' );
@@ -206,7 +198,7 @@ require_once( WPSISAC_DIR . '/includes/shortcodes/wpsisac-carousel.php' );
 
 // Gutenberg Block Initializer
 if ( function_exists( 'register_block_type' ) ) {
-	require_once( WPSISAC_DIR . '/includes/admin/supports/gutenberg-block.php' );
+	require_once( WPSISAC_DIR . '/includes/admin/supports/blocks/gutenberg-block.php' );
 }
 
 /* Plugin Wpos Analytics Data Starts */
@@ -215,13 +207,14 @@ function wpos_analytics_anl25_load() {
 	require_once dirname( __FILE__ ) . '/wpos-analytics/wpos-analytics.php';
 
 	$wpos_analytics =  wpos_anylc_init_module( array(
-							'id'			=> 25,
-							'file'			=> plugin_basename( __FILE__ ),
-							'name'			=> 'WP Slick Slider and Image Carousel',
-							'slug'			=> 'wp-slick-slider-and-image-carousel',
-							'type'			=> 'plugin',
-							'menu'			=> 'edit.php?post_type=slick_slider',
-							'text_domain'	=> 'wp-slick-slider-and-image-carousel',
+							'id'				=> 25,
+							'file'				=> plugin_basename( __FILE__ ),
+							'name'				=> 'WP Slick Slider and Image Carousel',
+							'slug'				=> 'wp-slick-slider-and-image-carousel',
+							'type'				=> 'plugin',
+							'menu'				=> 'edit.php?post_type=slick_slider',
+							'redirect_page'	=> 'edit.php?post_type=slick_slider&page=wpsisac-solutions-features',
+							'text_domain'		=> 'wp-slick-slider-and-image-carousel',
 						));
 
 	return $wpos_analytics;

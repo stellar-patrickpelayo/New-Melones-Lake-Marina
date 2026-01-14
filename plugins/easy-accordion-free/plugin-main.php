@@ -1,11 +1,13 @@
 <?php
 /**
  * Plugin name: Easy Accordion
- * Plugin URI:  https://shapedplugin.com/plugin/easy-accordion-pro/?ref=1
- * Description: The best Responsive and Touch-friendly drag & drop <strong>Accordion FAQ</strong> builder plugin for WordPress.
- * Author:      ShapedPlugin
+ * Plugin URI:  https://easyaccordion.io/?ref=1
+ * Description: Easy Accordion is a responsive Accordion and FAQ builder plugin for WordPress. Create unlimited accordions, FAQ sections, and WooCommerce Product FAQs with a simple drag-and-drop interface—no coding required.
+ * Author:      ShapedPlugin LLC
  * Author URI:  https://shapedplugin.com/
- * Version:     2.1.10
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Version:     3.0.7
  * Text Domain: easy-accordion-free
  * Domain Path: /languages/
  *
@@ -22,11 +24,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return boolean
  */
-function is_easy_accordion_pro() {
-	include_once ABSPATH . 'wp-admin/includes/plugin.php';
-	if ( ! ( is_plugin_active( 'easy-accordion-pro/easy-accordion-pro.php' ) || is_plugin_active_for_network( 'easy-accordion-pro/easy-accordion-pro.php' ) ) ) {
+function is_easy_accordion_pro_active() {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+	if (
+		is_plugin_active( 'easy-accordion-pro/easy-accordion-pro.php' ) ||
+		is_plugin_active_for_network( 'easy-accordion-pro/easy-accordion-pro.php' )
+	) {
 		return true;
 	}
+
+	return false;
 }
 
 /**
@@ -51,7 +59,7 @@ class SP_EASY_ACCORDION_FREE {
 	 *
 	 * @var string
 	 */
-	public $version = '2.1.10';
+	public $version = '3.0.7';
 
 	/**
 	 * The name of the plugin.
@@ -113,23 +121,9 @@ class SP_EASY_ACCORDION_FREE {
 		$this->define_constants();
 		$this->includes();
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_common_hooks();
-	}
-
-	/**
-	 * Define constant if not already set
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string      $name Define constant.
-	 * @param string|bool $value Define constant.
-	 */
-	public function define( $name, $value ) {
-		if ( ! defined( $name ) ) {
-			define( $name, $value );
-		}
+		$this->eap_wc_tab();
 	}
 
 	/**
@@ -138,12 +132,12 @@ class SP_EASY_ACCORDION_FREE {
 	 * @since 2.0.0
 	 */
 	public function define_constants() {
-		$this->define( 'SP_EA_VERSION', $this->version );
-		$this->define( 'SP_PLUGIN_NAME', $this->plugin_name );
-		$this->define( 'SP_EA_PATH', plugin_dir_path( __FILE__ ) );
-		$this->define( 'SP_EA_URL', plugin_dir_url( __FILE__ ) );
-		$this->define( 'SP_EA_BASENAME', plugin_basename( __FILE__ ) );
-		$this->define( 'SP_EA_INCLUDES', SP_EA_PATH . '/includes' );
+		define( 'SP_EA_VERSION', $this->version );
+		define( 'SP_PLUGIN_NAME', $this->plugin_name );
+		define( 'SP_EA_PATH', plugin_dir_path( __FILE__ ) );
+		define( 'SP_EA_URL', plugin_dir_url( __FILE__ ) );
+		define( 'SP_EA_BASENAME', plugin_basename( __FILE__ ) );
+		define( 'SP_EA_INCLUDES', SP_EA_PATH . '/includes' );
 	}
 
 	/**
@@ -162,20 +156,14 @@ class SP_EASY_ACCORDION_FREE {
 
 		$this->loader->add_action( 'manage_sp_easy_accordion_posts_custom_column', $plugin_admin, 'display_accordion_admin_fields', 10, 2 );
 		$this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'sp_eap_review_text', 10, 2 );
+		$this->loader->add_filter( 'update_footer', $plugin_admin, 'sp_eap_version_text', 11 );
 		$this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'after_easy_accodion_row_meta', 10, 4 );
 		$this->loader->add_action( 'activated_plugin', $plugin_admin, 'sp_ea_redirect_after_activation', 10, 2 );
-		// Help Page.
-		$help_page = new Easy_Accordion_Free_Help( SP_PLUGIN_NAME, SP_EA_VERSION );
-		$this->loader->add_action( 'admin_menu', $help_page, 'help_admin_menu', 50 );
-		$this->loader->add_filter( 'plugin_action_links', $help_page, 'add_plugin_action_links', 10, 2 );
-		// Premium page.
-		$premium_page = new Easy_Accordion_Premium( SP_PLUGIN_NAME, SP_EA_VERSION );
-		$this->loader->add_action( 'admin_menu', $premium_page, 'premium_admin_menu', 40 );
+		$this->loader->add_filter( 'plugin_action_links', $plugin_admin, 'add_plugin_action_links', 10, 2 );
 		// import export tools.
 		$import_export = new Easy_Accordion_Import_Export( SP_PLUGIN_NAME, SP_EA_VERSION );
 		$this->loader->add_action( 'wp_ajax_eap_export_accordions', $import_export, 'export_accordions' );
 		$this->loader->add_action( 'wp_ajax_eap_import_accordions', $import_export, 'import_accordions' );
-
 		if ( version_compare( $GLOBALS['wp_version'], '5.3', '>=' ) ) {
 			// Gutenberg block.
 			new Easy_Accordion_Free_Gutenberg_Block();
@@ -186,22 +174,30 @@ class SP_EASY_ACCORDION_FREE {
 		if ( ( is_plugin_active( 'elementor/elementor.php' ) || is_plugin_active_for_network( 'elementor/elementor.php' ) ) ) {
 			require_once SP_EA_PATH . 'admin/class-easy-accordion-free-element-shortcode-addons.php';
 		}
+		add_filter( 'body_class', array( $this, 'sp_easy_accordion_body_class' ) );
+		register_activation_hook( 'easy-accordion-free/easy-accordion-free.php', array( $this, 'eap_post_type_reset_flush_flag' ) );
 	}
 
 	/**
-	 * Define the locale for this plugin for internationalization.
+	 * Reset the flag if needed (e.g., during theme or plugin updates).
 	 *
-	 * Uses the Easy_Accordion_Free_I18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    2.0.0
-	 * @access   private
+	 * @return void
 	 */
-	private function set_locale() {
-		$plugin_i18n = new Easy_Accordion_Free_I18n();
+	public function eap_post_type_reset_flush_flag() {
+		delete_option( 'sp_eap_flush_rewrite_rules' );
+	}
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+	/**
+	 * Adds a custom body class for SP Easy Accordion to the body tag.
+	 *
+	 * @param array $classes An array of body classes.
+	 * @return array An updated array of body classes.
+	 */
+	public function sp_easy_accordion_body_class( $classes ) {
+		// Add the custom body class for SP Easy Accordion.
+		$classes[] = 'sp-easy-accordion-enabled';
 
+		return $classes;
 	}
 
 	/**
@@ -214,9 +210,27 @@ class SP_EASY_ACCORDION_FREE {
 		$plugin_cpt           = new Easy_Accordion_Free_Post_Type( $this->plugin_name, $this->version );
 		$plugin_review_notice = new Easy_Accordion_Free_Review( SP_PLUGIN_NAME, SP_EA_VERSION );
 		$this->loader->add_action( 'init', $plugin_cpt, 'easy_accordion_post_type', 10 );
-
+		$this->loader->add_action( 'init', $plugin_cpt, 'register_faq_post_type' );
+		$this->loader->add_action( 'admin_menu', $plugin_cpt, 'add_faq_submenu' );
 		$this->loader->add_action( 'admin_notices', $plugin_review_notice, 'display_admin_notice' );
 		$this->loader->add_action( 'wp_ajax_sp-eafree-never-show-review-notice', $plugin_review_notice, 'dismiss_review_notice' );
+	}
+
+	/**
+	 * Register WooCommerce hooks.
+	 *
+	 * @since 2.0.2
+	 * @access private
+	 */
+	private function eap_wc_tab() {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		$settings    = get_option( 'sp_eap_settings' );
+		$eap_woo_faq = isset( $settings['eap_woo_faq'] ) ? $settings['eap_woo_faq'] : '';
+		if ( ( $eap_woo_faq ) && ( is_plugin_active( 'woocommerce/woocommerce.php' ) || is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) ) ) {
+			// Product tab.
+			$product_tab = new Easy_Accordion_Free_Product_Tab( SP_PLUGIN_NAME, SP_EA_VERSION );
+			$this->loader->add_filter( 'woocommerce_product_tabs', $product_tab, 'eap_woo_faq_tab', 10, 2 );
+		}
 	}
 
 	/**
@@ -228,19 +242,13 @@ class SP_EASY_ACCORDION_FREE {
 		require_once SP_EA_INCLUDES . '/class-easy-accordion-free-updates.php';
 		require_once SP_EA_INCLUDES . '/class-easy-accordion-free-loader.php';
 		require_once SP_EA_INCLUDES . '/class-easy-accordion-free-post-types.php';
-		require_once SP_EA_INCLUDES . '/class-easy-accordion-free-i18n.php';
-		require_once SP_EA_PATH . 'admin/views/eap-mce-button/button.php';
-		require_once SP_EA_PATH . '/public/views/scripts.php';
+		require_once SP_EA_INCLUDES . '/class-easy-accordion-free-product-tab.php';
 		require_once SP_EA_PATH . '/admin/class-easy-accordion-free-admin.php';
-		require_once SP_EA_PATH . '/admin/views/help.php';
-		require_once SP_EA_PATH . '/admin/views/premium.php';
 		require_once SP_EA_PATH . '/admin/views/models/classes/setup.class.php';
-		require_once SP_EA_PATH . '/admin/views/metabox-config.php';
-		require_once SP_EA_PATH . '/admin/views/option-config.php';
-		require_once SP_EA_PATH . '/admin/views/tools-config.php';
+		require_once SP_EA_PATH . '/admin/help-page/help-page.php';
 		require_once SP_EA_PATH . '/admin/views/notices/review.php';
-		require_once SP_EA_PATH . '/public/views/class-easy-accordion-free-shortcode.php';
-		require_once SP_EA_PATH . '/public/views/deprecated/shortcode-deprecated.php';
+		require_once SP_EA_PATH . '/public/scripts.php';
+		require_once SP_EA_PATH . '/public/eap-frontend.php';
 		require_once SP_EA_PATH . '/includes/class-easy-accordion-import-export.php';
 		require_once SP_EA_PATH . '/admin/preview/class-easy-accordion-free-preview.php';
 		require_once SP_EA_PATH . '/admin/class-easy-accordion-free-gutenberg-block.php';
@@ -252,7 +260,6 @@ class SP_EASY_ACCORDION_FREE {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Easy_Accordion_Free_Loader. Orchestrates the hooks of the plugin.
-	 * - Easy_Accordion_Free_i18n. Defines internationalization functionality.
 	 * - Easy_Accordion_Free_Admin. Defines all hooks for the admin area.
 	 * - Easy_Accordion_Free_Public. Defines all hooks for the public side of the site.
 	 *
@@ -264,7 +271,6 @@ class SP_EASY_ACCORDION_FREE {
 	 */
 	private function load_dependencies() {
 		$this->loader = new Easy_Accordion_Free_Loader();
-
 	}
 
 	/**
@@ -287,8 +293,17 @@ class SP_EASY_ACCORDION_FREE {
 function sp_easy_accordion() {
 	$plugin = SP_EASY_ACCORDION_FREE::init();
 	$plugin->loader->run();
+
+	if ( ! defined( 'SHAPEDPLIUGIN_OFFER_BANNER_LOADED' ) ) {
+		define( 'SHAPEDPLIUGIN_OFFER_BANNER_LOADED', true );
+
+		/**
+		 * The file is responsible for generating admin offer banner.
+		 */
+		include_once plugin_dir_path( __FILE__ ) . 'admin/views/notices/offer-banner.php';
+	}
 }
 
-if ( is_easy_accordion_pro() ) {
+if ( ! is_easy_accordion_pro_active() ) {
 	sp_easy_accordion();
 }

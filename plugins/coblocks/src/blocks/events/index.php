@@ -13,10 +13,15 @@
  *
  * @return string Returns the events content.
  */
-function coblocks_render_events_block( $attributes, $content ) {
+function coblocks_render_coblocks_events_block( $attributes, $content ) {
 
 	if ( empty( $attributes['externalCalendarUrl'] ) ) {
 		return $content;
+	}
+
+	// If externalCalendarUrl contains a localhost URL, return an error message.
+	if ( strpos( $attributes['externalCalendarUrl'], 'localhost' ) !== false || strpos( $attributes['externalCalendarUrl'], '127.0' ) !== false ) {
+		return '<div class="components-placeholder"><div class="notice notice-error">' . __( 'An error has occurred. localhost URLs are not permitted.', 'coblocks' ) . '</div></div>';
 	}
 
 	try {
@@ -34,12 +39,12 @@ function coblocks_render_events_block( $attributes, $content ) {
 				'use_timezone_with_r_rules'     => false,
 			)
 		);
-		$ical->init_url( $attributes['externalCalendarUrl'] );
+		$ical->initUrl( esc_url_raw( $attributes['externalCalendarUrl'] ) ); // @codingStandardsIgnoreLine.
 
 		if ( 'all' === $attributes['eventsRange'] ) {
-			$events = $ical->events_from_range();
+			$events = $ical->eventsFromRange(); // @codingStandardsIgnoreLine.
 		} else {
-			$events = $ical->events_from_interval( $attributes['eventsRange'] );
+			$events = $ical->eventsFromInterval( $attributes['eventsRange'] ); // @codingStandardsIgnoreLine.
 		}
 		// Limit to 100 events.
 		$events = array_slice( $events, 0, 100 );
@@ -72,58 +77,119 @@ function coblocks_render_events_block( $attributes, $content ) {
 		foreach ( $events as $event ) {
 			$events_layout .= '<div class="wp-block-coblocks-event-item swiper-slide">';
 
-			$dtstart           = $ical->ical_date_to_date_time( $event->dtstart_array[3] );
-			$dtend             = $ical->ical_date_to_date_time( $event->dtend_array[3] );
+			$dtstart           = $ical->icalDateToDateTime( $event->dtstart_array[3] ); // @codingStandardsIgnoreLine.
+			$dtend             = $ical->icalDateToDateTime( $event->dtend_array[3] ); // @codingStandardsIgnoreLine.
 			$start_date_string = strtotime( $dtstart->format( 'YmdHis' ) );
 			$end_date_string   = strtotime( $dtend->format( 'YmdHis' ) );
 			$year              = gmdate( 'Y', $start_date_string );
 			$month             = gmdate( 'F', $start_date_string );
-			$day_of_month      = gmdate( 'd', $start_date_string );
-			$start_time        = gmdate( 'g:ia', $start_date_string );
-			$end_time          = gmdate( 'g:ia', $end_date_string );
+			$start_date        = gmdate( 'd', $start_date_string );
+			$end_date          = gmdate( 'd', $end_date_string );
+			$start_time        = gmdate( 'c', $start_date_string );
+			$end_time          = gmdate( 'c', $end_date_string );
 			$time_string       = $start_time . ' - ' . $end_time;
 			$title             = $event->summary;
-			$desctiption       = $event->description;
+			$description       = $event->description;
 			$location          = $event->location;
-			$events_layout    .= sprintf(
-				'
-				<div class="wp-block-coblocks-events__date">
-					<span class="wp-block-coblocks-events__day">%1$s</span>
-					<div>
-						<span class="wp-block-coblocks-events__month">%2$s</span>
-						<span class="wp-block-coblocks-events__year">%3$s</span>
-					</div>
-				</div>',
-				$day_of_month,
-				$month,
-				$year
-			);
+			$event_duration    = $end_date_string - $start_date_string;
+			$is_timed_event    = str_contains( $event->dtstart, 'Z' );
+			$one_day           = 86400;
 
-			$events_layout .= sprintf(
-				'<div class="wp-block-coblocks-events__content">
-					<span class="wp-block-coblocks-events__title">%1$s</span>
-					<span class="wp-block-coblocks-events__description">%2$s</span>
-				</div>',
-				$title,
-				$desctiption
-			);
+			if ( $event_duration === $one_day && ! $is_timed_event ) {
 
-			$events_layout .= sprintf(
-				'<div class="wp-block-coblocks-events__details">
-					<span class="wp-block-coblocks-events__time">%1$s</span>
-					<span class="wp-block-coblocks-events__location">%2$s</span>
-				</div>',
-				$time_string,
-				$location
-			);
+				$event_time_string = sprintf(
+					'<span class="wp-block-coblocks-events__time">%1$s - %2$s</span>',
+					gmdate( 'g:ia', $start_date_string ),
+					gmdate( 'g:ia', $end_date_string )
+				);
+
+				$events_layout .= coblocks_render_single_day_event_item(
+					$start_date,
+					$month,
+					$year,
+					$title,
+					$description,
+					$event_time_string,
+					$location
+				);
+
+			} elseif ( $event_duration > $one_day && ! $is_timed_event ) {
+
+				$event_time_string = sprintf(
+					'<span class="wp-block-coblocks-events__time">%1$s - %2$s</span>',
+					gmdate( 'g:ia', $start_date_string ),
+					gmdate( 'g:ia', $end_date_string )
+				);
+
+				$events_layout .= coblocks_render_multi_day_event_item(
+					$start_date,
+					$end_date - 1,
+					$month,
+					$year,
+					$title,
+					$description,
+					$event_time_string,
+					$location
+				);
+
+			} elseif ( $event_duration < $one_day && $is_timed_event ) {
+
+				$event_time_string = sprintf(
+					'<span data-start-time=%1$s data-end-time=%2$s class="wp-block-coblocks-events__time wp-block-coblocks-events__time-formatted"></span>',
+					gmdate( 'c', $start_date_string ),
+					gmdate( 'c', $end_date_string )
+				);
+
+				$events_layout .= coblocks_render_single_day_event_item(
+					$start_date,
+					$month,
+					$year,
+					$title,
+					$description,
+					$event_time_string,
+					$location
+				);
+
+			} elseif ( $event_duration > $one_day || $event_duration === $one_day && $is_timed_event ) {
+
+				$event_time_string = sprintf(
+					'<span data-start-time=%1$s data-end-time=%2$s class="wp-block-coblocks-events__time wp-block-coblocks-events__time-formatted"></span>',
+					gmdate( 'c', $start_date_string ),
+					gmdate( 'c', $end_date_string )
+				);
+
+				$events_layout .= coblocks_render_multi_day_event_item(
+					$start_date,
+					$end_date,
+					$month,
+					$year,
+					$title,
+					$description,
+					$event_time_string,
+					$location
+				);
+
+			} else {
+
+				$events_layout .= coblocks_render_single_day_event_item(
+					$start_date,
+					$month,
+					$year,
+					$title,
+					$description,
+					null,
+					$location
+				);
+
+			}
 
 			$events_layout .= '</div>';
 		}
 
 		$events_layout .= '</div>';
 
-		$events_layout .= '<button class="wp-coblocks-events-nav-button__prev" id="wp-coblocks-event-swiper-prev" style="visibility: hidden" />';
-		$events_layout .= '<button class="wp-coblocks-events-nav-button__next" id="wp-coblocks-event-swiper-next" style="visibility: hidden" />';
+		$events_layout .= sprintf( '<button class="wp-coblocks-events-nav-button__prev" id="wp-coblocks-event-swiper-prev" style="visibility: hidden" aria-label="%s"/>', __( 'Previous post', 'coblocks' ) );
+		$events_layout .= sprintf( '<button class="wp-coblocks-events-nav-button__next" id="wp-coblocks-event-swiper-next" style="visibility: hidden" aria-label="%s"/>', __( 'Next post', 'coblocks' ) );
 
 		$events_layout .= '</div>';
 
@@ -139,27 +205,81 @@ function coblocks_render_events_block( $attributes, $content ) {
 }
 
 /**
- * Registers the `events` block on server.
+ * Formats a generic event item into HTML
+ *
+ * @param string $date_range the range of dates for the event.
+ * @param string $month month of the event.
+ * @param string $year year of the event.
+ * @param string $title title of event.
+ * @param string $description string description of event.
+ * @param string $time_string the time range of the event.
+ * @param string $location location of the event.
  */
-function coblocks_register_events_block() {
+function coblocks_render_event_item(
+	$date_range,
+	$month,
+	$year,
+	$title,
+	$description,
+	$time_string,
+	$location
+) {
 
-	// Return early if this function does not exist.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	// Load attributes from block.json.
-	ob_start();
-	include COBLOCKS_PLUGIN_DIR . 'src/blocks/events/block.json';
-	$metadata = json_decode( ob_get_clean(), true );
-
-	register_block_type(
-		'coblocks/events',
-		array(
-			'attributes'      => $metadata['attributes'],
-			'render_callback' => 'coblocks_render_events_block',
-		)
+	$event_layout = sprintf(
+		'
+		<div class="wp-block-coblocks-events__date">
+			<span class="wp-block-coblocks-events__day">%1s</span>
+			<div>
+				<span class="wp-block-coblocks-events__month">%2$s</span>
+				<span class="wp-block-coblocks-events__year">%3$s</span>
+			</div>
+		</div>',
+		$date_range,
+		$month,
+		$year
 	);
+
+	$event_layout .= sprintf(
+		'<div class="wp-block-coblocks-events__content">
+			<span class="wp-block-coblocks-events__title">%1$s</span>
+			<span class="wp-block-coblocks-events__description">%2$s</span>
+		</div>',
+		$title,
+		$description
+	);
+
+	$event_layout .= sprintf(
+		'<div class="wp-block-coblocks-events__details">
+			%1$s
+			<span class="wp-block-coblocks-events__location">%2$s</span>
+		</div>',
+		$time_string,
+		$location
+	);
+
+	return $event_layout;
 }
 
-add_action( 'init', 'coblocks_register_events_block' );
+/**
+ * Formats a multi-day event into HTML
+ *
+ * @param string $start_date start date of event.
+ * @param string $end_date end date of event.
+ * @param mixed  ...$event_data list of event data arguments.
+ */
+function coblocks_render_multi_day_event_item( $start_date, $end_date, ...$event_data ) {
+	$date_range  = $start_date;
+	$date_range .= ' - ';
+	$date_range .= $end_date;
+
+	return coblocks_render_event_item( $date_range, ...$event_data );
+}
+
+/**
+ * Formats a single-day event into HTML
+ *
+ * @param mixed ...$event_data event data.
+ */
+function coblocks_render_single_day_event_item( ...$event_data ) {
+	return coblocks_render_event_item( ...$event_data );
+}

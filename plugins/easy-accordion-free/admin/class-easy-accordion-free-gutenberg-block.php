@@ -1,9 +1,4 @@
 <?php
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 /**
  * The plugin gutenberg block.
  *
@@ -14,6 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @subpackage Easy_Accordion_Free/Admin
  * @author     ShapedPlugin <support@shapedplugin.com>
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block' ) ) {
 
 	/**
@@ -28,6 +28,5 @@ if ( ! class_exists( 'Easy_Accordion_Free_Gutenberg_Block' ) ) {
 			require_once SP_EA_PATH . '/admin/GutenbergBlock/class-easy-accordion-free-gutenberg-block-init.php';
 			new Easy_Accordion_Free_Gutenberg_Block_Init();
 		}
-
 	}
 }

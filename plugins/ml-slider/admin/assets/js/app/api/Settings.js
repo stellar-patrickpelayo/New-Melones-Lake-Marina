@@ -45,6 +45,14 @@ const Settings = {
 			}
 		})
 	},
+	getUserSetting(setting) {
+		return api.get('settings/user/', {
+			params: {
+				action: 'ms_get_user_details',
+				setting: setting,
+			}
+		})
+	},
 	get(setting) {
 		return api.get('settings/single', {
 			params: {
@@ -77,6 +85,15 @@ const Settings = {
 			}
 		})
     },
+	
+	// @TODO - Maybe move this to metaslider-pro/v1 ?
+	getProSettings() {
+		return api.get('settings/pro', {
+			params: {
+				action: 'ms_get_pro_settings'
+			}
+		})
+	},
 
 	saveGlobalSettings(settings) {
 		let formData = new FormData()
@@ -95,6 +112,18 @@ const Settings = {
 		formData.append('setting_key', key)
 		formData.append('setting_value', value)
 		return api.post('settings/global/single/save', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		})
+	},
+
+	// @TODO - Maybe move this to metaslider-pro/v1 ?
+	saveProSettings(settings) {
+		let formData = new FormData()
+		formData.append('action', 'ms_update_pro_settings')
+		formData.append('settings', settings)
+		return api.post('settings/pro/save', formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data'
 			}
